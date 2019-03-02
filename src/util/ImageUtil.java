@@ -13,7 +13,6 @@ public class ImageUtil {
     }
 
     public static void canvasUpdate(){
-        System.out.println("Image width: " + Canvas.getInstance().getImage().getWidth() + "\theight: " + Canvas.getInstance().getImage().getHeight());
         CanvasView.getInstance().setImage(ImageUtil.bufToImage(Canvas.getInstance().getImage()));
     }
 }

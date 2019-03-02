@@ -8,4 +8,9 @@ public class StringUtil {
         Pattern pattern = Pattern.compile("[+-]?[0-9]+");
         return pattern.matcher(s).matches();
     }
+
+    public static boolean isDouble(String s){
+        Pattern pattern = Pattern.compile("[+-]?([0-9]*\\.?[0-9]+|[0-9]+\\.)");
+        return pattern.matcher(s).matches();
+    }
 }

@@ -16,7 +16,10 @@ public class PaintPen{
     }
 
     public void setColor(int r, int g, int b){
-        color = new Color(r, g, b);
+        if (r >= 0 && r <= 255 && g >= 0 && g <= 255 && b >= 0 && b <= 255)
+            color = new Color(r, g, b);
+        else
+            System.out.println("r, g, b should range from 0 to 255.");
     }
 
     public int getRGB(){
