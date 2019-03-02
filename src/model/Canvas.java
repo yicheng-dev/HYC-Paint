@@ -8,6 +8,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Stack;
 import java.util.Vector;
 
 public class Canvas{
@@ -20,10 +21,20 @@ public class Canvas{
     private static int DEFAULT_IMAGE_TYPE = BufferedImage.TYPE_3BYTE_BGR;
 
     private BufferedImage bufferedImage;
+    private Vector<Vector<Stack<Integer>>> rgbOfPixels;
 
     private Canvas(int width, int height, int imageType) {
         bufferedImage = new BufferedImage(width, height, imageType);
         this.graphs = new Vector<>();
+        this.rgbOfPixels = new Vector<>();
+        for (int i = 0; i < width; i++){
+            Vector<Stack<Integer>> rgbOfLine = new Vector<>();
+            for (int j = 0; j < height; j++){
+                rgbOfLine.add(new Stack<>());
+            }
+            rgbOfPixels.add(rgbOfLine);
+        }
+        System.out.println(rgbOfPixels.size() + " " + rgbOfPixels.size());
         this.width = width;
         this.height = height;
         this.imageType = imageType;
@@ -79,6 +90,14 @@ public class Canvas{
             return;
         bufferedImage = new BufferedImage(width, height, DEFAULT_IMAGE_TYPE);
         graphs = new Vector<>();
+        rgbOfPixels = new Vector<>();
+        for (int i = 0; i < width; i++){
+            Vector<Stack<Integer>> rgbOfLine = new Vector<>();
+            for (int j = 0; j < height; j++){
+                rgbOfLine.add(new Stack<>());
+            }
+            rgbOfPixels.add(rgbOfLine);
+        }
         this.width = width;
         this.height = height;
         setWhileBackground();
@@ -96,7 +115,8 @@ public class Canvas{
     public void paintPixel(int x, int y, int rgb){
         if (!assertXY(x, y))
             return;
-        bufferedImage.setRGB(x, y, rgb);
+        rgbOfPixels.get(x).get(y).push(rgb);
+        bufferedImage.setRGB(x, y, rgbOfPixels.get(x).get(y).peek());
     }
 
     public BufferedImage getImage(){
