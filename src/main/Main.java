@@ -1,17 +1,15 @@
 package main;
 
+import io.CuiInterpreter;
 import javafx.application.Application;
-import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
-import model.PaintPen;
+import model.Canvas;
+import model.CanvasView;
 import util.ImageUtil;
 
-import java.awt.*;
 
 public class Main extends Application {
 
@@ -21,22 +19,12 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        primaryStage.setTitle("Drawing Operations Test");
+        primaryStage.setTitle("HYC-Paint");
         BorderPane root = new BorderPane();
-        model.Canvas ca = model.Canvas.getInstance();
-        ImageView imageView = new ImageView();
-        imageView.setImage(ImageUtil.bufToImage(ca.getImage()));
-        root.setCenter(imageView);
-
+        ImageUtil.canvasUpdate();
+        root.setCenter(CanvasView.getInstance());
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
-        PaintPen p = PaintPen.getInstance();
-        p.setColor(255, 0, 255);
-        ca.resetCanvas(700, 700);
-        for (int i = 0; i < 700; i++) {
-            ca.paintPixel(i, i, p.getRGB());
-        }
-        ca.saveCanvas("output.bmp");
-        ImageUtil.imageUpdate(imageView, ca);
+        CuiInterpreter.run();
     }
 }

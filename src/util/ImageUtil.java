@@ -2,8 +2,8 @@ package util;
 
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import model.Canvas;
+import model.CanvasView;
 
 import java.awt.image.BufferedImage;
 
@@ -12,12 +12,8 @@ public class ImageUtil {
         return SwingFXUtils.toFXImage(bufferedImage, null);
     }
 
-    public static void imageUpdate(ImageView imageView, Canvas canvas){
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                imageView.setImage(ImageUtil.bufToImage(canvas.getImage()));
-            }
-        }).start();
+    public static void canvasUpdate(){
+        System.out.println("Image width: " + Canvas.getInstance().getImage().getWidth() + "\theight: " + Canvas.getInstance().getImage().getHeight());
+        CanvasView.getInstance().setImage(ImageUtil.bufToImage(Canvas.getInstance().getImage()));
     }
 }
