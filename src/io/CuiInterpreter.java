@@ -1,10 +1,16 @@
 package io;
 
 import javafx.stage.Stage;
+import main.GP;
 import model.Canvas;
 import model.PaintPen;
 import util.ImageUtil;
 import util.StringUtil;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Scanner;
 
 public class CuiInterpreter {
@@ -14,15 +20,23 @@ public class CuiInterpreter {
 
 
     public static void run(){
-        Scanner scanner = new Scanner(System.in);
-        do {
-            if (exitFlag)
-                break;
-            System.out.print(PROMPT);
-            String command = scanner.nextLine();
-            commandProcess(command);
-        }while (true);
-        System.exit(0);
+        try {
+            InputStream inputStream = new FileInputStream(new File("input.txt"));
+            if (GP.STDIN)
+                inputStream = System.in;
+            Scanner scanner = new Scanner(inputStream);
+            do {
+                if (exitFlag)
+                    break;
+                if (GP.STDIN)
+                    System.out.print(PROMPT);
+                String command = scanner.nextLine();
+                commandProcess(command);
+            } while (true);
+            System.exit(0);
+        }catch (IOException e){
+            System.out.println("Input file not found.");
+        }
     }
 
     public static void commandProcess(String command){
