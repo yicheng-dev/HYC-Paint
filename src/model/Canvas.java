@@ -67,6 +67,7 @@ public class Canvas{
         if (!assertId(id))
             return;
         Line line = new Line(id, GraphEntityType.LINE);
+        CGAlgorithm.setBeginEndPixel(line, beginX, beginY, endX, endY);
         switch (algorithm){
             case "Bresenham":
                 CGAlgorithm.bresenham(line, beginX, beginY, endX, endY);

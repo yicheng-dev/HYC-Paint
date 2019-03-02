@@ -1,7 +1,12 @@
 resetCanvas 400 300
 setColor 255 0 255
-drawLine 1 50 50 200 250 DDA
-drawLine 2 86.4 84.1 288.67 9.99 Bresenham
-drawLine 3 0 0 50 70 MidPoint
+drawLine 1 50 50 60 100 MidPoint
+drawLine 2 50 50 100 60 MidPoint
+drawLine 3 50 50 100 40 MidPoint
+drawLine 4 50 50 60 0 MidPoint
+drawLine 5 50 50 40 0 MidPoint
+drawLine 6 50 50 0 40 MidPoint
+drawLine 7 50 50 0 60 MidPoint
+drawLine 8 50 50 40 100 MidPoint
 saveCanvas output.bmp
 exit

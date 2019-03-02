@@ -25,5 +25,12 @@ public class Line extends GraphEntity{
         return endPoint;
     }
 
+    public void setBeginPoint(int x, int y, int rgb){
+        beginPoint = new Pixel(x, y, rgb);
+    }
+
+    public void setEndPoint(int x, int y, int rgb){
+        endPoint = new Pixel(x, y, rgb);
+    }
 
 }

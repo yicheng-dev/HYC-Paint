@@ -1,6 +1,7 @@
 package util;
 
 import model.Line;
+import model.PaintPen;
 
 public class CGAlgorithm {
     public static void dda(Line line, double beginX, double beginY, double endX, double endY){
@@ -144,6 +145,11 @@ public class CGAlgorithm {
                 }
             }
         }
+    }
+
+    public static void setBeginEndPixel(Line line, double beginX, double beginY, double endX, double endY){
+        line.setBeginPoint(nearInt(beginX), nearInt(beginY), PaintPen.getInstance().getRGB());
+        line.setEndPoint(nearInt(endX), nearInt(endY), PaintPen.getInstance().getRGB());
     }
 
     private static int nearInt(double value){
