@@ -1,10 +1,11 @@
 package util;
 
-import model.Line;
-import model.PaintPen;
+import model.*;
+
+import java.util.Vector;
 
 public class CGAlgorithm {
-    public static void dda(Line line, double beginX, double beginY, double endX, double endY){
+    public static void dda(GraphEntity line, double beginX, double beginY, double endX, double endY){
         if (beginX == endX){
             for (int y = nearInt(beginY); y <= nearInt(endY); y++){
                 line.addPixel(nearInt(beginX), y);
@@ -46,7 +47,7 @@ public class CGAlgorithm {
         }
     }
 
-    public static void bresenham(Line line, double beginX, double beginY, double endX, double endY){
+    public static void bresenham(GraphEntity line, double beginX, double beginY, double endX, double endY){
         if (beginX == endX){
             for (int y = nearInt(beginY); y <= nearInt(endY); y++){
                 line.addPixel(nearInt(beginX), y);
@@ -94,7 +95,7 @@ public class CGAlgorithm {
         }
     }
 
-    public static void midPoint(Line line, double beginX, double beginY, double endX, double endY){
+    public static void midPoint(GraphEntity line, double beginX, double beginY, double endX, double endY){
         if (beginX == endX){
             for (int y = nearInt(beginY); y <= nearInt(endY); y++){
                 line.addPixel(nearInt(beginX), y);
@@ -147,9 +148,40 @@ public class CGAlgorithm {
         }
     }
 
+    public static void ddaPolygon(Polygon polygon, int n, Vector<Point> points){
+        for (int i = 0; i < n - 1; i ++){
+            //System.out.println("DDA: " + points.get(i).x + " " + points.get(i).y + " " + points.get(i + 1).x + " " + points.get(i + 1).y);
+            dda(polygon, points.get(i).x, points.get(i).y, points.get(i + 1).x, points.get(i + 1).y);
+        }
+        if (n > 2)
+            dda(polygon, points.get(n - 1).x, points.get(n - 1).y, points.get(0).x, points.get(0).y);
+    }
+
+    public static void midPointPolygon(Polygon polygon, int n, Vector<Point> points){
+        for (int i = 0; i < n - 1; i ++){
+            midPoint(polygon, points.get(i).x, points.get(i).y, points.get(i + 1).x, points.get(i + 1).y);
+        }
+        if (n > 2)
+            midPoint(polygon, points.get(n - 1).x, points.get(n - 1).y, points.get(0).x, points.get(0).y);
+    }
+
+    public static void bresenhamPolygon(Polygon polygon, int n, Vector<Point> points){
+        for (int i = 0; i < n - 1; i ++){
+            bresenham(polygon, points.get(i).x, points.get(i).y, points.get(i + 1).x, points.get(i + 1).y);
+        }
+        if (n > 2)
+            bresenham(polygon, points.get(n - 1).x, points.get(n - 1).y, points.get(0).x, points.get(0).y);
+    }
+
     public static void setBeginEndPixel(Line line, double beginX, double beginY, double endX, double endY){
         line.setBeginPoint(nearInt(beginX), nearInt(beginY), PaintPen.getInstance().getRGB());
         line.setEndPoint(nearInt(endX), nearInt(endY), PaintPen.getInstance().getRGB());
+    }
+
+    public static void setPointsPixel(Polygon polygon, Vector<Point> points){
+        for (Point point : points){
+            polygon.addPoint(nearInt(point.x), nearInt(point.y), PaintPen.getInstance().getRGB());
+        }
     }
 
     private static int nearInt(double value){

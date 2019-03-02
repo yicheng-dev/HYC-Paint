@@ -2,6 +2,7 @@ package model;
 
 import main.GraphEntityType;
 import util.CGAlgorithm;
+import util.StringUtil;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -34,7 +35,6 @@ public class Canvas{
             }
             rgbOfPixels.add(rgbOfLine);
         }
-        System.out.println(rgbOfPixels.size() + " " + rgbOfPixels.size());
         this.width = width;
         this.height = height;
         this.imageType = imageType;
@@ -84,6 +84,34 @@ public class Canvas{
         }
         graphs.add(line);
         line.draw();
+    }
+
+    public void drawPolygon(int id, int n, String algorithm, Vector<Point> points){
+        for (Point point : points){
+            if (!assertXY((int)point.x, (int)point.y) || !assertXY((int)point.x + 1, (int)point.y + 1)){
+                return;
+            }
+        }
+        if (!assertId(id))
+            return;
+        Polygon polygon = new Polygon(id, GraphEntityType.POLYGON);
+        CGAlgorithm.setPointsPixel(polygon, points);
+        switch (algorithm){
+            case "Bresenham":
+                CGAlgorithm.bresenhamPolygon(polygon, n, points);
+                break;
+            case "DDA":
+                CGAlgorithm.ddaPolygon(polygon, n, points);
+                break;
+            case "MidPoint":
+                CGAlgorithm.midPointPolygon(polygon, n, points);
+                break;
+            default:
+                System.out.println("Available algorithms: DDA, MidPoint and Bresenham.");
+                return;
+        }
+        graphs.add(polygon);
+        polygon.draw();
     }
 
     public void resetCanvas(int width, int height){

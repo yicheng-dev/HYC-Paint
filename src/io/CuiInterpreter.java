@@ -4,6 +4,7 @@ import javafx.stage.Stage;
 import main.GP;
 import model.Canvas;
 import model.PaintPen;
+import model.Point;
 import util.ImageUtil;
 import util.StringUtil;
 
@@ -12,6 +13,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Scanner;
+import java.util.Vector;
 
 public class CuiInterpreter {
 
@@ -74,6 +76,24 @@ public class CuiInterpreter {
                 }
                 doDrawLine(Integer.valueOf(paras[1]), Double.valueOf(paras[2]), Double.valueOf(paras[3]), Double.valueOf(paras[4]), Double.valueOf(paras[5]), paras[6]);
                 break;
+            case "drawPolygon":
+                if (paras.length <= 5 || !StringUtil.isInteger(paras[1]) || !StringUtil.isInteger(paras[2]) ||
+                    !(Integer.valueOf(paras[2]) * 2 + 4 == paras.length)){
+                    usage(paras[0]);
+                    return;
+                }
+                int n = Integer.valueOf(paras[2]);
+                for (int i = 4; i <= 3 + 2 * n; i ++){
+                    if (!StringUtil.isDouble(paras[i])){
+                        usage(paras[0]);
+                        return;
+                    }
+                }
+                Vector<Point> points = new Vector<>();
+                for (int i = 4; i <= 3 + 2 * n; i += 2){
+                    points.add(new Point(Double.valueOf(paras[i]), Double.valueOf(paras[i + 1])));
+                }
+                doDrawPolygon(Integer.valueOf(paras[1]), Integer.valueOf(paras[2]), paras[3], points);
             case "exit":
             case "q":
                 exitFlag = true;
@@ -97,6 +117,9 @@ public class CuiInterpreter {
             case "drawLine":
                 System.out.println("Usage: " + command + " [id] [beginX] [beginY] [endX] [endY] [algorithm], while id is an integer and four x/y are doubles.");
                 break;
+            case "drawPolygon":
+                System.out.println("Usage: " + command + " [id] [n] [algorithm] ([X] [Y] ...).");
+                break;
             default:
                 break;
         }
@@ -117,6 +140,11 @@ public class CuiInterpreter {
 
     private static void doDrawLine(int id, double beginX, double beginY, double endX, double endY, String algorithm){
         Canvas.getInstance().drawLine(id, beginX, beginY, endX, endY, algorithm);
+        ImageUtil.canvasUpdate();
+    }
+
+    private static void doDrawPolygon(int id, int n, String algorithm, Vector<Point> points){
+        Canvas.getInstance().drawPolygon(id, n, algorithm, points);
         ImageUtil.canvasUpdate();
     }
 }

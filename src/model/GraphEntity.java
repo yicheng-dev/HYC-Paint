@@ -26,6 +26,10 @@ public class GraphEntity {
         pixels.add(new Pixel(x, y, PaintPen.getInstance().getRGB()));
     }
 
+    public Vector<Pixel> getPixels(){
+        return pixels;
+    }
+
     public void clearPixel(){
         pixels.clear();
     }

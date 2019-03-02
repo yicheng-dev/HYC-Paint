@@ -21,7 +21,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        redirectErr("err.txt");
+        //redirectErr("err.txt");
         primaryStage.setTitle("HYC-Paint");
         BorderPane root = new BorderPane();
         ImageUtil.canvasUpdate();
