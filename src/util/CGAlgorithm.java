@@ -150,11 +150,9 @@ public class CGAlgorithm {
 
     public static void ddaPolygon(Polygon polygon, int n, Vector<Point> points){
         for (int i = 0; i < n - 1; i ++){
-            System.out.println(points.get(i).x + " " + points.get(i).y + " " + points.get(i + 1).x + " " + points.get(i + 1).y);
             dda(polygon, points.get(i).x, points.get(i).y, points.get(i + 1).x, points.get(i + 1).y);
         }
         if (n > 2) {
-            System.out.println(points.get(n - 1).x + " " + points.get(n - 1).y + " " + points.get(0).x + " " + points.get(0).y);
             dda(polygon, points.get(n - 1).x, points.get(n - 1).y, points.get(0).x, points.get(0).y);
         }
     }

@@ -112,6 +112,7 @@ public class Canvas{
                 System.out.println("Available algorithms: DDA, MidPoint and Bresenham.");
                 return;
         }
+        polygon.setAlgorithm(algorithm);
         graphs.add(polygon);
         polygon.draw();
     }
@@ -165,6 +166,9 @@ public class Canvas{
                 if (graph.getType() == GraphEntityType.LINE){
                     lineTranslate(graph, dx, dy);
                 }
+                else if (graph.getType() == GraphEntityType.POLYGON){
+                    polygonTranslate(graph, dx, dy);
+                }
                 break;
             }
         }
@@ -193,6 +197,36 @@ public class Canvas{
         }
         CGAlgorithm.setBeginEndPixel(line, beginX, beginY, endX, endY);
         line.draw();
+    }
+
+    private void polygonTranslate(GraphEntity graph, double dx, double dy){
+        Polygon polygon = (Polygon)graph;
+        Vector<Point> points = new Vector<>();
+        for (Pixel point : polygon.getPoints()){
+            points.add(new Point(point.getX() + dx, point.getY() + dy));
+        }
+        for (Point point : points){
+            if (!assertXY((int)point.x, (int)point.y) || !assertXY((int)point.x+ 1, (int)point.y + 1)){
+                return;
+            }
+        }
+        polygon.clearPoints();
+        CGAlgorithm.setPolyPointsPixel(polygon, points);
+        switch (polygon.getAlgorithm()){
+            case "Bresenham":
+                CGAlgorithm.bresenhamPolygon(polygon, points.size(), points);
+                break;
+            case "DDA":
+                CGAlgorithm.ddaPolygon(polygon, points.size(), points);
+                break;
+            case "MidPoint":
+                CGAlgorithm.midPointPolygon(polygon, points.size(), points);
+                break;
+            default:
+                System.out.println("Available algorithms: DDA, MidPoint and Bresenham.");
+                return;
+        }
+        polygon.draw();
     }
 
     public void resetCanvas(int width, int height){
@@ -285,6 +319,7 @@ public class Canvas{
     private boolean assertXY(int x, int y){
         if (x >= 0 && x <= width && y >= 0 && y <= height)
             return true;
+        System.out.println("x: " + x + "\ty: " + y);
         System.out.println("X or Y should be in range of width or height.");
         return false;
     }
