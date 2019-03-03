@@ -1,5 +1,5 @@
 resetCanvas 400 300
 setColor 255 0 255
-drawCurve 1 4 Bezier 50 50 100 50 100 100 50 100
+drawCurve 1 4 B-spline 50 50 100 50 100 100 50 100
 saveCanvas output.bmp
 exit

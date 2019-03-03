@@ -219,7 +219,21 @@ public class CGAlgorithm {
     }
 
     public static void bSpline(Curve curve, int n, Vector<Point> points){
-
+        double step = 0.001;
+        for (double t = 0; t <= 1; t += step){
+            double x = 0.0;
+            double y = 0.0;
+            for (int i = 0; i <= n - 1; i++){
+                double f = 0.0;
+                for (int j = 0; j <= n - 1 - i; j++){
+                    f += Math.pow(-1, j) * combination(j, n) * Math.pow(t + n - 1 - i - j, n - 1);
+                }
+                f /= factorial(n - 1);
+                x += points.get(i).x * f;
+                y += points.get(i).y * f;
+            }
+            curve.addPixel(nearInt(x), nearInt(y));
+        }
     }
 
     public static void setBeginEndPixel(Line line, double beginX, double beginY, double endX, double endY){
