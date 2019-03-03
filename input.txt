@@ -1,5 +1,5 @@
 resetCanvas 400 300
 setColor 255 0 255
-drawPolygon 1 4 DDA 50 50 50 100 100 100 100 50
+drawEllipse 1 50 50 20 30
 saveCanvas output.bmp
 exit

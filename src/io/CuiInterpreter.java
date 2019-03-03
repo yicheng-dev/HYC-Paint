@@ -95,6 +95,15 @@ public class CuiInterpreter {
                 }
                 doDrawPolygon(Integer.valueOf(paras[1]), Integer.valueOf(paras[2]), paras[3], points);
                 break;
+            case "drawEllipse":
+                if (paras.length != 6 || !StringUtil.isInteger(paras[1]) || !StringUtil.isDouble(paras[2])
+                        || !StringUtil.isDouble(paras[3]) || !StringUtil.isDouble(paras[4]) || !StringUtil.isDouble(paras[5])) {
+                    usage(paras[0]);
+                    return;
+                }
+                doDrawEllipse(Integer.valueOf(paras[1]), Double.valueOf(paras[2]), Double.valueOf(paras[3]),
+                        Double.valueOf(paras[4]), Double.valueOf(paras[5]));
+                break;
             case "exit":
             case "q":
                 exitFlag = true;
@@ -121,6 +130,9 @@ public class CuiInterpreter {
             case "drawPolygon":
                 System.out.println("Usage: " + command + " [id] [n] [algorithm] ([X] [Y] ...).");
                 break;
+            case "drawEllipse":
+                System.out.println("Usage: " + command + " [id] [x] [y] [rx] [ry].");
+                break;
             default:
                 break;
         }
@@ -146,6 +158,11 @@ public class CuiInterpreter {
 
     private static void doDrawPolygon(int id, int n, String algorithm, Vector<Point> points){
         Canvas.getInstance().drawPolygon(id, n, algorithm, points);
+        ImageUtil.canvasUpdate();
+    }
+
+    private static void doDrawEllipse(int id, double x, double y, double rx, double ry){
+        Canvas.getInstance().drawEllipse(id, x, y, rx, ry);
         ImageUtil.canvasUpdate();
     }
 }

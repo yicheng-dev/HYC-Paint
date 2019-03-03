@@ -114,6 +114,20 @@ public class Canvas{
         polygon.draw();
     }
 
+    public void drawEllipse(int id, double x, double y, double rx, double ry){
+        if (!assertXY((int)(x - rx), (int)y) || !assertXY((int)x, (int)(y - ry))
+                || !assertXY((int)(x + rx + 1), (int)y) || !assertXY((int)x, (int)(y + ry + 1))){
+            return;
+        }
+        if (!assertId(id))
+            return;
+        Ellipse ellipse = new Ellipse(id, GraphEntityType.ELLIPSE);
+        CGAlgorithm.setEllipseAttr(ellipse, x, y, rx, ry);
+        CGAlgorithm.midPointEllipse(ellipse, x, y, rx, ry);
+        graphs.add(ellipse);
+        ellipse.draw();
+    }
+
     public void resetCanvas(int width, int height){
         if (!(assertWidthHeight(width) && assertWidthHeight(height)))
             return;

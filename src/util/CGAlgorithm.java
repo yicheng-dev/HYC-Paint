@@ -175,6 +175,36 @@ public class CGAlgorithm {
             bresenham(polygon, points.get(n - 1).x, points.get(n - 1).y, points.get(0).x, points.get(0).y);
     }
 
+    public static void midPointEllipse(Ellipse ellipse, double centerX, double centerY, double rx, double ry){
+        double rxSquare = rx * rx;
+        double rySquare = ry * ry;
+        double d = rySquare + rxSquare * (-ry + 0.25);
+        int x = 0, y = nearInt(ry);
+        plotEllipse(ellipse, nearInt(centerX), nearInt(centerY), x, y);
+        while (rySquare * (x + 1) < rxSquare * (y - 0.5)){
+            if (d < 0)
+                d += rySquare * (2 * x + 3);
+            else{
+                d += rySquare * (2 * x + 3) + rxSquare * (-2 * y + 2);
+                y --;
+            }
+            x ++;
+            plotEllipse(ellipse, nearInt(centerX), nearInt(centerY), x, y);
+        }
+        d = (ry * (x + 0.5)) * 2 + (rx * (y - 1)) * 2 - (rx * ry) * 2;
+        while (y > 0){
+            if (d < 0){
+                d += rySquare * (2 * x + 2) + rxSquare * (-2 * y + 3);
+                x ++;
+            }
+            else{
+                d += rxSquare * (-2 * y + 3);
+            }
+            y --;
+            plotEllipse(ellipse, nearInt(centerX), nearInt(centerY), x, y);
+        }
+    }
+
     public static void setBeginEndPixel(Line line, double beginX, double beginY, double endX, double endY){
         line.setBeginPoint(nearInt(beginX), nearInt(beginY), PaintPen.getInstance().getRGB());
         line.setEndPoint(nearInt(endX), nearInt(endY), PaintPen.getInstance().getRGB());
@@ -184,6 +214,18 @@ public class CGAlgorithm {
         for (Point point : points){
             polygon.addPoint(nearInt(point.x), nearInt(point.y), PaintPen.getInstance().getRGB());
         }
+    }
+
+    public static void setEllipseAttr(Ellipse ellipse, double x, double y, double rx, double ry){
+        ellipse.setCenter(nearInt(x), nearInt(y));
+        ellipse.setRadius(nearInt(rx), nearInt(ry));
+    }
+
+    private static void plotEllipse(Ellipse ellipse, int centerX, int centerY, int x, int y){
+        ellipse.addPixel(centerX + x, centerY + y);
+        ellipse.addPixel(centerX + x, centerY - y);
+        ellipse.addPixel(centerX - x, centerY + y);
+        ellipse.addPixel(centerX - x, centerY - y);
     }
 
     private static int nearInt(double value){
