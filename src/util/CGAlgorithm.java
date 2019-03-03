@@ -205,14 +205,37 @@ public class CGAlgorithm {
         }
     }
 
+    public static void bezier(Curve curve, int n, Vector<Point> points){
+        double step = 0.001;
+        for (double t = 0; t <= 1; t += step){
+            double x = 0.0;
+            double y = 0.0;
+            for (int i = 0; i <= n - 1; i++){
+                x += combination(i, n - 1) * Math.pow(t, i) * Math.pow(1 - t, n - 1 - i) * points.get(i).x;
+                y += combination(i, n - 1) * Math.pow(t, i) * Math.pow(1 - t, n - 1 - i) * points.get(i).y;
+            }
+            curve.addPixel(nearInt(x), nearInt(y));
+        }
+    }
+
+    public static void bSpline(Curve curve, int n, Vector<Point> points){
+
+    }
+
     public static void setBeginEndPixel(Line line, double beginX, double beginY, double endX, double endY){
         line.setBeginPoint(nearInt(beginX), nearInt(beginY), PaintPen.getInstance().getRGB());
         line.setEndPoint(nearInt(endX), nearInt(endY), PaintPen.getInstance().getRGB());
     }
 
-    public static void setPointsPixel(Polygon polygon, Vector<Point> points){
+    public static void setPolyPointsPixel(Polygon polygon, Vector<Point> points){
         for (Point point : points){
             polygon.addPoint(nearInt(point.x), nearInt(point.y), PaintPen.getInstance().getRGB());
+        }
+    }
+
+    public static void setCurvePointsPixel(Curve curve, Vector<Point> points){
+        for (Point point : points){
+            curve.addPoint(nearInt(point.x), nearInt(point.y), PaintPen.getInstance().getRGB());
         }
     }
 
@@ -232,5 +255,17 @@ public class CGAlgorithm {
         if (value - (int)value < (int)value + 1 - value)
             return (int)value;
         return (int)value + 1;
+    }
+
+    private static int factorial(int a){
+        int sum = 1;
+        while( a > 0 ) {
+            sum = sum * a--;
+        }
+        return sum;
+    }
+
+    private static int combination(int m, int n){
+        return m <= n ? factorial(n) / (factorial(m) * factorial((n - m))) : 0;
     }
 }

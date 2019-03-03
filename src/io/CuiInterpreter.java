@@ -76,6 +76,7 @@ public class CuiInterpreter {
                 }
                 doDrawLine(Integer.valueOf(paras[1]), Double.valueOf(paras[2]), Double.valueOf(paras[3]), Double.valueOf(paras[4]), Double.valueOf(paras[5]), paras[6]);
                 break;
+            case "drawCurve":
             case "drawPolygon":
                 if (paras.length <= 5 || !StringUtil.isInteger(paras[1]) || !StringUtil.isInteger(paras[2]) ||
                     !(Integer.valueOf(paras[2]) * 2 + 4 == paras.length)){
@@ -93,7 +94,10 @@ public class CuiInterpreter {
                 for (int i = 4; i <= 3 + 2 * n; i += 2){
                     points.add(new Point(Double.valueOf(paras[i]), Double.valueOf(paras[i + 1])));
                 }
-                doDrawPolygon(Integer.valueOf(paras[1]), Integer.valueOf(paras[2]), paras[3], points);
+                if (paras[0].equals("drawPolygon"))
+                    doDrawPolygon(Integer.valueOf(paras[1]), Integer.valueOf(paras[2]), paras[3], points);
+                else if (paras[0].equals("drawCurve"))
+                    doDrawCurve(Integer.valueOf(paras[1]), Integer.valueOf(paras[2]), paras[3], points);
                 break;
             case "drawEllipse":
                 if (paras.length != 6 || !StringUtil.isInteger(paras[1]) || !StringUtil.isDouble(paras[2])
@@ -133,6 +137,9 @@ public class CuiInterpreter {
             case "drawEllipse":
                 System.out.println("Usage: " + command + " [id] [x] [y] [rx] [ry].");
                 break;
+            case "drawCurve":
+                System.out.println("Usage: " + command + " [id] [n] [algorithm] ([X] [Y] ...).");
+                break;
             default:
                 break;
         }
@@ -163,6 +170,11 @@ public class CuiInterpreter {
 
     private static void doDrawEllipse(int id, double x, double y, double rx, double ry){
         Canvas.getInstance().drawEllipse(id, x, y, rx, ry);
+        ImageUtil.canvasUpdate();
+    }
+
+    private static void doDrawCurve(int id, int n, String algorithm, Vector<Point> points){
+        Canvas.getInstance().drawCurve(id, n, algorithm, points);
         ImageUtil.canvasUpdate();
     }
 }

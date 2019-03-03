@@ -95,7 +95,7 @@ public class Canvas{
         if (!assertId(id))
             return;
         Polygon polygon = new Polygon(id, GraphEntityType.POLYGON);
-        CGAlgorithm.setPointsPixel(polygon, points);
+        CGAlgorithm.setPolyPointsPixel(polygon, points);
         switch (algorithm){
             case "Bresenham":
                 CGAlgorithm.bresenhamPolygon(polygon, n, points);
@@ -126,6 +126,31 @@ public class Canvas{
         CGAlgorithm.midPointEllipse(ellipse, x, y, rx, ry);
         graphs.add(ellipse);
         ellipse.draw();
+    }
+
+    public void drawCurve(int id, int n, String algorithm, Vector<Point> points){
+        for (Point point : points){
+            if (!assertXY((int)point.x, (int)point.y) || !assertXY((int)point.x + 1, (int)point.y + 1)){
+                return;
+            }
+        }
+        if (!assertId(id))
+            return;
+        Curve curve = new Curve(id, GraphEntityType.CURVE);
+        CGAlgorithm.setCurvePointsPixel(curve, points);
+        switch (algorithm){
+            case "Bezier":
+                CGAlgorithm.bezier(curve, n, points);
+                break;
+            case "B-spline":
+                CGAlgorithm.bSpline(curve, n, points);
+                break;
+            default:
+                System.out.println("Available algorithms: Bezier and B-spline.");
+                return;
+        }
+        graphs.add(curve);
+        curve.draw();
     }
 
     public void resetCanvas(int width, int height){
