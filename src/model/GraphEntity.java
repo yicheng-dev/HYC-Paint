@@ -9,6 +9,8 @@ public class GraphEntity {
     private int id;
     private GraphEntityType type;
     private Vector<Pixel> pixels;
+    private boolean hasPainted = false;
+    private int rgb;
 
     public GraphEntity(int id, GraphEntityType type){
         this.id = id;
@@ -23,7 +25,11 @@ public class GraphEntity {
     }
 
     public void addPixel(int x, int y){
-        pixels.add(new Pixel(x, y, PaintPen.getInstance().getRGB()));
+        if (!hasPainted) {
+            hasPainted = true;
+            rgb = PaintPen.getInstance().getRGB();
+        }
+        pixels.add(new Pixel(x, y, rgb));
     }
 
     public Vector<Pixel> getPixels(){
@@ -46,5 +52,21 @@ public class GraphEntity {
         for (Pixel pixel : pixels){
             Canvas.getInstance().paintPixel(pixel.getX(), Canvas.getInstance().getHeight() - pixel.getY(), pixel.getRgb());
         }
+    }
+
+    public void clear(){
+        if (pixels.size() == 0){
+            System.out.println("GraphEntity " + id + "'s pixels haven't been assigned.");
+            return;
+        }
+        for (Pixel pixel : pixels) {
+            Canvas.getInstance().clearPixel(pixel.getX(), Canvas.getInstance().getHeight() - pixel.getY());
+        }
+    }
+
+    public int getRgb() {
+        if (!hasPainted)
+            return PaintPen.getInstance().getRGB();
+        return rgb;
     }
 }

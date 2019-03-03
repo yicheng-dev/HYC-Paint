@@ -108,6 +108,14 @@ public class CuiInterpreter {
                 doDrawEllipse(Integer.valueOf(paras[1]), Double.valueOf(paras[2]), Double.valueOf(paras[3]),
                         Double.valueOf(paras[4]), Double.valueOf(paras[5]));
                 break;
+            case "translate":
+                if (paras.length != 4 || !StringUtil.isInteger(paras[1]) || !StringUtil.isDouble(paras[2])
+                    || !StringUtil.isDouble(paras[3])){
+                    usage(paras[0]);
+                    return;
+                }
+                doTranslate(Integer.valueOf(paras[1]), Double.valueOf(paras[2]), Double.valueOf(paras[3]));
+                break;
             case "exit":
             case "q":
                 exitFlag = true;
@@ -139,6 +147,9 @@ public class CuiInterpreter {
                 break;
             case "drawCurve":
                 System.out.println("Usage: " + command + " [id] [n] [algorithm] ([X] [Y] ...).");
+                break;
+            case "translate":
+                System.out.println("Usage: " + command + " [id] [dx] [dy].");
                 break;
             default:
                 break;
@@ -175,6 +186,11 @@ public class CuiInterpreter {
 
     private static void doDrawCurve(int id, int n, String algorithm, Vector<Point> points){
         Canvas.getInstance().drawCurve(id, n, algorithm, points);
+        ImageUtil.canvasUpdate();
+    }
+
+    public static void doTranslate(int id, double dx, double dy){
+        Canvas.getInstance().translate(id, dx, dy);
         ImageUtil.canvasUpdate();
     }
 }

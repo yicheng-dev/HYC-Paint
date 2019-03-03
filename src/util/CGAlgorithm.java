@@ -237,19 +237,19 @@ public class CGAlgorithm {
     }
 
     public static void setBeginEndPixel(Line line, double beginX, double beginY, double endX, double endY){
-        line.setBeginPoint(nearInt(beginX), nearInt(beginY), PaintPen.getInstance().getRGB());
-        line.setEndPoint(nearInt(endX), nearInt(endY), PaintPen.getInstance().getRGB());
+        line.setBeginPoint(nearInt(beginX), nearInt(beginY), line.getRgb());
+        line.setEndPoint(nearInt(endX), nearInt(endY), line.getRgb());
     }
 
     public static void setPolyPointsPixel(Polygon polygon, Vector<Point> points){
         for (Point point : points){
-            polygon.addPoint(nearInt(point.x), nearInt(point.y), PaintPen.getInstance().getRGB());
+            polygon.addPoint(nearInt(point.x), nearInt(point.y), polygon.getRgb());
         }
     }
 
     public static void setCurvePointsPixel(Curve curve, Vector<Point> points){
         for (Point point : points){
-            curve.addPoint(nearInt(point.x), nearInt(point.y), PaintPen.getInstance().getRGB());
+            curve.addPoint(nearInt(point.x), nearInt(point.y), curve.getRgb());
         }
     }
 
@@ -265,7 +265,7 @@ public class CGAlgorithm {
         ellipse.addPixel(centerX - x, centerY - y);
     }
 
-    private static int nearInt(double value){
+    public static int nearInt(double value){
         if (value - (int)value < (int)value + 1 - value)
             return (int)value;
         return (int)value + 1;

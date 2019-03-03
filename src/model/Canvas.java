@@ -20,6 +20,7 @@ public class Canvas{
     private static int DEFAULT_WIDTH = 200;
     private static int DEFAULT_HEIGHT = 200;
     private static int DEFAULT_IMAGE_TYPE = BufferedImage.TYPE_3BYTE_BGR;
+    private static Color BACKGROUND_COLOR = new Color(255, 255, 255);
 
     private BufferedImage bufferedImage;
     private Vector<Vector<Stack<Integer>>> rgbOfPixels;
@@ -56,7 +57,7 @@ public class Canvas{
     private void setWhileBackground(){
         for (int x = 0; x < width; x++){
             for (int y = 0; y < height; y++){
-                this.paintPixel(x, y, new Color(255, 255, 255).getRGB());
+                this.paintPixel(x, y, BACKGROUND_COLOR.getRGB());
             }
         }
     }
@@ -64,7 +65,7 @@ public class Canvas{
     public void drawLine(int id, double beginX, double beginY, double endX, double endY, String algorithm){
         if (!(assertXY((int)beginX, (int)beginY) && assertXY((int)endX + 1, (int)endY + 1)))
             return;
-        if (!assertId(id))
+        if (!assertId(id, true))
             return;
         Line line = new Line(id, GraphEntityType.LINE);
         CGAlgorithm.setBeginEndPixel(line, beginX, beginY, endX, endY);
@@ -82,6 +83,7 @@ public class Canvas{
                 System.out.println("Available algorithms: DDA, MidPoint and Bresenham.");
                 return;
         }
+        line.setAlgorithm(algorithm);
         graphs.add(line);
         line.draw();
     }
@@ -92,7 +94,7 @@ public class Canvas{
                 return;
             }
         }
-        if (!assertId(id))
+        if (!assertId(id, true))
             return;
         Polygon polygon = new Polygon(id, GraphEntityType.POLYGON);
         CGAlgorithm.setPolyPointsPixel(polygon, points);
@@ -119,7 +121,7 @@ public class Canvas{
                 || !assertXY((int)(x + rx + 1), (int)y) || !assertXY((int)x, (int)(y + ry + 1))){
             return;
         }
-        if (!assertId(id))
+        if (!assertId(id, true))
             return;
         Ellipse ellipse = new Ellipse(id, GraphEntityType.ELLIPSE);
         CGAlgorithm.setEllipseAttr(ellipse, x, y, rx, ry);
@@ -134,7 +136,7 @@ public class Canvas{
                 return;
             }
         }
-        if (!assertId(id))
+        if (!assertId(id, true))
             return;
         Curve curve = new Curve(id, GraphEntityType.CURVE);
         CGAlgorithm.setCurvePointsPixel(curve, points);
@@ -151,6 +153,46 @@ public class Canvas{
         }
         graphs.add(curve);
         curve.draw();
+    }
+
+    public void translate(int id, double dx, double dy){
+        if (assertId(id, false))
+            return;
+        for (GraphEntity graph : graphs){
+            if (id == graph.getId()){
+                graph.clear();
+                graph.clearPixel();
+                if (graph.getType() == GraphEntityType.LINE){
+                    lineTranslate(graph, dx, dy);
+                }
+                break;
+            }
+        }
+    }
+
+    private void lineTranslate(GraphEntity graph, double dx, double dy){
+        Line line = (Line)graph;
+        int beginX = line.getBeginPoint().getX() + CGAlgorithm.nearInt(dx);
+        int endX = line.getEndPoint().getX() + CGAlgorithm.nearInt(dx);
+        int beginY = line.getBeginPoint().getY() + CGAlgorithm.nearInt(dy);
+        int endY = line.getEndPoint().getY() + CGAlgorithm.nearInt(dy);
+        if (!(assertXY(beginX, beginY) && assertXY(endX + 1, endY + 1)))
+            return;
+        switch (line.getAlgorithm()){
+            case "Bresenham":
+                CGAlgorithm.bresenham(line, beginX , beginY, endX, endY);
+                break;
+            case "DDA":
+                CGAlgorithm.dda(line, beginX, beginY, endX, endY);
+                break;
+            case "MidPoint":
+                CGAlgorithm.midPoint(line, beginX, beginY, endX, endY);
+                break;
+            default:
+                break;
+        }
+        CGAlgorithm.setBeginEndPixel(line, beginX, beginY, endX, endY);
+        line.draw();
     }
 
     public void resetCanvas(int width, int height){
@@ -187,6 +229,17 @@ public class Canvas{
         bufferedImage.setRGB(x, y, rgbOfPixels.get(x).get(y).peek());
     }
 
+    public void clearPixel(int x, int y){
+        if (!assertXY(x, y))
+            return;
+        int nowRgb = BACKGROUND_COLOR.getRGB();
+        if (!rgbOfPixels.get(x).get(y).empty()){
+            rgbOfPixels.get(x).get(y).pop();
+            nowRgb = rgbOfPixels.get(x).get(y).peek();
+        }
+        bufferedImage.setRGB(x, y, nowRgb);
+    }
+
     public BufferedImage getImage(){
         return bufferedImage;
     }
@@ -195,14 +248,15 @@ public class Canvas{
 
     public int getHeight() { return height; }
 
-    private boolean assertId(int id){
+    private boolean assertId(int id, boolean create){
         if (id < 0) {
             System.out.println("Please choose an id with positive value.");
             return false;
         }
         for (GraphEntity graph : graphs){
             if (graph.getId() == id) {
-                System.out.println("The id " + id + " has been occupied by another graph entity.");
+                if (create)
+                    System.out.println("The id " + id + " has been occupied by another graph entity.");
                 return false;
             }
         }

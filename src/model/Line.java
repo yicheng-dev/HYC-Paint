@@ -8,6 +8,7 @@ public class Line extends GraphEntity{
 
     private Pixel beginPoint;
     private Pixel endPoint;
+    private String algorithm;
 
     public Line(int id, GraphEntityType type){
         super(id, type);
@@ -33,4 +34,11 @@ public class Line extends GraphEntity{
         endPoint = new Pixel(x, y, rgb);
     }
 
+    public void setAlgorithm(String algorithm){
+        this.algorithm = algorithm;
+    }
+
+    public String getAlgorithm() {
+        return algorithm;
+    }
 }

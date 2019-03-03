@@ -1,5 +1,6 @@
 resetCanvas 400 300
 setColor 255 0 255
-drawCurve 1 4 B-spline 50 50 100 50 100 100 50 100
+drawLine 1 50 50 100 100 DDA
+translate 1 110 110
 saveCanvas output.bmp
 exit
