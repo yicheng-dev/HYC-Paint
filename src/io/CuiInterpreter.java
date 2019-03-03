@@ -94,6 +94,7 @@ public class CuiInterpreter {
                     points.add(new Point(Double.valueOf(paras[i]), Double.valueOf(paras[i + 1])));
                 }
                 doDrawPolygon(Integer.valueOf(paras[1]), Integer.valueOf(paras[2]), paras[3], points);
+                break;
             case "exit":
             case "q":
                 exitFlag = true;

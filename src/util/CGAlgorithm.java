@@ -7,7 +7,7 @@ import java.util.Vector;
 public class CGAlgorithm {
     public static void dda(GraphEntity line, double beginX, double beginY, double endX, double endY){
         if (beginX == endX){
-            for (int y = nearInt(beginY); y <= nearInt(endY); y++){
+            for (int y = Math.min(nearInt(beginY), nearInt(endY)); y <= Math.max(nearInt(endY), nearInt(beginY)); y++){
                 line.addPixel(nearInt(beginX), y);
             }
             return;
@@ -49,7 +49,7 @@ public class CGAlgorithm {
 
     public static void bresenham(GraphEntity line, double beginX, double beginY, double endX, double endY){
         if (beginX == endX){
-            for (int y = nearInt(beginY); y <= nearInt(endY); y++){
+            for (int y = Math.min(nearInt(beginY), nearInt(endY)); y <= Math.max(nearInt(endY), nearInt(beginY)); y++){
                 line.addPixel(nearInt(beginX), y);
             }
             return;
@@ -97,7 +97,7 @@ public class CGAlgorithm {
 
     public static void midPoint(GraphEntity line, double beginX, double beginY, double endX, double endY){
         if (beginX == endX){
-            for (int y = nearInt(beginY); y <= nearInt(endY); y++){
+            for (int y = Math.min(nearInt(beginY), nearInt(endY)); y <= Math.max(nearInt(endY), nearInt(beginY)); y++){
                 line.addPixel(nearInt(beginX), y);
             }
             return;
@@ -150,11 +150,13 @@ public class CGAlgorithm {
 
     public static void ddaPolygon(Polygon polygon, int n, Vector<Point> points){
         for (int i = 0; i < n - 1; i ++){
-            //System.out.println("DDA: " + points.get(i).x + " " + points.get(i).y + " " + points.get(i + 1).x + " " + points.get(i + 1).y);
+            System.out.println(points.get(i).x + " " + points.get(i).y + " " + points.get(i + 1).x + " " + points.get(i + 1).y);
             dda(polygon, points.get(i).x, points.get(i).y, points.get(i + 1).x, points.get(i + 1).y);
         }
-        if (n > 2)
+        if (n > 2) {
+            System.out.println(points.get(n - 1).x + " " + points.get(n - 1).y + " " + points.get(0).x + " " + points.get(0).y);
             dda(polygon, points.get(n - 1).x, points.get(n - 1).y, points.get(0).x, points.get(0).y);
+        }
     }
 
     public static void midPointPolygon(Polygon polygon, int n, Vector<Point> points){

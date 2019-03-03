@@ -35,7 +35,6 @@ public class Main extends Application {
         p.setStyle(cssBordering);
         root.setCenter(p);
         primaryStage.setScene(new Scene(root, 1080, 720));
-        primaryStage.show();
         Thread cuiThread = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -43,6 +42,7 @@ public class Main extends Application {
             }
         });
         cuiThread.start();
+        primaryStage.show();
     }
 
     private void redirectErr(String filename){
