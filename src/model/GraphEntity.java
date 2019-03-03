@@ -50,7 +50,7 @@ public class GraphEntity {
 
     public void draw(){
         for (Pixel pixel : pixels){
-            Canvas.getInstance().paintPixel(pixel.getX(), Canvas.getInstance().getHeight() - pixel.getY(), pixel.getRgb());
+            Canvas.getInstance().paintPixel(pixel.getX(), Canvas.getInstance().getHeight() - pixel.getY(), id);
         }
     }
 
@@ -60,7 +60,7 @@ public class GraphEntity {
             return;
         }
         for (Pixel pixel : pixels) {
-            Canvas.getInstance().clearPixel(pixel.getX(), Canvas.getInstance().getHeight() - pixel.getY());
+            Canvas.getInstance().clearPixel(pixel.getX(), Canvas.getInstance().getHeight() - pixel.getY(), id);
         }
     }
 

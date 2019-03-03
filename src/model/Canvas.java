@@ -23,18 +23,18 @@ public class Canvas{
     private static Color BACKGROUND_COLOR = new Color(255, 255, 255);
 
     private BufferedImage bufferedImage;
-    private Vector<Vector<Stack<Integer>>> rgbOfPixels;
+    private Vector<Vector<Vector<Integer>>> idOfPixels;
 
     private Canvas(int width, int height, int imageType) {
         bufferedImage = new BufferedImage(width, height, imageType);
         this.graphs = new Vector<>();
-        this.rgbOfPixels = new Vector<>();
+        this.idOfPixels = new Vector<>();
         for (int i = 0; i < width; i++){
-            Vector<Stack<Integer>> rgbOfLine = new Vector<>();
+            Vector<Vector<Integer>> idOfLine = new Vector<>();
             for (int j = 0; j < height; j++){
-                rgbOfLine.add(new Stack<>());
+                idOfLine.add(new Vector<>());
             }
-            rgbOfPixels.add(rgbOfLine);
+            idOfPixels.add(idOfLine);
         }
         this.width = width;
         this.height = height;
@@ -57,7 +57,7 @@ public class Canvas{
     private void setWhileBackground(){
         for (int x = 0; x < width; x++){
             for (int y = 0; y < height; y++){
-                this.paintPixel(x, y, BACKGROUND_COLOR.getRGB());
+                this.paintPixel(x, y, -1);
             }
         }
     }
@@ -200,13 +200,13 @@ public class Canvas{
             return;
         bufferedImage = new BufferedImage(width, height, DEFAULT_IMAGE_TYPE);
         graphs = new Vector<>();
-        rgbOfPixels = new Vector<>();
+        idOfPixels = new Vector<>();
         for (int i = 0; i < width; i++){
-            Vector<Stack<Integer>> rgbOfLine = new Vector<>();
+            Vector<Vector<Integer>> idOfLine = new Vector<>();
             for (int j = 0; j < height; j++){
-                rgbOfLine.add(new Stack<>());
+                idOfLine.add(new Vector<>());
             }
-            rgbOfPixels.add(rgbOfLine);
+            idOfPixels.add(idOfLine);
         }
         this.width = width;
         this.height = height;
@@ -222,20 +222,39 @@ public class Canvas{
         }
     }
 
-    public void paintPixel(int x, int y, int rgb){
+    public void paintPixel(int x, int y, int id){
         if (!assertXY(x, y))
             return;
-        rgbOfPixels.get(x).get(y).push(rgb);
-        bufferedImage.setRGB(x, y, rgbOfPixels.get(x).get(y).peek());
+        idOfPixels.get(x).get(y).add(id);
+        if (id == -1)
+            bufferedImage.setRGB(x, y, BACKGROUND_COLOR.getRGB());
+        else {
+            for (GraphEntity graph : graphs){
+                if (graph.getId() == id){
+                    bufferedImage.setRGB(x, y, graph.getRgb());
+                    break;
+                }
+            }
+        }
     }
 
-    public void clearPixel(int x, int y){
+    public void clearPixel(int x, int y, int id){
         if (!assertXY(x, y))
             return;
         int nowRgb = BACKGROUND_COLOR.getRGB();
-        if (!rgbOfPixels.get(x).get(y).empty()){
-            rgbOfPixels.get(x).get(y).pop();
-            nowRgb = rgbOfPixels.get(x).get(y).peek();
+        if (!idOfPixels.get(x).get(y).isEmpty()){
+            for (int id1 : idOfPixels.get(x).get(y)){
+                if (id1 == id){
+                    idOfPixels.get(x).get(y).removeElement(id1);
+                    break;
+                }
+            }
+            for (GraphEntity graph : graphs){
+                if (graph.getId() == idOfPixels.get(x).get(y).get(idOfPixels.get(x).get(y).size() - 1)){
+                    nowRgb = graph.getRgb();
+                    break;
+                }
+            }
         }
         bufferedImage.setRGB(x, y, nowRgb);
     }
