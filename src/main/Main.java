@@ -65,6 +65,21 @@ public class Main extends Application {
             System.out.println("Command-Line arguments should be: Path of input file and Path of output directory.");
             return false;
         }
+        File inputFile = new File(args[0]);
+        if (!inputFile.exists()){
+            System.out.println("Input file not found.");
+            return false;
+        }
+        File outputDir = new File(args[1]);
+        if (!outputDir.exists()){
+            System.out.println("Output dir not found. Create it for you.");
+            try {
+                outputDir.createNewFile();
+            }catch (IOException e){
+                System.out.println("Output dir creation failed.");
+                return false;
+            }
+        }
         GP.inputInstrFile = args[0];
         GP.outputDir = args[1];
         return true;
