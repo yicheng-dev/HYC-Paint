@@ -21,21 +21,28 @@ public class CliInterpreter {
     private static final String PROMPT = ">> ";
     private static boolean exitFlag = false;
 
-
     public static void run(){
         try {
             InputStream inputStream = new FileInputStream(new File(GP.inputInstrFile));
             if (GP.STDIN)
                 inputStream = System.in;
             Scanner scanner = new Scanner(inputStream);
+            String commandBuffer = "";
             do {
                 if (exitFlag)
                     break;
-                if (GP.STDIN)
-                    System.out.print(PROMPT);
-                String command = scanner.nextLine();
-                commandProcess(command);
-            } while (true);
+                String str = scanner.next();
+                if (GP.operations.contains(str)){
+                    if (commandBuffer.length() != 0){
+                        commandProcess(commandBuffer);
+                    }
+                    commandBuffer = "";
+                    commandBuffer += str;
+                }
+                else{
+                    commandBuffer += (" " + str);
+                }
+            } while (scanner.hasNext());
             System.exit(0);
         }catch (IOException e){
             System.out.println("Input file not found.");

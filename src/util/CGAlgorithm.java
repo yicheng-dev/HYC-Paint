@@ -179,7 +179,7 @@ public class CGAlgorithm {
         double d = rySquare + rxSquare * (-ry + 0.25);
         int x = 0, y = nearInt(ry);
         plotEllipse(ellipse, nearInt(centerX), nearInt(centerY), x, y);
-        while (rySquare * (x + 1) < rxSquare * (y - 0.5)){
+        while (rySquare * (x + 1) <= rxSquare * (y - 0.5)){
             if (d < 0)
                 d += rySquare * (2 * x + 3);
             else{
@@ -190,7 +190,7 @@ public class CGAlgorithm {
             plotEllipse(ellipse, nearInt(centerX), nearInt(centerY), x, y);
         }
         d = (ry * (x + 0.5)) * 2 + (rx * (y - 1)) * 2 - (rx * ry) * 2;
-        while (y > 0){
+        while (y >= 0){
             if (d < 0){
                 d += rySquare * (2 * x + 2) + rxSquare * (-2 * y + 3);
                 x ++;
@@ -204,7 +204,8 @@ public class CGAlgorithm {
     }
 
     public static void bezier(Curve curve, int n, Vector<Point> points){
-        double step = 0.0001;
+        double step = 0.01;
+        Vector<Point> pixels = new Vector<>();
         for (double t = 0; t <= 1; t += step){
             double x = 0.0;
             double y = 0.0;
@@ -212,12 +213,16 @@ public class CGAlgorithm {
                 x += combination(i, n - 1) * Math.pow(t, i) * Math.pow(1 - t, n - 1 - i) * points.get(i).x;
                 y += combination(i, n - 1) * Math.pow(t, i) * Math.pow(1 - t, n - 1 - i) * points.get(i).y;
             }
-            curve.addPixel(nearInt(x), nearInt(y));
+            pixels.add(new Point(x, y));
+        }
+        for (int i = 0; i < pixels.size() - 1; i++){
+            dda(curve, pixels.get(i).x, pixels.get(i).y, pixels.get(i + 1).x, pixels.get(i + 1).y);
         }
     }
 
     public static void bSpline(Curve curve, int n, Vector<Point> points){
-        double step = 0.001;
+        double step = 0.01;
+        Vector<Point> pixels = new Vector<>();
         for (double t = 0; t <= 1; t += step){
             double x = 0.0;
             double y = 0.0;
@@ -230,7 +235,10 @@ public class CGAlgorithm {
                 x += points.get(i).x * f;
                 y += points.get(i).y * f;
             }
-            curve.addPixel(nearInt(x), nearInt(y));
+            pixels.add(new Point(x, y));
+        }
+        for (int i = 0; i < pixels.size() - 1; i++){
+            dda(curve, pixels.get(i).x, pixels.get(i).y, pixels.get(i + 1).x, pixels.get(i + 1).y);
         }
     }
 
