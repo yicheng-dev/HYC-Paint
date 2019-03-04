@@ -60,8 +60,6 @@ public class Canvas{
     }
 
     public void drawLine(int id, double beginX, double beginY, double endX, double endY, String algorithm){
-        if (!(assertXY((int)beginX, (int)beginY) && assertXY((int)endX + 1, (int)endY + 1)))
-            return;
         if (!assertId(id, true))
             return;
         Line line = new Line(id, GraphEntityType.LINE);
@@ -86,11 +84,6 @@ public class Canvas{
     }
 
     public void drawPolygon(int id, int n, String algorithm, Vector<Point> points){
-        for (Point point : points){
-            if (!assertXY((int)point.x, (int)point.y) || !assertXY((int)point.x + 1, (int)point.y + 1)){
-                return;
-            }
-        }
         if (!assertId(id, true))
             return;
         Polygon polygon = new Polygon(id, GraphEntityType.POLYGON);
@@ -115,10 +108,6 @@ public class Canvas{
     }
 
     public void drawEllipse(int id, double x, double y, double rx, double ry){
-        if (!assertXY((int)(x - rx), (int)y) || !assertXY((int)x, (int)(y - ry))
-                || !assertXY((int)(x + rx + 1), (int)y) || !assertXY((int)x, (int)(y + ry + 1))){
-            return;
-        }
         if (!assertId(id, true))
             return;
         Ellipse ellipse = new Ellipse(id, GraphEntityType.ELLIPSE);
@@ -129,11 +118,6 @@ public class Canvas{
     }
 
     public void drawCurve(int id, int n, String algorithm, Vector<Point> points){
-        for (Point point : points){
-            if (!assertXY((int)point.x, (int)point.y) || !assertXY((int)point.x + 1, (int)point.y + 1)){
-                return;
-            }
-        }
         if (!assertId(id, true))
             return;
         Curve curve = new Curve(id, GraphEntityType.CURVE);
@@ -202,8 +186,6 @@ public class Canvas{
             beginY = line.getBeginPoint().getY() * vars.get(2) + vars.get(1) * (1 - vars.get(2));
             endY = line.getEndPoint().getY() * vars.get(2) + vars.get(1) * (1- vars.get(2));
         }
-        if (!(assertXY((int)beginX, (int)beginY) && assertXY((int)endX + 1, (int)endY + 1)))
-            return;
         switch (line.getAlgorithm()){
             case "Bresenham":
                 CGAlgorithm.bresenham(line, beginX , beginY, endX, endY);
@@ -240,11 +222,6 @@ public class Canvas{
             for (Pixel point : polygon.getPoints()){
                 points.add(new Point(point.getX() * vars.get(2) + vars.get(0) * (1 - vars.get(2)),
                         point.getY() * vars.get(2) + vars.get(1) * (1 - vars.get(2))));
-            }
-        }
-        for (Point point : points){
-            if (!assertXY((int)point.x, (int)point.y) || !assertXY((int)point.x+ 1, (int)point.y + 1)){
-                return;
             }
         }
         polygon.clearPoints();
@@ -331,11 +308,6 @@ public class Canvas{
                         point.getY() * vars.get(2) + vars.get(1) * (1 - vars.get(2))));
             }
         }
-        for (Point point : points){
-            if (!assertXY((int)point.x, (int)point.y) || !assertXY((int)point.x+ 1, (int)point.y + 1)){
-                return;
-            }
-        }
         curve.clearPoints();
         CGAlgorithm.setCurvePointsPixel(curve, points);
         switch (curve.getAlgorithm()){
@@ -355,8 +327,6 @@ public class Canvas{
         if (assertIdLine(id)){
             return;
         }
-        if (!(assertXY((int)x1, (int)y1 + 1) && assertXY((int)x2 + 1, (int)y2)))
-            return;
         for (GraphEntity graph : graphs){
             if (graph.getId() == id){
                 if (graph.getType() == GraphEntityType.LINE){
@@ -488,10 +458,8 @@ public class Canvas{
     }
 
     private boolean assertXY(int x, int y){
-        if (x >= 0 && x <= width && y >= 0 && y <= height)
+        if (x >= 0 && x <= width - 1 && y >= 0 && y <= height - 1)
             return true;
-        System.out.println("x: " + x + "\ty: " + y);
-        System.out.println("X or Y should be in range of width or height.");
         return false;
     }
 
