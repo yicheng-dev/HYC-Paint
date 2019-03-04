@@ -322,7 +322,77 @@ public class CGAlgorithm {
     }
 
     public static void liangBarsky(Line line, double x1, double y1, double x2, double y2){
+        boolean flag = false;
+        double u1 = 0, u2 = 1, r;
+        double [] p = new double[4];
+        double [] q = new double[4];
+        double beginX, endX, beginY, endY;
+        if (line.getBeginPoint().getX() == line.getEndPoint().getX()){
+            if (y2 < Math.min(line.getBeginPoint().getY(), line.getEndPoint().getY())
+                    || y1 > Math.max(line.getBeginPoint().getY(), line.getEndPoint().getY())){
+                return;
+            }
+            beginX = endX = line.getBeginPoint().getX();
+            beginY = Math.max(y1, Math.min(line.getBeginPoint().getY(), line.getEndPoint().getY()));
+            endY = Math.min(y2, Math.max(line.getBeginPoint().getY(), line.getEndPoint().getY()));
+        }
+        else if (line.getBeginPoint().getY() == line.getEndPoint().getY()){
+            if (x2 < Math.min(line.getBeginPoint().getX(), line.getEndPoint().getX())
+                    || x1 > Math.max(line.getBeginPoint().getX(), line.getEndPoint().getX())){
+                return;
+            }
+            beginY = endY = line.getBeginPoint().getY();
+            beginX = Math.max(x1, Math.min(line.getBeginPoint().getX(), line.getEndPoint().getX()));
+            endX = Math.min(x2, Math.max(line.getBeginPoint().getX(), line.getEndPoint().getX()));
+        }
+        else {
+            p[0] = line.getBeginPoint().getX() - line.getEndPoint().getX();
+            p[1] = line.getEndPoint().getX() - line.getBeginPoint().getX();
+            p[2] = line.getBeginPoint().getY() - line.getEndPoint().getY();
+            p[3] = -line.getBeginPoint().getY() + line.getEndPoint().getY();
+            q[0] = line.getBeginPoint().getX() - x1;
+            q[1] = x2 - line.getBeginPoint().getX();
+            q[2] = line.getBeginPoint().getY() - y1;
+            q[3] = y2 - line.getBeginPoint().getY();
 
+            for (int i = 0; i < 4; i++) {
+                r = q[i] / p[i];
+                if (p[i] < 0) {
+                    u1 = Math.max(u1, r);
+                    if (u1 > u2) {
+                        flag = true;
+                    }
+                }
+                if (p[i] > 0) {
+                    u2 = Math.min(u2, r);
+                    if (u1 > u2) {
+                        flag = true;
+                    }
+                }
+                if (p[i] == 0)
+                    flag = true;
+            }
+            if (flag)
+                return;
+            beginX = line.getBeginPoint().getX() - u1 * (line.getBeginPoint().getX() - line.getEndPoint().getX());
+            beginY = line.getBeginPoint().getY() - u1 * (line.getBeginPoint().getY() - line.getEndPoint().getY());
+            endX = line.getBeginPoint().getX() - u2 * (line.getBeginPoint().getX() - line.getEndPoint().getX());
+            endY = line.getBeginPoint().getY() - u2 * (line.getBeginPoint().getY() - line.getEndPoint().getY());
+        }
+        setBeginEndPixel(line, nearInt(beginX), nearInt(beginY), nearInt(endX), nearInt(endY));
+        switch (line.getAlgorithm()){
+            case "Bresenham":
+                CGAlgorithm.bresenham(line, beginX , beginY, endX, endY);
+                break;
+            case "DDA":
+                CGAlgorithm.dda(line, beginX, beginY, endX, endY);
+                break;
+            case "MidPoint":
+                CGAlgorithm.midPoint(line, beginX, beginY, endX, endY);
+                break;
+            default:
+                break;
+        }
     }
 
     public static void setBeginEndPixel(Line line, double beginX, double beginY, double endX, double endY){
