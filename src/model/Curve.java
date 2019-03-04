@@ -1,11 +1,10 @@
 package model;
 
-import main.GraphEntityType;
-
 import java.util.Vector;
 
 public class Curve extends GraphEntity{
-    Vector<Pixel> points;
+    private Vector<Pixel> points;
+    private String algorithm;
 
     public Curve(int id, GraphEntityType type){
         super(id, type);
@@ -17,11 +16,23 @@ public class Curve extends GraphEntity{
         points = new Vector<>();
     }
 
+    public void clearPoints(){
+        points.clear();
+    }
+
     public void addPoint(int x, int y, int rgb){
         points.add(new Pixel(x, y, rgb));
     }
 
     public Vector<Pixel> getPoints(){
         return points;
+    }
+
+    public String getAlgorithm() {
+        return algorithm;
+    }
+
+    public void setAlgorithm(String algorithm) {
+        this.algorithm = algorithm;
     }
 }

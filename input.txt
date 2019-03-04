@@ -5,9 +5,22 @@ setColor 255 255 0
 drawLine 2 100 50 50 100 DDA
 setColor 120 120 1
 drawPolygon 3 4 DDA 150 150 150 200 200 200 200 150
+drawEllipse 4 200 150 50 40
+setColor 0 230 111
+drawCurve 5 3 Bezier 10 10 200 70 98 122
 translate 1 110 110
 translate 1 -110 -110
 translate 3 -80 -80
 translate 3 150 150
+translate 4 50 0
+translate 5 180 100
+rotate 1 75 75 60
+rotate 3 245 245 -435
+rotate 4 250 150 225
+rotate 5 0 0 -5
+scale 1 0 0 1.5
+scale 3 200 200 0.5
+scale 4 0 0 0.6
+scale 5 0 0 0.3
 saveCanvas output.bmp
 exit

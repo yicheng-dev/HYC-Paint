@@ -1,7 +1,5 @@
 package model;
 
-import main.GraphEntityType;
-
 import java.util.Vector;
 
 public class Polygon extends GraphEntity{

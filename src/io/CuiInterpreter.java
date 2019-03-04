@@ -5,6 +5,7 @@ import main.GP;
 import model.Canvas;
 import model.PaintPen;
 import model.Point;
+import model.TransformType;
 import util.ImageUtil;
 import util.StringUtil;
 
@@ -116,6 +117,22 @@ public class CuiInterpreter {
                 }
                 doTranslate(Integer.valueOf(paras[1]), Double.valueOf(paras[2]), Double.valueOf(paras[3]));
                 break;
+            case "rotate":
+                if (paras.length != 5 || !StringUtil.isInteger(paras[1]) || !StringUtil.isDouble(paras[2])
+                        || !StringUtil.isDouble(paras[3]) || !StringUtil.isDouble(paras[4])){
+                    usage(paras[0]);
+                    return;
+                }
+                doRotate(Integer.valueOf(paras[1]), Double.valueOf(paras[2]), Double.valueOf(paras[3]), Double.valueOf(paras[4]));
+                break;
+            case "scale":
+                if (paras.length != 5 || !StringUtil.isInteger(paras[1]) || !StringUtil.isDouble(paras[2])
+                        || !StringUtil.isDouble(paras[3]) || !StringUtil.isDouble(paras[4])){
+                    usage(paras[0]);
+                    return;
+                }
+                doScale(Integer.valueOf(paras[1]), Double.valueOf(paras[2]), Double.valueOf(paras[3]), Double.valueOf(paras[4]));
+                break;
             case "exit":
             case "q":
                 exitFlag = true;
@@ -150,6 +167,12 @@ public class CuiInterpreter {
                 break;
             case "translate":
                 System.out.println("Usage: " + command + " [id] [dx] [dy].");
+                break;
+            case "rotate":
+                System.out.println("Usage: " + command + " [id] [x] [y] [r].");
+                break;
+            case "scale":
+                System.out.println("Usage: " + command + " [id] [x] [y] [s].");
                 break;
             default:
                 break;
@@ -190,7 +213,28 @@ public class CuiInterpreter {
     }
 
     public static void doTranslate(int id, double dx, double dy){
-        Canvas.getInstance().translate(id, dx, dy);
+        Vector<Double> vars = new Vector<>();
+        vars.add(dx);
+        vars.add(dy);
+        Canvas.getInstance().transform(id, TransformType.TRANSLATE, vars);
+        ImageUtil.canvasUpdate();
+    }
+
+    public static void doRotate(int id, double x, double y, double r){
+        Vector<Double> vars = new Vector<>();
+        vars.add(x);
+        vars.add(y);
+        vars.add(r);
+        Canvas.getInstance().transform(id, TransformType.ROTATE, vars);
+        ImageUtil.canvasUpdate();
+    }
+
+    public static void doScale(int id, double x, double y, double s){
+        Vector<Double> vars = new Vector<>();
+        vars.add(x);
+        vars.add(y);
+        vars.add(s);
+        Canvas.getInstance().transform(id, TransformType.SCALE, vars);
         ImageUtil.canvasUpdate();
     }
 }

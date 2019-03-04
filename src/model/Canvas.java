@@ -1,15 +1,12 @@
 package model;
 
-import main.GraphEntityType;
 import util.CGAlgorithm;
-import util.StringUtil;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.Stack;
 import java.util.Vector;
 
 public class Canvas{
@@ -152,35 +149,60 @@ public class Canvas{
                 System.out.println("Available algorithms: Bezier and B-spline.");
                 return;
         }
+        curve.setAlgorithm(algorithm);
         graphs.add(curve);
         curve.draw();
     }
 
-    public void translate(int id, double dx, double dy){
+    public void transform(int id, TransformType type, Vector<Double> vars){
         if (assertId(id, false))
             return;
         for (GraphEntity graph : graphs){
             if (id == graph.getId()){
                 graph.clear();
-                graph.clearPixel();
                 if (graph.getType() == GraphEntityType.LINE){
-                    lineTranslate(graph, dx, dy);
+                    graph.clearPixel();
+                    lineTransform(graph, type, vars);
                 }
                 else if (graph.getType() == GraphEntityType.POLYGON){
-                    polygonTranslate(graph, dx, dy);
+                    graph.clearPixel();
+                    polygonTransform(graph, type, vars);
+                }
+                else if (graph.getType() == GraphEntityType.ELLIPSE){
+                    ellipseTransform(graph, type, vars);
+                }
+                else if (graph.getType() == GraphEntityType.CURVE){
+                    graph.clearPixel();
+                    curveTransform(graph, type, vars);
                 }
                 break;
             }
         }
     }
 
-    private void lineTranslate(GraphEntity graph, double dx, double dy){
+    private void lineTransform(GraphEntity graph, TransformType type, Vector<Double> vars){
         Line line = (Line)graph;
-        int beginX = line.getBeginPoint().getX() + CGAlgorithm.nearInt(dx);
-        int endX = line.getEndPoint().getX() + CGAlgorithm.nearInt(dx);
-        int beginY = line.getBeginPoint().getY() + CGAlgorithm.nearInt(dy);
-        int endY = line.getEndPoint().getY() + CGAlgorithm.nearInt(dy);
-        if (!(assertXY(beginX, beginY) && assertXY(endX + 1, endY + 1)))
+        double beginX = 0, endX = 0, beginY = 0, endY = 0;
+        if (type == TransformType.TRANSLATE) {
+            beginX = line.getBeginPoint().getX() + vars.get(0);
+            endX = line.getEndPoint().getX() + vars.get(0);
+            beginY = line.getBeginPoint().getY() + vars.get(1);
+            endY = line.getEndPoint().getY() + vars.get(1);
+        }
+        if (type == TransformType.ROTATE){
+            double radians = Math.toRadians(vars.get(2));
+            beginX = vars.get(0) + (line.getBeginPoint().getX() - vars.get(0)) * Math.cos(radians) - (line.getBeginPoint().getY() - vars.get(1)) * Math.sin(radians);
+            endX = vars.get(0) + (line.getEndPoint().getX() - vars.get(0)) * Math.cos(radians) - (line.getEndPoint().getY() - vars.get(1)) * Math.sin(radians);
+            beginY = vars.get(1) + (line.getBeginPoint().getX() - vars.get(0)) * Math.sin(radians) + (line.getBeginPoint().getY() - vars.get(1)) * Math.cos(radians);
+            endY = vars.get(1) + (line.getEndPoint().getX() - vars.get(0)) * Math.sin(radians) + (line.getEndPoint().getY() - vars.get(1)) * Math.cos(radians);
+        }
+        if (type == TransformType.SCALE){
+            beginX = line.getBeginPoint().getX() * vars.get(2) + vars.get(0) * (1 - vars.get(2));
+            endX = line.getEndPoint().getX() * vars.get(2) + vars.get(0) * (1 - vars.get(2));
+            beginY = line.getBeginPoint().getY() * vars.get(2) + vars.get(1) * (1 - vars.get(2));
+            endY = line.getEndPoint().getY() * vars.get(2) + vars.get(1) * (1- vars.get(2));
+        }
+        if (!(assertXY((int)beginX, (int)beginY) && assertXY((int)endX + 1, (int)endY + 1)))
             return;
         switch (line.getAlgorithm()){
             case "Bresenham":
@@ -199,11 +221,26 @@ public class Canvas{
         line.draw();
     }
 
-    private void polygonTranslate(GraphEntity graph, double dx, double dy){
+    private void polygonTransform(GraphEntity graph, TransformType type, Vector<Double> vars){
         Polygon polygon = (Polygon)graph;
         Vector<Point> points = new Vector<>();
-        for (Pixel point : polygon.getPoints()){
-            points.add(new Point(point.getX() + dx, point.getY() + dy));
+        if (type == TransformType.TRANSLATE) {
+            for (Pixel point : polygon.getPoints()){
+                points.add(new Point(point.getX() + vars.get(0), point.getY() + vars.get(1)));
+            }
+        }
+        if (type == TransformType.ROTATE){
+            double radians = Math.toRadians(vars.get(2));
+            for (Pixel point : polygon.getPoints()){
+                points.add(new Point(vars.get(0) + (point.getX() - vars.get(0)) * Math.cos(radians) - (point.getY() - vars.get(1)) * Math.sin(radians),
+                        vars.get(1) + (point.getX() - vars.get(0)) * Math.sin(radians) + (point.getY() - vars.get(1)) * Math.cos(radians)));
+            }
+        }
+        if (type == TransformType.SCALE){
+            for (Pixel point : polygon.getPoints()){
+                points.add(new Point(point.getX() * vars.get(2) + vars.get(0) * (1 - vars.get(2)),
+                        point.getY() * vars.get(2) + vars.get(1) * (1 - vars.get(2))));
+            }
         }
         for (Point point : points){
             if (!assertXY((int)point.x, (int)point.y) || !assertXY((int)point.x+ 1, (int)point.y + 1)){
@@ -227,6 +264,91 @@ public class Canvas{
                 return;
         }
         polygon.draw();
+    }
+
+    private void ellipseTransform(GraphEntity graph, TransformType type, Vector<Double> vars){
+        Ellipse ellipse = (Ellipse)graph;
+        double centerX = 0, centerY = 0, rx = 0, ry = 0;
+        if (type == TransformType.TRANSLATE) {
+            for (Pixel point : ellipse.getPixels()){
+                int originX = point.getX();
+                int originY = point.getY();
+                point.setX(CGAlgorithm.nearInt(originX + vars.get(0)));
+                point.setY(CGAlgorithm.nearInt(originY + vars.get(1)));
+            }
+            centerX = vars.get(0) + ellipse.getCenter().x;
+            centerY = vars.get(1) + ellipse.getCenter().y;
+            rx = ellipse.getRx();
+            ry = ellipse.getRy();
+        }
+        if (type == TransformType.ROTATE){
+            double radians = Math.toRadians(vars.get(2));
+            for (Pixel point : ellipse.getPixels()){
+                int originX = point.getX();
+                int originY = point.getY();
+                point.setX(CGAlgorithm.nearInt(vars.get(0) + (originX - vars.get(0)) * Math.cos(radians) - (originY - vars.get(1)) * Math.sin(radians)));
+                point.setY(CGAlgorithm.nearInt(vars.get(1) + (originX - vars.get(0)) * Math.sin(radians) + (originY - vars.get(1)) * Math.cos(radians)));
+            }
+            centerX = vars.get(0) + (ellipse.getCenter().x - vars.get(0)) * Math.cos(radians) - (ellipse.getCenter().y - vars.get(1)) * Math.sin(radians);
+            centerY = vars.get(1) + (ellipse.getCenter().x - vars.get(0)) * Math.sin(radians) + (ellipse.getCenter().y - vars.get(1)) * Math.cos(radians);
+            rx = ellipse.getRx();
+            ry = ellipse.getRy();
+        }
+        if (type == TransformType.SCALE){
+            for (Pixel point : ellipse.getPixels()){
+                int originX = point.getX();
+                int originY = point.getY();
+                point.setX(CGAlgorithm.nearInt(originX * vars.get(2) + vars.get(0) * (1 - vars.get(2))));
+                point.setY(CGAlgorithm.nearInt(originY * vars.get(2) + vars.get(1) * (1 - vars.get(2))));
+            }
+            centerX = ellipse.getCenter().x * vars.get(2) + vars.get(0) * (1 - vars.get(2));
+            centerY = ellipse.getCenter().y * vars.get(2) + vars.get(1) * (1 - vars.get(2));
+            rx = ellipse.getRx() * vars.get(2);
+            ry = ellipse.getRy() * vars.get(2);
+        }
+        CGAlgorithm.setEllipseAttr(ellipse, centerX, centerY, rx, ry);
+        ellipse.draw();
+    }
+
+    private void curveTransform(GraphEntity graph, TransformType type, Vector<Double> vars){
+        Curve curve = (Curve)graph;
+        Vector<Point> points = new Vector<>();
+        if (type == TransformType.TRANSLATE) {
+            for (Pixel point : curve.getPoints()) {
+                points.add(new Point(point.getX() + vars.get(0), point.getY() + vars.get(1)));
+            }
+        }
+        if (type == TransformType.ROTATE){
+            double radians = Math.toRadians(vars.get(2));
+            for (Pixel point : curve.getPoints()){
+                points.add(new Point(vars.get(0) + (point.getX() - vars.get(0)) * Math.cos(radians) - (point.getY() - vars.get(1)) * Math.sin(radians),
+                        vars.get(1) + (point.getX() - vars.get(0)) * Math.sin(radians) + (point.getY() - vars.get(1)) * Math.cos(radians)));
+            }
+        }
+        if (type == TransformType.SCALE){
+            for (Pixel point : curve.getPoints()){
+                points.add(new Point(point.getX() * vars.get(2) + vars.get(0) * (1 - vars.get(2)),
+                        point.getY() * vars.get(2) + vars.get(1) * (1 - vars.get(2))));
+            }
+        }
+        for (Point point : points){
+            if (!assertXY((int)point.x, (int)point.y) || !assertXY((int)point.x+ 1, (int)point.y + 1)){
+                return;
+            }
+        }
+        curve.clearPoints();
+        CGAlgorithm.setCurvePointsPixel(curve, points);
+        switch (curve.getAlgorithm()){
+            case "Bezier":
+                CGAlgorithm.bezier(curve, points.size(), points);
+                break;
+            case "B-spline":
+                CGAlgorithm.bSpline(curve, points.size(), points);
+                break;
+            default:
+                break;
+        }
+        curve.draw();
     }
 
     public void resetCanvas(int width, int height){

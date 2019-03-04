@@ -1,8 +1,5 @@
 package model;
 
-import main.GraphEntityType;
-import util.ImageUtil;
-
 import java.util.Vector;
 
 public class GraphEntity {
