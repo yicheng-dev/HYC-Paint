@@ -327,10 +327,16 @@ public class Canvas{
         if (assertIdLine(id)){
             return;
         }
+        if (x1 > x2 || y1 > y2){
+            System.out.println("You should firstly input the left-bottom one and then the right-top one.");
+            return;
+        }
         for (GraphEntity graph : graphs){
             if (graph.getId() == id){
+                graph.clear();
+                graph.clearPixel();
                 if (graph.getType() == GraphEntityType.LINE){
-                    lineClip((Line)graph, x1, x2, y1, y2, algorithm);
+                    lineClip((Line)graph, x1, y1, x2, y2, algorithm);
                 }
                 break;
             }
@@ -347,8 +353,9 @@ public class Canvas{
                 break;
             default:
                 System.out.println("Available clipping algorithms: Cohen-Sutherland and Liang-Barsky");
-                break;
+                return;
         }
+        line.draw();
     }
 
     public void resetCanvas(int width, int height){

@@ -243,7 +243,86 @@ public class CGAlgorithm {
     }
 
     public static void cohenSutherland(Line line, double x1, double y1, double x2, double y2){
-
+        double xMin = x1;
+        double xMax = x2;
+        double yMin = y1;
+        double yMax = y2;
+        double beginX = line.getBeginPoint().getX();
+        double endX = line.getEndPoint().getX();
+        double beginY = line.getBeginPoint().getY();
+        double endY = line.getEndPoint().getY();
+        int codeBegin = encode(line.getBeginPoint().getX(), line.getBeginPoint().getY(), xMin, xMax, yMin, yMax);
+        int codeEnd = encode(line.getEndPoint().getX(), line.getEndPoint().getY(), xMin, xMax, yMin, yMax);
+        boolean accept = false;
+        while (true){
+            System.out.println("codeBegin: " + (codeBegin));
+            System.out.println("codeEnd: " + codeEnd);
+            if ((codeBegin | codeEnd) == 0){
+                accept = true;
+                break;
+            }
+            else if ((codeBegin & codeEnd) != 0){
+                break;
+            }
+            else {
+                double x = 0, y = 0;
+                int code = codeBegin != 0 ? codeBegin : codeEnd;
+                if (code == codeBegin) {
+                    if ((code & 8) != 0) {
+                        x = endX + (endX - beginX) * (yMax - beginY) / (endY - beginY);
+                        y = yMax;
+                    } else if ((code & 4) != 0) {
+                        x = beginX + (endX - beginX) * (yMin - beginY) / (endY - beginY);
+                        y = yMin;
+                    } else if ((code & 2) != 0) {
+                        y = beginY + (endY - beginY) * (xMax - beginX) / (endX - beginX);
+                        x = xMax;
+                    } else if ((code & 1) != 0) {
+                        y = beginY + (endY - beginY) * (xMin - beginX) / (endX - beginX);
+                        x = xMin;
+                    }
+                    beginX = x;
+                    beginY = y;
+                    codeBegin = encode(beginX, beginY, xMin, xMax, yMin, yMax);
+                }
+                else{
+                    if ((code & 8) != 0) {
+                        x = endX + (endX - beginX) * (yMax - endY) / (endY - beginY);
+                        y = yMax;
+                    } else if ((code & 4) != 0) {
+                        x = beginX + (endX - beginX) * (yMin - endY) / (endY - beginY);
+                        y = yMin;
+                    } else if ((code & 2) != 0) {
+                        y = beginY + (endY - beginY) * (xMax - endX) / (endX - beginX);
+                        x = xMax;
+                    } else if ((code & 1) != 0) {
+                        y = beginY + (endY - beginY) * (xMin - endX) / (endX - beginX);
+                        x = xMin;
+                    }
+                    endX = x;
+                    endY = y;
+                    codeEnd = encode(endX, endY, xMin, xMax, yMin, yMax);
+                }
+                System.out.println("(x1, y1) : (" + beginX + ", " + beginY + ")");
+                System.out.println("(x2, y2) : (" + endX + ", " + endY + ")");
+            }
+        }
+        if (accept){
+            setBeginEndPixel(line, nearInt(beginX), nearInt(beginY), nearInt(endX), nearInt(endY));
+            switch (line.getAlgorithm()){
+                case "Bresenham":
+                    CGAlgorithm.bresenham(line, beginX , beginY, endX, endY);
+                    break;
+                case "DDA":
+                    CGAlgorithm.dda(line, beginX, beginY, endX, endY);
+                    break;
+                case "MidPoint":
+                    CGAlgorithm.midPoint(line, beginX, beginY, endX, endY);
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 
     public static void liangBarsky(Line line, double x1, double y1, double x2, double y2){
@@ -283,6 +362,19 @@ public class CGAlgorithm {
         if (value - (int)value < (int)value + 1 - value)
             return (int)value;
         return (int)value + 1;
+    }
+
+    private static int encode(double x, double y, double xMin, double xMax, double yMin, double yMax){
+        int code = 0;
+        if (x < xMin)
+            code |= 1;
+        else if (x > xMax)
+            code |= 2;
+        if (y < yMin)
+            code |= 4;
+        else if (y > yMax)
+            code |= 8;
+        return code;
     }
 
     private static int factorial(int a){
