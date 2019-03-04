@@ -1,13 +1,12 @@
 package main;
 
-import io.CuiInterpreter;
+import io.CliInterpreter;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import model.CanvasView;
 import util.ImageUtil;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
@@ -16,6 +15,10 @@ import java.io.PrintStream;
 public class Main extends Application {
 
     public static void main(String[] args) {
+        if (GP.CLI){
+            if (!parseArg(args))
+                return;
+        }
         launch(args);
     }
 
@@ -38,7 +41,7 @@ public class Main extends Application {
         Thread cuiThread = new Thread(new Runnable() {
             @Override
             public void run() {
-                CuiInterpreter.run();
+                CliInterpreter.run();
             }
         });
         cuiThread.start();
@@ -55,5 +58,15 @@ public class Main extends Application {
         }catch (IOException e){
             System.out.println("Err File not found.");
         }
+    }
+
+    private static boolean parseArg(String[] args){
+        if (args.length != 2) {
+            System.out.println("Command-Line arguments should be: Path of input file and Path of output directory.");
+            return false;
+        }
+        GP.inputInstrFile = args[0];
+        GP.outputDir = args[1];
+        return true;
     }
 }

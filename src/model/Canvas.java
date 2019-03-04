@@ -1,5 +1,6 @@
 package model;
 
+import main.GP;
 import util.CGAlgorithm;
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -399,7 +400,7 @@ public class Canvas{
     }
 
     public void saveCanvas(String name){
-        File outputFile = new File(name);
+        File outputFile = new File(GP.outputDir + name);
         try {
             ImageIO.write(bufferedImage, "bmp", outputFile);
         }catch (IOException e){

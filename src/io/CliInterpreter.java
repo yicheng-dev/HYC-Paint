@@ -16,7 +16,7 @@ import java.io.InputStream;
 import java.util.Scanner;
 import java.util.Vector;
 
-public class CuiInterpreter {
+public class CliInterpreter {
 
     private static final String PROMPT = ">> ";
     private static boolean exitFlag = false;
@@ -24,7 +24,7 @@ public class CuiInterpreter {
 
     public static void run(){
         try {
-            InputStream inputStream = new FileInputStream(new File("input.txt"));
+            InputStream inputStream = new FileInputStream(new File(GP.inputInstrFile));
             if (GP.STDIN)
                 inputStream = System.in;
             Scanner scanner = new Scanner(inputStream);
