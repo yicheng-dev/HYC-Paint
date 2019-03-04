@@ -204,7 +204,7 @@ public class CGAlgorithm {
     }
 
     public static void bezier(Curve curve, int n, Vector<Point> points){
-        double step = 0.001;
+        double step = 0.0001;
         for (double t = 0; t <= 1; t += step){
             double x = 0.0;
             double y = 0.0;
@@ -232,6 +232,14 @@ public class CGAlgorithm {
             }
             curve.addPixel(nearInt(x), nearInt(y));
         }
+    }
+
+    public static void cohenSutherland(Line line, double x1, double y1, double x2, double y2){
+
+    }
+
+    public static void liangBarsky(Line line, double x1, double y1, double x2, double y2){
+
     }
 
     public static void setBeginEndPixel(Line line, double beginX, double beginY, double endX, double endY){

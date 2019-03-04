@@ -1,7 +1,6 @@
 package model;
 
 import util.CGAlgorithm;
-
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -351,6 +350,36 @@ public class Canvas{
         curve.draw();
     }
 
+    public void clip(int id, double x1, double y1, double x2, double y2, String algorithm){
+        if (assertIdLine(id)){
+            return;
+        }
+        if (!(assertXY((int)x1, (int)y1 + 1) && assertXY((int)x2 + 1, (int)y2)))
+            return;
+        for (GraphEntity graph : graphs){
+            if (graph.getId() == id){
+                if (graph.getType() == GraphEntityType.LINE){
+                    lineClip((Line)graph, x1, x2, y1, y2, algorithm);
+                }
+                break;
+            }
+        }
+    }
+
+    private void lineClip(Line line, double x1, double y1, double x2, double y2, String algorithm){
+        switch (algorithm){
+            case "Cohen-Sutherland":
+                CGAlgorithm.cohenSutherland(line, x1, y1, x2, y2);
+                break;
+            case "Liang-Barsky":
+                CGAlgorithm.liangBarsky(line, x1, y1, x2, y2);
+                break;
+            default:
+                System.out.println("Available clipping algorithms: Cohen-Sutherland and Liang-Barsky");
+                break;
+        }
+    }
+
     public void resetCanvas(int width, int height){
         if (!(assertWidthHeight(width) && assertWidthHeight(height)))
             return;
@@ -426,12 +455,31 @@ public class Canvas{
     private boolean assertId(int id, boolean create){
         if (id < 0) {
             System.out.println("Please choose an id with positive value.");
-            return false;
+            if (create)
+                return false;
+            return true;
         }
         for (GraphEntity graph : graphs){
             if (graph.getId() == id) {
                 if (create)
                     System.out.println("The id " + id + " has been occupied by another graph entity.");
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean assertIdLine(int id){
+        if (id < 0){
+            System.out.println("Please choose an id with positive value.");
+            return true;
+        }
+        for (GraphEntity graph : graphs){
+            if (graph.getId() == id){
+                if (graph.getType() != GraphEntityType.LINE){
+                    System.out.println("Clip is only available for Line at current stage.");
+                    return true;
+                }
                 return false;
             }
         }

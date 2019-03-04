@@ -133,6 +133,16 @@ public class CuiInterpreter {
                 }
                 doScale(Integer.valueOf(paras[1]), Double.valueOf(paras[2]), Double.valueOf(paras[3]), Double.valueOf(paras[4]));
                 break;
+            case "clip":
+                if (paras.length != 7 || !StringUtil.isInteger(paras[1]) || !StringUtil.isDouble(paras[2])
+                        || !StringUtil.isDouble(paras[3]) || !StringUtil.isDouble(paras[4])
+                        || !StringUtil.isDouble(paras[5])){
+                    usage(paras[0]);
+                    return;
+                }
+                doClip(Integer.valueOf(paras[1]), Double.valueOf(paras[2]), Double.valueOf(paras[3]), Double.valueOf(paras[4]),
+                        Double.valueOf(paras[5]), paras[6]);
+                break;
             case "exit":
             case "q":
                 exitFlag = true;
@@ -173,6 +183,9 @@ public class CuiInterpreter {
                 break;
             case "scale":
                 System.out.println("Usage: " + command + " [id] [x] [y] [s].");
+                break;
+            case "clip":
+                System.out.println("Usage: " + command + " [id] [x1] [y1] [x2] [y2] [algorithm].");
                 break;
             default:
                 break;
@@ -235,6 +248,11 @@ public class CuiInterpreter {
         vars.add(y);
         vars.add(s);
         Canvas.getInstance().transform(id, TransformType.SCALE, vars);
+        ImageUtil.canvasUpdate();
+    }
+
+    public static void doClip(int id, double x1, double y1, double x2, double y2, String algorithm){
+        Canvas.getInstance().clip(id, x1, y1, x2, y2, algorithm);
         ImageUtil.canvasUpdate();
     }
 }
