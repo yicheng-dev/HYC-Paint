@@ -255,8 +255,6 @@ public class CGAlgorithm {
         int codeEnd = encode(line.getEndPoint().getX(), line.getEndPoint().getY(), xMin, xMax, yMin, yMax);
         boolean accept = false;
         while (true){
-            System.out.println("codeBegin: " + (codeBegin));
-            System.out.println("codeEnd: " + codeEnd);
             if ((codeBegin | codeEnd) == 0){
                 accept = true;
                 break;
@@ -269,7 +267,7 @@ public class CGAlgorithm {
                 int code = codeBegin != 0 ? codeBegin : codeEnd;
                 if (code == codeBegin) {
                     if ((code & 8) != 0) {
-                        x = endX + (endX - beginX) * (yMax - beginY) / (endY - beginY);
+                        x = beginX + (endX - beginX) * (yMax - beginY) / (endY - beginY);
                         y = yMax;
                     } else if ((code & 4) != 0) {
                         x = beginX + (endX - beginX) * (yMin - beginY) / (endY - beginY);
@@ -290,21 +288,19 @@ public class CGAlgorithm {
                         x = endX + (endX - beginX) * (yMax - endY) / (endY - beginY);
                         y = yMax;
                     } else if ((code & 4) != 0) {
-                        x = beginX + (endX - beginX) * (yMin - endY) / (endY - beginY);
+                        x = endX + (endX - beginX) * (yMin - endY) / (endY - beginY);
                         y = yMin;
                     } else if ((code & 2) != 0) {
-                        y = beginY + (endY - beginY) * (xMax - endX) / (endX - beginX);
+                        y = endY + (endY - beginY) * (xMax - endX) / (endX - beginX);
                         x = xMax;
                     } else if ((code & 1) != 0) {
-                        y = beginY + (endY - beginY) * (xMin - endX) / (endX - beginX);
+                        y = endY + (endY - beginY) * (xMin - endX) / (endX - beginX);
                         x = xMin;
                     }
                     endX = x;
                     endY = y;
                     codeEnd = encode(endX, endY, xMin, xMax, yMin, yMax);
                 }
-                System.out.println("(x1, y1) : (" + beginX + ", " + beginY + ")");
-                System.out.println("(x2, y2) : (" + endX + ", " + endY + ")");
             }
         }
         if (accept){
