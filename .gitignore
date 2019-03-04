@@ -1,3 +1,4 @@
 *.txt
 *.bmp
+*.DS_Store
 out/
