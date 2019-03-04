@@ -2,25 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="cdb932d9-7e58-4d94-93a9-e7b232ef17da" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/src/model/TransformType.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/input.txt" beforeDir="false" afterPath="$PROJECT_DIR$/input.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/HYC-Paint/main/GraphEntityType.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/HYC-Paint/model/Canvas.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/HYC-Paint/model/Canvas.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/HYC-Paint/model/Curve.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/HYC-Paint/model/Curve.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/HYC-Paint/model/Ellipse.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/HYC-Paint/model/Ellipse.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/HYC-Paint/model/GraphEntity.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/HYC-Paint/model/GraphEntity.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/HYC-Paint/model/Line.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/HYC-Paint/model/Line.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/HYC-Paint/model/Polygon.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/HYC-Paint/model/Polygon.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/output.bmp" beforeDir="false" afterPath="$PROJECT_DIR$/output.bmp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/io/CuiInterpreter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/io/CuiInterpreter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/GraphEntityType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/GraphEntityType.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/model/Canvas.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/Canvas.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/model/Curve.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/Curve.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/model/Ellipse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/Ellipse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/model/GraphEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/GraphEntity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/model/Line.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/Line.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/model/Polygon.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/Polygon.java" afterDir="false" />
     </list>
     <ignored path="JavaFxApplication.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -80,13 +63,22 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/model/Canvas.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1053">
-              <caret line="330" column="87" selection-start-line="330" selection-start-column="87" selection-end-line="330" selection-end-column="87" />
+            <state relative-caret-position="171">
+              <caret line="332" column="9" lean-forward="true" selection-start-line="332" selection-start-column="9" selection-end-line="332" selection-end-column="9" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#17539#17540#0" expanded="true" />
                 <element signature="e#17575#17576#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/.gitignore">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="30">
+              <caret line="2" column="5" selection-start-line="2" selection-start-column="5" selection-end-line="2" selection-end-column="5" />
             </state>
           </provider>
         </entry>
@@ -121,18 +113,13 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/input.txt">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="345">
               <caret line="23" column="15" selection-start-line="23" selection-start-column="15" selection-end-line="23" selection-end-column="15" />
             </state>
           </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/output.bmp">
-          <provider selected="true" editor-type-id="images" />
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
@@ -203,8 +190,9 @@
         <option value="$PROJECT_DIR$/src/model/TransformType.java" />
         <option value="$PROJECT_DIR$/shit.txt" />
         <option value="$PROJECT_DIR$/src/io/CuiInterpreter.java" />
-        <option value="$PROJECT_DIR$/src/model/Canvas.java" />
         <option value="$PROJECT_DIR$/input.txt" />
+        <option value="$PROJECT_DIR$/src/model/Canvas.java" />
+        <option value="$PROJECT_DIR$/.gitignore" />
       </list>
     </option>
   </component>
@@ -280,7 +268,7 @@
     <property name="OverrideImplement.combined" value="false" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1551682211005" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1551682616984" />
     <property name="dynamic.classpath" value="false" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="project.structure.last.edited" value="Facets" />
@@ -393,18 +381,18 @@
       <workItem from="1551536813944" duration="382000" />
       <workItem from="1551580123368" duration="6285000" />
       <workItem from="1551594415342" duration="17291000" />
-      <workItem from="1551664922805" duration="10606000" />
+      <workItem from="1551664922805" duration="11076000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="77647000" />
+    <option name="totallyTimeSpent" value="78117000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1280" height="800" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.6703755" visible="true" weight="0.28917608" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.6703755" visible="true" weight="0.28917608" />
       <window_info id="Structure" order="1" weight="0.25" />
       <window_info id="Favorites" order="2" />
       <window_info id="Designer" order="3" />
@@ -413,7 +401,7 @@
       <window_info id="Capture Tool" order="6" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32876712" />
-      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.3260274" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.3260274" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -426,7 +414,7 @@
       <window_info anchor="bottom" id="Event Log" order="12" />
       <window_info anchor="bottom" id="Messages" order="13" weight="0.32739726" />
       <window_info anchor="bottom" id="Database Changes" order="14" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Terminal" order="15" weight="0.2739726" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="15" visible="true" weight="0.2739726" />
       <window_info anchor="bottom" id="Docker" order="16" show_stripe_button="false" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -748,16 +736,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/io/CuiInterpreter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="390">
-          <caret line="26" column="74" selection-start-line="26" selection-start-column="74" selection-end-line="26" selection-end-column="74" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/util/CGAlgorithm.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-774">
@@ -768,8 +746,12 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/output.bmp">
-      <provider selected="true" editor-type-id="images" />
+    <entry file="file://$PROJECT_DIR$/src/model/GraphEntity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="275">
+          <caret line="53" column="21" selection-start-line="53" selection-start-column="16" selection-end-line="53" selection-end-column="21" />
+        </state>
+      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/model/Ellipse.java">
       <provider selected="true" editor-type-id="text-editor">
@@ -778,17 +760,30 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/model/GraphEntity.java">
+    <entry file="file://$PROJECT_DIR$/output.bmp">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/input.txt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="275">
-          <caret line="53" column="21" selection-start-line="53" selection-start-column="16" selection-end-line="53" selection-end-column="21" />
+        <state relative-caret-position="345">
+          <caret line="23" column="15" selection-start-line="23" selection-start-column="15" selection-end-line="23" selection-end-column="15" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/io/CuiInterpreter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="390">
+          <caret line="26" column="74" selection-start-line="26" selection-start-column="74" selection-end-line="26" selection-end-column="74" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/model/Canvas.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1053">
-          <caret line="330" column="87" selection-start-line="330" selection-start-column="87" selection-end-line="330" selection-end-column="87" />
+        <state relative-caret-position="171">
+          <caret line="332" column="9" lean-forward="true" selection-start-line="332" selection-start-column="9" selection-end-line="332" selection-end-column="9" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#17539#17540#0" expanded="true" />
@@ -797,10 +792,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/input.txt">
+    <entry file="file://$PROJECT_DIR$/.gitignore">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="345">
-          <caret line="23" column="15" selection-start-line="23" selection-start-column="15" selection-end-line="23" selection-end-column="15" />
+        <state relative-caret-position="30">
+          <caret line="2" column="5" selection-start-line="2" selection-start-column="5" selection-end-line="2" selection-end-column="5" />
         </state>
       </provider>
     </entry>
