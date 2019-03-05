@@ -377,7 +377,8 @@ public class Canvas{
     }
 
     public void saveCanvas(String name){
-        File outputFile = new File(GP.outputDir + name);
+        String filename = GP.CLI ? GP.outputDir + name : name;
+        File outputFile = new File(filename);
         try {
             ImageIO.write(bufferedImage, "bmp", outputFile);
         }catch (IOException e){

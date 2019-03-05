@@ -37,7 +37,7 @@ public class Main extends Application {
 
         BorderPane p = new BorderPane();
         MenuBar menuBar = new MenuBar();
-        MenuConfig.config(menuBar);
+        MenuConfig.config(menuBar, primaryStage);
         p.setCenter(CanvasView.getInstance());
         p.setMaxHeight(CanvasView.getInstance().getImage().getHeight());
         p.setMaxWidth(CanvasView.getInstance().getImage().getWidth());

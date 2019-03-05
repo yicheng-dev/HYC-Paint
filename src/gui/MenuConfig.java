@@ -10,21 +10,40 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
+import javafx.stage.DirectoryChooser;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import javafx.util.Pair;
 
+import java.io.File;
 import java.util.Optional;
 
 public class MenuConfig {
 
-    public static void config(MenuBar menuBar){
-        addFileMenu(menuBar);
+    public static void config(MenuBar menuBar, Stage stage){
+        addFileMenu(menuBar, stage);
     }
 
-    private static void addFileMenu(MenuBar menuBar){
+    private static void addFileMenu(MenuBar menuBar, Stage stage){
         Menu fileMenu = new Menu("File");
         addNewFileMenuItem(fileMenu);
-
+        addSaveFileMenuItem(fileMenu, stage);
         menuBar.getMenus().add(fileMenu);
+    }
+
+    private static void addSaveFileMenuItem(Menu fileMenu, Stage stage){
+        MenuItem saveFileMenuItem = new MenuItem("Save");
+        saveFileMenuItem.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                FileChooser fileChooser=new FileChooser();
+                File file = fileChooser.showSaveDialog(stage);
+                String path = file.getPath();
+                String command = "saveCanvas " + path;
+                CliInterpreter.commandProcess(command);
+            }
+        });
+        fileMenu.getItems().add(saveFileMenuItem);
     }
 
     private static void addNewFileMenuItem(Menu fileMenu){
@@ -53,11 +72,6 @@ public class MenuConfig {
                 grid.add(heightText, 1, 1);
                 Node confirmButton = dialog.getDialogPane().lookupButton(confirmButtonType);
                 confirmButton.setDisable(true);
-                /*widthText.textProperty().addListener((observable, oldValue, newValue) -> {
-                    heightText.textProperty().addListener((observable1, oldValue1, newValue1) -> {
-                        confirmButton.setDisable(newValue.trim().isEmpty() || newValue1.trim().isEmpty());
-                    });
-                });*/
                 confirmButton.disableProperty().bind(Bindings.createBooleanBinding(() ->
                                 widthText.getText().trim().isEmpty() || heightText.getText().trim().isEmpty(),
                         widthText.textProperty(), heightText.textProperty()));
@@ -79,6 +93,5 @@ public class MenuConfig {
             }
         });
         fileMenu.getItems().add(newMenuItem);
-
     }
 }
