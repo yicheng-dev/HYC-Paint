@@ -44,12 +44,14 @@ public class Main extends Application {
         p.setMaxHeight(CanvasView.getInstance().getImage().getHeight());
         p.setMaxWidth(CanvasView.getInstance().getImage().getWidth());
         p.setStyle(cssBordering);
+        VBox vBox = new VBox();
         HBox hBox = new HBox();
         ColorPicker colorPicker = new ColorPicker();
         ColorPickerConfig.config(colorPicker);
         hBox.getChildren().add(menuBar);
-        hBox.getChildren().add(colorPicker);
-        root.setTop(hBox);
+        vBox.getChildren().add(hBox);
+        vBox.getChildren().add(colorPicker);
+        root.setTop(vBox);
         root.setCenter(p);
         primaryStage.setScene(new Scene(root, 1080, 720));
         primaryStage.show();
