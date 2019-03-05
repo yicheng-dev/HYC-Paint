@@ -10,6 +10,7 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -23,6 +24,7 @@ public class MenuConfig {
 
     public static void config(MenuBar menuBar, Stage stage){
         addFileMenu(menuBar, stage);
+        addEditMenu(menuBar, stage);
     }
 
     private static void addFileMenu(MenuBar menuBar, Stage stage){
@@ -31,6 +33,12 @@ public class MenuConfig {
         addSaveFileMenuItem(fileMenu, stage);
         addFromFileMenuItem(fileMenu, stage);
         menuBar.getMenus().add(fileMenu);
+    }
+
+    private static void addEditMenu(MenuBar menuBar, Stage stage){
+        Menu editMenu = new Menu("Edit");
+        // TODO
+        menuBar.getMenus().add(editMenu);
     }
 
     private static void addFromFileMenuItem(Menu fileMenu, Stage stage){

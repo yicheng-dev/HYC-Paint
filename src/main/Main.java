@@ -1,9 +1,11 @@
 package main;
 
+import gui.ColorPickerConfig;
 import gui.MenuConfig;
 import io.CliInterpreter;
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
@@ -42,7 +44,12 @@ public class Main extends Application {
         p.setMaxHeight(CanvasView.getInstance().getImage().getHeight());
         p.setMaxWidth(CanvasView.getInstance().getImage().getWidth());
         p.setStyle(cssBordering);
-        root.setTop(menuBar);
+        HBox hBox = new HBox();
+        ColorPicker colorPicker = new ColorPicker();
+        ColorPickerConfig.config(colorPicker);
+        hBox.getChildren().add(menuBar);
+        hBox.getChildren().add(colorPicker);
+        root.setTop(hBox);
         root.setCenter(p);
         primaryStage.setScene(new Scene(root, 1080, 720));
         primaryStage.show();
