@@ -43,7 +43,8 @@ public class CliInterpreter {
                     commandBuffer += (" " + str);
                 }
             } while (scanner.hasNext());
-            System.exit(0);
+            if (exitFlag)
+                System.exit(0);
         }catch (IOException e){
             System.out.println("Input file not found.");
         }

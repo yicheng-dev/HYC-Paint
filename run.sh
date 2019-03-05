@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 OUTPUT_DIR=out/
 
 test -e $OUTPUT_DIR || mkdir $OUTPUT_DIR

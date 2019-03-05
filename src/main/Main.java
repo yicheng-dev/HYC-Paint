@@ -38,21 +38,23 @@ public class Main extends Application {
         BorderPane p = new BorderPane();
         MenuBar menuBar = new MenuBar();
         MenuConfig.config(menuBar);
-        p.setTop(menuBar);
         p.setCenter(CanvasView.getInstance());
         p.setMaxHeight(CanvasView.getInstance().getImage().getHeight());
         p.setMaxWidth(CanvasView.getInstance().getImage().getWidth());
         p.setStyle(cssBordering);
+        root.setTop(menuBar);
         root.setCenter(p);
         primaryStage.setScene(new Scene(root, 1080, 720));
-        Thread cuiThread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                CliInterpreter.run();
-            }
-        });
-        cuiThread.start();
         primaryStage.show();
+        if (GP.CLI) {
+            Thread cuiThread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    CliInterpreter.run();
+                }
+            });
+            cuiThread.start();
+        }
     }
 
     private void redirectErr(String filename){
