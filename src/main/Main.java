@@ -1,8 +1,12 @@
 package main;
 
+import gui.MenuConfig;
 import io.CliInterpreter;
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import model.CanvasView;
@@ -32,6 +36,9 @@ public class Main extends Application {
                 + "-fx-border-width:5.0";
 
         BorderPane p = new BorderPane();
+        MenuBar menuBar = new MenuBar();
+        MenuConfig.config(menuBar);
+        p.setTop(menuBar);
         p.setCenter(CanvasView.getInstance());
         p.setMaxHeight(CanvasView.getInstance().getImage().getHeight());
         p.setMaxWidth(CanvasView.getInstance().getImage().getWidth());
