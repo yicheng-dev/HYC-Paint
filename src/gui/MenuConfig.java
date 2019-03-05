@@ -14,6 +14,7 @@ import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Pair;
+import main.GP;
 
 import java.io.File;
 import java.util.Optional;
@@ -28,7 +29,23 @@ public class MenuConfig {
         Menu fileMenu = new Menu("File");
         addNewFileMenuItem(fileMenu);
         addSaveFileMenuItem(fileMenu, stage);
+        addFromFileMenuItem(fileMenu, stage);
         menuBar.getMenus().add(fileMenu);
+    }
+
+    private static void addFromFileMenuItem(Menu fileMenu, Stage stage){
+        MenuItem fromFileFileMenuItem = new MenuItem("From file");
+        fromFileFileMenuItem.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                FileChooser fileChooser = new FileChooser();
+                File file = fileChooser.showOpenDialog(stage);
+                String path = file.getPath();
+                GP.inputInstrFile = path;
+                CliInterpreter.run();
+            }
+        });
+        fileMenu.getItems().add(fromFileFileMenuItem);
     }
 
     private static void addSaveFileMenuItem(Menu fileMenu, Stage stage){
@@ -36,7 +53,7 @@ public class MenuConfig {
         saveFileMenuItem.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                FileChooser fileChooser=new FileChooser();
+                FileChooser fileChooser = new FileChooser();
                 File file = fileChooser.showSaveDialog(stage);
                 String path = file.getPath();
                 String command = "saveCanvas " + path;
