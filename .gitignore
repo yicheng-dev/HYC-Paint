@@ -2,3 +2,4 @@
 *.bmp
 *.DS_Store
 out/
+!/image/output.bmp
