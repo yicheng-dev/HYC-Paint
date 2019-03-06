@@ -6,13 +6,19 @@ import model.GraphEntity;
 
 public class GUIUtil {
     public static int nextFreeId(){
-        for (int id = GP.id; ; id++){
+        int id = GP.id;
+        for (; ; id++){
+            boolean findFlag = false;
             for (GraphEntity graph : Canvas.getInstance().getGraphs()){
                 if (graph.getId() == id){
-                    continue;
+                    findFlag = true;
+                    break;
                 }
             }
-            return id;
+            if (!findFlag)
+                break;
         }
+        GP.id = id + 1;
+        return id;
     }
 }

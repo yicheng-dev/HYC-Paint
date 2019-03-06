@@ -1,5 +1,5 @@
 package model;
 
 public enum GraphEntityType {
-    LINE, POLYGON, ELLIPSE, CURVE;
+    LINE, POLYGON, ELLIPSE, CURVE
 }

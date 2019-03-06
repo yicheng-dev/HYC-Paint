@@ -1,6 +1,8 @@
 package main;
 
 import gui.ToggleType;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import model.Canvas;
 import model.Point;
 
@@ -8,7 +10,7 @@ import java.io.File;
 import java.util.Vector;
 
 public class GP {
-    public final static boolean CLI = true;
+    public final static boolean CLI = false;
     public final static boolean STDIN = false;
     public final static int ROOT_WIDTH = 1080;
     public final static int ROOT_HEIGHT = 720;
@@ -18,7 +20,7 @@ public class GP {
 
     public static Vector<Point> chosenPoints = new Vector<>();
     public static boolean drawing = false;
-    public final static int NEAR_BOUND = 10;
+    public static ObservableList<Integer> graphList = FXCollections.observableArrayList();
 
     public static String lineAlgorithm = "DDA";
     public static String curveAlgorithm = "Bezier";

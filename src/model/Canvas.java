@@ -81,6 +81,7 @@ public class Canvas{
         }
         line.setAlgorithm(algorithm);
         graphs.add(line);
+        GP.graphList.add(id);
         line.draw();
     }
 
@@ -105,6 +106,7 @@ public class Canvas{
         }
         polygon.setAlgorithm(algorithm);
         graphs.add(polygon);
+        GP.graphList.add(id);
         polygon.draw();
     }
 
@@ -115,6 +117,7 @@ public class Canvas{
         CGAlgorithm.setEllipseAttr(ellipse, x, y, rx, ry);
         CGAlgorithm.midPointEllipse(ellipse, x, y, rx, ry);
         graphs.add(ellipse);
+        GP.graphList.add(id);
         ellipse.draw();
     }
 
@@ -136,6 +139,7 @@ public class Canvas{
         }
         curve.setAlgorithm(algorithm);
         graphs.add(curve);
+        GP.graphList.add(id);
         curve.draw();
     }
 

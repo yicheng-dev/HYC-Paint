@@ -31,6 +31,7 @@ public class Main extends Application {
         TopConfig.config(root, primaryStage);
         CanvasConfig.config(root);
         BottomConfig.config(root);
+        LeftConfig.config(root);
         primaryStage.setScene(new Scene(root, GP.ROOT_WIDTH, GP.ROOT_HEIGHT));
         primaryStage.show();
         if (GP.CLI) {

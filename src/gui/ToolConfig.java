@@ -23,6 +23,7 @@ public class ToolConfig {
         ColorPicker colorPicker = new ColorPicker();
         ColorPickerConfig.config(colorPicker);
         toggleConfig(toolHBox);
+        toolHBox.setSpacing(10);
         toolHBox.getChildren().add(text);
         toolHBox.getChildren().add(colorPicker);
         toolHBox.getChildren().add(commandText);
