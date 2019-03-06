@@ -283,7 +283,13 @@ public class Canvas{
             centerY = ellipse.getCenter().y * vars.get(2) + vars.get(1) * (1 - vars.get(2));
             rx = ellipse.getRx() * vars.get(2);
             ry = ellipse.getRy() * vars.get(2);
+        }/*
+        for (int i = 0; i < ellipse.getPixels().size() - 1; i++){
+            CGAlgorithm.dda(ellipse, ellipse.getPixels().get(i).getX(), ellipse.getPixels().get(i).getY(),
+                    ellipse.getPixels().get(i + 1).getX(), ellipse.getPixels().get(i + 1).getY());
         }
+        CGAlgorithm.dda(ellipse, ellipse.getPixels().get(ellipse.getPixels().size() - 1).getX(), ellipse.getPixels().get(ellipse.getPixels().size() - 1).getY(),
+                ellipse.getPixels().get(0).getX(), ellipse.getPixels().get(0).getY());*/
         CGAlgorithm.setEllipseAttr(ellipse, centerX, centerY, rx, ry);
         ellipse.draw();
     }
@@ -431,6 +437,10 @@ public class Canvas{
     public int getWidth() { return width; }
 
     public int getHeight() { return height; }
+
+    public Vector<GraphEntity> getGraphs() {
+        return graphs;
+    }
 
     private boolean assertId(int id, boolean create){
         if (id < 0) {
