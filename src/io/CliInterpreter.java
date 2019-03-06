@@ -1,5 +1,6 @@
 package io;
 
+import gui.WarningText;
 import javafx.stage.Stage;
 import main.GP;
 import model.Canvas;
@@ -46,7 +47,7 @@ public class CliInterpreter {
             if (exitFlag)
                 System.exit(0);
         }catch (IOException e){
-            System.out.println("Input file not found.");
+            WarningText.getInstance().setWarningText("Input file not found.");
         }
     }
 
@@ -163,37 +164,37 @@ public class CliInterpreter {
     private static void usage(String command){
         switch (command){
             case "resetCanvas":
-                System.out.println("Usage: " + command + " [width] [height], while 100 <= width, height <= 1000.");
+                WarningText.getInstance().setWarningText("Usage: " + command + " [width] [height], while 100 <= width, height <= 1000.");
                 break;
             case "saveCanvas":
-                System.out.println("Usage: " + command + " [filename].");
+                WarningText.getInstance().setWarningText("Usage: " + command + " [filename].");
                 break;
             case "setColor":
-                System.out.println("Usage: " + command + " [R] [G] [B], while 0 <= R, G, B <= 255.");
+                WarningText.getInstance().setWarningText("Usage: " + command + " [R] [G] [B], while 0 <= R, G, B <= 255.");
                 break;
             case "drawLine":
-                System.out.println("Usage: " + command + " [id] [beginX] [beginY] [endX] [endY] [algorithm], while id is an integer and four x/y are doubles.");
+                WarningText.getInstance().setWarningText("Usage: " + command + " [id] [beginX] [beginY] [endX] [endY] [algorithm], while id is an integer and four x/y are doubles.");
                 break;
             case "drawPolygon":
-                System.out.println("Usage: " + command + " [id] [n] [algorithm] ([X] [Y] ...).");
+                WarningText.getInstance().setWarningText("Usage: " + command + " [id] [n] [algorithm] ([X] [Y] ...).");
                 break;
             case "drawEllipse":
-                System.out.println("Usage: " + command + " [id] [x] [y] [rx] [ry].");
+                WarningText.getInstance().setWarningText("Usage: " + command + " [id] [x] [y] [rx] [ry].");
                 break;
             case "drawCurve":
-                System.out.println("Usage: " + command + " [id] [n] [algorithm] ([X] [Y] ...).");
+                WarningText.getInstance().setWarningText("Usage: " + command + " [id] [n] [algorithm] ([X] [Y] ...).");
                 break;
             case "translate":
-                System.out.println("Usage: " + command + " [id] [dx] [dy].");
+                WarningText.getInstance().setWarningText("Usage: " + command + " [id] [dx] [dy].");
                 break;
             case "rotate":
-                System.out.println("Usage: " + command + " [id] [x] [y] [r].");
+                WarningText.getInstance().setWarningText("Usage: " + command + " [id] [x] [y] [r].");
                 break;
             case "scale":
-                System.out.println("Usage: " + command + " [id] [x] [y] [s].");
+                WarningText.getInstance().setWarningText("Usage: " + command + " [id] [x] [y] [s].");
                 break;
             case "clip":
-                System.out.println("Usage: " + command + " [id] [x1] [y1] [x2] [y2] [algorithm].");
+                WarningText.getInstance().setWarningText("Usage: " + command + " [id] [x1] [y1] [x2] [y2] [algorithm].");
                 break;
             default:
                 break;

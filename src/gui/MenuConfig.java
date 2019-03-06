@@ -54,9 +54,10 @@ public class MenuConfig {
             public void handle(ActionEvent event) {
                 FileChooser fileChooser = new FileChooser();
                 File file = fileChooser.showOpenDialog(stage);
-                String path = file.getPath();
-                GP.inputInstrFile = path;
-                CliInterpreter.run();
+                if (file != null) {
+                    GP.inputInstrFile = file.getPath();
+                    CliInterpreter.run();
+                }
             }
         });
         fileMenu.getItems().add(fromFileFileMenuItem);
@@ -69,9 +70,11 @@ public class MenuConfig {
             public void handle(ActionEvent event) {
                 FileChooser fileChooser = new FileChooser();
                 File file = fileChooser.showSaveDialog(stage);
-                String path = file.getPath();
-                String command = "saveCanvas " + path;
-                CliInterpreter.commandProcess(command);
+                if (file != null) {
+                    String path = file.getPath();
+                    String command = "saveCanvas " + path;
+                    CliInterpreter.commandProcess(command);
+                }
             }
         });
         fileMenu.getItems().add(saveFileMenuItem);

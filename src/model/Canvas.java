@@ -1,5 +1,6 @@
 package model;
 
+import gui.WarningText;
 import main.GP;
 import util.CGAlgorithm;
 import javax.imageio.ImageIO;
@@ -75,7 +76,7 @@ public class Canvas{
                 CGAlgorithm.midPoint(line, beginX, beginY, endX, endY);
                 break;
             default:
-                System.out.println("Available algorithms: DDA, MidPoint and Bresenham.");
+                WarningText.getInstance().setWarningText("Available algorithms: DDA, MidPoint and Bresenham.");
                 return;
         }
         line.setAlgorithm(algorithm);
@@ -99,7 +100,7 @@ public class Canvas{
                 CGAlgorithm.midPointPolygon(polygon, n, points);
                 break;
             default:
-                System.out.println("Available algorithms: DDA, MidPoint and Bresenham.");
+                WarningText.getInstance().setWarningText("Available algorithms: DDA, MidPoint and Bresenham.");
                 return;
         }
         polygon.setAlgorithm(algorithm);
@@ -130,7 +131,7 @@ public class Canvas{
                 CGAlgorithm.bSpline(curve, n, points);
                 break;
             default:
-                System.out.println("Available algorithms: Bezier and B-spline.");
+                WarningText.getInstance().setWarningText("Available algorithms: Bezier and B-spline.");
                 return;
         }
         curve.setAlgorithm(algorithm);
@@ -237,7 +238,7 @@ public class Canvas{
                 CGAlgorithm.midPointPolygon(polygon, points.size(), points);
                 break;
             default:
-                System.out.println("Available algorithms: DDA, MidPoint and Bresenham.");
+                WarningText.getInstance().setWarningText("Available algorithms: DDA, MidPoint and Bresenham.");
                 return;
         }
         polygon.draw();
@@ -328,7 +329,7 @@ public class Canvas{
             return;
         }
         if (x1 > x2 || y1 > y2){
-            System.out.println("You should firstly input the left-bottom one and then the right-top one.");
+            WarningText.getInstance().setWarningText("You should firstly input the left-bottom one and then the right-top one.");
             return;
         }
         for (GraphEntity graph : graphs){
@@ -352,7 +353,7 @@ public class Canvas{
                 CGAlgorithm.liangBarsky(line, x1, y1, x2, y2);
                 break;
             default:
-                System.out.println("Available clipping algorithms: Cohen-Sutherland and Liang-Barsky");
+                WarningText.getInstance().setWarningText("Available clipping algorithms: Cohen-Sutherland and Liang-Barsky");
                 return;
         }
         line.draw();
@@ -382,7 +383,7 @@ public class Canvas{
         try {
             ImageIO.write(bufferedImage, "bmp", outputFile);
         }catch (IOException e){
-            System.out.println("Canvas saving failed.");
+            WarningText.getInstance().setWarningText("Canvas saving failed.");
         }
     }
 
@@ -433,7 +434,7 @@ public class Canvas{
 
     private boolean assertId(int id, boolean create){
         if (id < 0) {
-            System.out.println("Please choose an id with positive value.");
+            WarningText.getInstance().setWarningText("Please choose an id with positive value.");
             if (create)
                 return false;
             return true;
@@ -441,7 +442,7 @@ public class Canvas{
         for (GraphEntity graph : graphs){
             if (graph.getId() == id) {
                 if (create)
-                    System.out.println("The id " + id + " has been occupied by another graph entity.");
+                    WarningText.getInstance().setWarningText("The id " + id + " has been occupied by another graph entity.");
                 return false;
             }
         }
@@ -450,13 +451,13 @@ public class Canvas{
 
     private boolean assertIdLine(int id){
         if (id < 0){
-            System.out.println("Please choose an id with positive value.");
+            WarningText.getInstance().setWarningText("Please choose an id with positive value.");
             return true;
         }
         for (GraphEntity graph : graphs){
             if (graph.getId() == id){
                 if (graph.getType() != GraphEntityType.LINE){
-                    System.out.println("Clip is only available for Line at current stage.");
+                    WarningText.getInstance().setWarningText("Clip is only available for Line at current stage.");
                     return true;
                 }
                 return false;
@@ -474,7 +475,7 @@ public class Canvas{
     private boolean assertWidthHeight(int value){
         if (value >= 100 && value <= 1000)
             return true;
-        System.out.println("Height or width of the canvas should range from 100 to 1000.");
+        WarningText.getInstance().setWarningText("Height or width of the canvas should range from 100 to 1000.");
         return false;
     }
 }

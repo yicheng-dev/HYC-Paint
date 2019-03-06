@@ -1,5 +1,7 @@
 package model;
 
+import gui.WarningText;
+
 import java.util.Vector;
 
 public class GraphEntity {
@@ -53,7 +55,7 @@ public class GraphEntity {
 
     public void clear(){
         if (pixels.size() == 0){
-            System.out.println("GraphEntity " + id + "'s pixels haven't been assigned.");
+            WarningText.getInstance().setWarningText("GraphEntity " + id + "'s pixels haven't been assigned.");
             return;
         }
         for (Pixel pixel : pixels) {

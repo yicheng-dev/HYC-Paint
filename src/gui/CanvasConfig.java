@@ -1,7 +1,6 @@
 package gui;
 
 import javafx.scene.layout.BorderPane;
-import model.CanvasView;
 
 public class CanvasConfig {
     public static void config(BorderPane root){

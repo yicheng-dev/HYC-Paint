@@ -3,7 +3,7 @@ package util;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;
 import model.Canvas;
-import model.CanvasView;
+import gui.CanvasView;
 
 import java.awt.image.BufferedImage;
 

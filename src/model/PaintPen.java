@@ -1,5 +1,7 @@
 package model;
 
+import gui.WarningText;
+
 import java.awt.*;
 
 public class PaintPen{
@@ -19,7 +21,7 @@ public class PaintPen{
         if (r >= 0 && r <= 255 && g >= 0 && g <= 255 && b >= 0 && b <= 255)
             color = new Color(r, g, b);
         else
-            System.out.println("r, g, b should range from 0 to 255.");
+            WarningText.getInstance().setWarningText("r, g, b should range from 0 to 255.");
     }
 
     public int getRGB(){

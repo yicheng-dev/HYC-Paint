@@ -3,15 +3,9 @@ package main;
 import gui.*;
 import io.CliInterpreter;
 import javafx.application.Application;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.ColorPicker;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.MenuItem;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
-import model.CanvasView;
 import util.ImageUtil;
 import java.io.File;
 import java.io.IOException;
@@ -36,6 +30,7 @@ public class Main extends Application {
         ImageUtil.canvasUpdate();
         TopConfig.config(root, primaryStage);
         CanvasConfig.config(root);
+        BottomConfig.config(root);
         primaryStage.setScene(new Scene(root, GP.ROOT_WIDTH, GP.ROOT_HEIGHT));
         primaryStage.show();
         if (GP.CLI) {
