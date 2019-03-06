@@ -62,7 +62,7 @@ exit       % Exit
 
 ```
 
-- Later, `JavaFX` will be used to optimize the front-end.
+- `JavaFX` is being used to optimize the front-end.
 
 ## Back End
 

@@ -8,7 +8,7 @@ import java.io.File;
 import java.util.Vector;
 
 public class GP {
-    public final static boolean CLI = false;
+    public final static boolean CLI = true;
     public final static boolean STDIN = false;
     public final static int ROOT_WIDTH = 1080;
     public final static int ROOT_HEIGHT = 720;
@@ -23,7 +23,7 @@ public class GP {
     public static String lineAlgorithm = "DDA";
     public static String curveAlgorithm = "Bezier";
     public static ToggleType chosenToggle = ToggleType.CHOOSE;
-    public static String inputInstrFile = "shit.txt";
+    public static String inputInstrFile = "input.txt";
     public static String outputDir = "." + File.separator;
     public static Vector<String> operations = new Vector<>();
 
