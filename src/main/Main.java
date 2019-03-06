@@ -1,9 +1,9 @@
 package main;
 
-import gui.ColorPickerConfig;
-import gui.MenuConfig;
+import gui.*;
 import io.CliInterpreter;
 import javafx.application.Application;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Menu;
@@ -34,26 +34,9 @@ public class Main extends Application {
         primaryStage.setTitle("HYC-Paint");
         BorderPane root = new BorderPane();
         ImageUtil.canvasUpdate();
-        String cssBordering = "-fx-border-color:black ; \n" //#090a0c
-                + "-fx-border-width:5.0";
-
-        BorderPane p = new BorderPane();
-        MenuBar menuBar = new MenuBar();
-        MenuConfig.config(menuBar, primaryStage);
-        p.setCenter(CanvasView.getInstance());
-        p.setMaxHeight(CanvasView.getInstance().getImage().getHeight());
-        p.setMaxWidth(CanvasView.getInstance().getImage().getWidth());
-        p.setStyle(cssBordering);
-        VBox vBox = new VBox();
-        HBox hBox = new HBox();
-        ColorPicker colorPicker = new ColorPicker();
-        ColorPickerConfig.config(colorPicker);
-        hBox.getChildren().add(menuBar);
-        vBox.getChildren().add(hBox);
-        vBox.getChildren().add(colorPicker);
-        root.setTop(vBox);
-        root.setCenter(p);
-        primaryStage.setScene(new Scene(root, 1080, 720));
+        TopConfig.config(root, primaryStage);
+        CanvasConfig.config(root);
+        primaryStage.setScene(new Scene(root, GP.ROOT_WIDTH, GP.ROOT_HEIGHT));
         primaryStage.show();
         if (GP.CLI) {
             Thread cuiThread = new Thread(new Runnable() {

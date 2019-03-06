@@ -9,7 +9,10 @@ import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
@@ -22,9 +25,12 @@ import java.util.Optional;
 
 public class MenuConfig {
 
-    public static void config(MenuBar menuBar, Stage stage){
+    public static void config(BorderPane root, Stage stage, VBox vBox){
+        MenuBar menuBar = new MenuBar();
         addFileMenu(menuBar, stage);
         addEditMenu(menuBar, stage);
+        vBox.getChildren().add(menuBar);
+        root.setTop(vBox);
     }
 
     private static void addFileMenu(MenuBar menuBar, Stage stage){
