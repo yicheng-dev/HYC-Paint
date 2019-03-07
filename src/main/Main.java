@@ -15,11 +15,19 @@ import java.io.PrintStream;
 public class Main extends Application {
 
     public static void main(String[] args) {
-        if (GP.CLI){
+        if (args.length == 2){
             if (!parseArg(args))
                 return;
+            GP.CLI = true;
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    CliInterpreter.run();
+                }
+            }).start();
+        }else {
+            launch(args);
         }
-        launch(args);
     }
 
     @Override
@@ -34,15 +42,6 @@ public class Main extends Application {
         LeftConfig.config(root);
         primaryStage.setScene(new Scene(root, GP.ROOT_WIDTH, GP.ROOT_HEIGHT));
         primaryStage.show();
-        if (GP.CLI) {
-            Thread cuiThread = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    CliInterpreter.run();
-                }
-            });
-            cuiThread.start();
-        }
     }
 
     private void redirectErr(String filename){

@@ -1,6 +1,8 @@
 package model;
 
+import gui.LeftConfig;
 import gui.WarningText;
+import javafx.collections.FXCollections;
 import main.GP;
 import util.CGAlgorithm;
 import javax.imageio.ImageIO;
@@ -8,6 +10,8 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
 
 public class Canvas{
@@ -382,6 +386,10 @@ public class Canvas{
             }
             idOfPixels.add(idOfLine);
         }
+        GP.id = 0;
+        GP.drawing = false;
+        GP.chosenPoints.clear();
+        GP.graphList.clear();
         this.width = width;
         this.height = height;
         setWhileBackground();
@@ -444,6 +452,14 @@ public class Canvas{
 
     public Vector<GraphEntity> getGraphs() {
         return graphs;
+    }
+
+    public GraphEntity getGraph(int id){
+        for (GraphEntity graph : graphs){
+            if (graph.getId() == id)
+                return graph;
+        }
+        return null;
     }
 
     private boolean assertId(int id, boolean create){

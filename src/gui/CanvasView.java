@@ -18,6 +18,19 @@ public class CanvasView extends ImageView {
     private CanvasView(){
         super();
         GP.chosenPoints = new Vector<>();
+
+        this.setOnMouseMoved(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                if (GP.drawing){
+                    if (GP.chosenToggle == ToggleType.LINE){
+                        int id = GUIUtil.nextFreeId();
+                        GraphEntity graph = Canvas.getInstance().getGraph(id);
+                    }
+                }
+            }
+        });
+
         this.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
@@ -45,13 +58,7 @@ public class CanvasView extends ImageView {
                         String command = "drawEllipse " + GUIUtil.nextFreeId() + " " + event.getX() + " " + (Canvas.getInstance().getHeight() - event.getY())
                                 + " " + GP.DEFAULT_ELLIPSE_AX + " " + GP.DEFAULT_ELLIPSE_BX;
                         CliInterpreter.commandProcess(command);
-                    }/*
-                    else if (GP.chosenToggle == ToggleType.CHOOSE){
-                        GraphEntity graphEntity;
-                        if (findNearGraphEntity((int)event.getX(), (int)event.getY(), graphEntity)){
-
-                        }
-                    }*/
+                    }
                 }
                 else if (event.getButton() == MouseButton.SECONDARY){
                     if (GP.drawing){

@@ -24,26 +24,32 @@ public class CliInterpreter {
 
     public static void run(){
         try {
-            InputStream inputStream = new FileInputStream(new File(GP.inputInstrFile));
+            File inputFile = new File(GP.inputInstrFile);
+            if (!inputFile.exists()){
+                System.out.println("Input file doesn't exist.");
+                return;
+            }
+            InputStream inputStream = new FileInputStream(inputFile);
             if (GP.STDIN)
                 inputStream = System.in;
             Scanner scanner = new Scanner(inputStream);
             String commandBuffer = "";
-            do {
+            while (scanner.hasNext()) {
                 if (exitFlag)
                     break;
                 String str = scanner.next();
-                if (GP.operations.contains(str)){
-                    if (commandBuffer.length() != 0){
+                if (GP.operations.contains(str)) {
+                    if (commandBuffer.length() != 0) {
                         commandProcess(commandBuffer);
                     }
                     commandBuffer = "";
                     commandBuffer += str;
-                }
-                else{
+                } else {
                     commandBuffer += (" " + str);
                 }
-            } while (scanner.hasNext());
+            }
+            if (commandBuffer.length() != 0)
+                commandProcess(commandBuffer);
             if (exitFlag)
                 System.exit(0);
         }catch (IOException e){
@@ -52,6 +58,7 @@ public class CliInterpreter {
     }
 
     public static void commandProcess(String command){
+        System.out.println(command);
         String[] paras = command.split("\\s+");
         if (paras.length < 1){
             return;
@@ -207,7 +214,8 @@ public class CliInterpreter {
 
     private static void doResetCanvas(int width, int height){
         Canvas.getInstance().resetCanvas(width, height);
-        ImageUtil.canvasUpdate();
+        if (!GP.CLI)
+            ImageUtil.canvasUpdate();
     }
 
     private static void doSetColor(int r, int g, int b){
@@ -216,22 +224,26 @@ public class CliInterpreter {
 
     private static void doDrawLine(int id, double beginX, double beginY, double endX, double endY, String algorithm){
         Canvas.getInstance().drawLine(id, beginX, beginY, endX, endY, algorithm);
-        ImageUtil.canvasUpdate();
+        if (!GP.CLI)
+            ImageUtil.canvasUpdate();
     }
 
     private static void doDrawPolygon(int id, int n, String algorithm, Vector<Point> points){
         Canvas.getInstance().drawPolygon(id, n, algorithm, points);
-        ImageUtil.canvasUpdate();
+        if (!GP.CLI)
+            ImageUtil.canvasUpdate();
     }
 
     private static void doDrawEllipse(int id, double x, double y, double rx, double ry){
         Canvas.getInstance().drawEllipse(id, x, y, rx, ry);
-        ImageUtil.canvasUpdate();
+        if (!GP.CLI)
+            ImageUtil.canvasUpdate();
     }
 
     private static void doDrawCurve(int id, int n, String algorithm, Vector<Point> points){
         Canvas.getInstance().drawCurve(id, n, algorithm, points);
-        ImageUtil.canvasUpdate();
+        if (!GP.CLI)
+            ImageUtil.canvasUpdate();
     }
 
     public static void doTranslate(int id, double dx, double dy){
@@ -239,7 +251,8 @@ public class CliInterpreter {
         vars.add(dx);
         vars.add(dy);
         Canvas.getInstance().transform(id, TransformType.TRANSLATE, vars);
-        ImageUtil.canvasUpdate();
+        if (!GP.CLI)
+            ImageUtil.canvasUpdate();
     }
 
     public static void doRotate(int id, double x, double y, double r){
@@ -248,7 +261,8 @@ public class CliInterpreter {
         vars.add(y);
         vars.add(r);
         Canvas.getInstance().transform(id, TransformType.ROTATE, vars);
-        ImageUtil.canvasUpdate();
+        if (!GP.CLI)
+            ImageUtil.canvasUpdate();
     }
 
     public static void doScale(int id, double x, double y, double s){
@@ -257,11 +271,13 @@ public class CliInterpreter {
         vars.add(y);
         vars.add(s);
         Canvas.getInstance().transform(id, TransformType.SCALE, vars);
-        ImageUtil.canvasUpdate();
+        if (!GP.CLI)
+            ImageUtil.canvasUpdate();
     }
 
     public static void doClip(int id, double x1, double y1, double x2, double y2, String algorithm){
         Canvas.getInstance().clip(id, x1, y1, x2, y2, algorithm);
-        ImageUtil.canvasUpdate();
+        if (!GP.CLI)
+            ImageUtil.canvasUpdate();
     }
 }

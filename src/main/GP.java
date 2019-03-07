@@ -10,7 +10,7 @@ import java.io.File;
 import java.util.Vector;
 
 public class GP {
-    public final static boolean CLI = false;
+    public static boolean CLI = false;
     public final static boolean STDIN = false;
     public final static int ROOT_WIDTH = 1080;
     public final static int ROOT_HEIGHT = 720;

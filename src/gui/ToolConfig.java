@@ -13,6 +13,13 @@ import javafx.scene.text.Text;
 import main.GP;
 
 public class ToolConfig {
+
+    static ToggleButton chooseButton = new ToggleButton("Choose");
+    static ToggleButton lineButton = new ToggleButton("Line");
+    static ToggleButton polygonButton = new ToggleButton("Polygon");
+    static ToggleButton ellipseButton = new ToggleButton ("Ellipse");
+    static ToggleButton curveButton = new ToggleButton("Curve");
+
     public static void config(VBox vBox){
         HBox toolHBox = new HBox();
         toolHBox.setAlignment(Pos.CENTER_LEFT);
@@ -42,15 +49,10 @@ public class ToolConfig {
     }
 
     private static void toggleConfig(HBox toolHBox){
-        ToggleButton chooseButton = new ToggleButton("Choose");
         chooseButton.setUserData("Choose");
-        ToggleButton lineButton = new ToggleButton("Line");
         lineButton.setUserData("Line");
-        ToggleButton polygonButton = new ToggleButton("Polygon");
         polygonButton.setUserData("Polygon");
-        ToggleButton ellipseButton = new ToggleButton ("Ellipse");
         ellipseButton.setUserData("Ellipse");
-        ToggleButton curveButton = new ToggleButton("Curve");
         curveButton.setUserData("Curve");
         ToggleGroup group = new ToggleGroup();
         group.selectedToggleProperty().addListener(

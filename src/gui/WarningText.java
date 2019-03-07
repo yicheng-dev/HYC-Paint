@@ -2,6 +2,7 @@ package gui;
 
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import main.GP;
 
 public class WarningText extends Text {
     private WarningText(){
@@ -14,7 +15,8 @@ public class WarningText extends Text {
     }
 
     public void setWarningText(String text){
-        this.setText(text);
+        if (!GP.CLI)
+            this.setText(text);
         System.out.println(text);
     }
 }

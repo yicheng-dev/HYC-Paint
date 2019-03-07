@@ -18,7 +18,7 @@ public class GUIUtil {
             if (!findFlag)
                 break;
         }
-        GP.id = id + 1;
+        GP.id = id;
         return id;
     }
 }

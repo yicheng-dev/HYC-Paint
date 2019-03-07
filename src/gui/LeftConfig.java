@@ -10,15 +10,20 @@ import main.GP;
 
 public class LeftConfig {
 
+    public static ListView<Integer> listView = new ListView<>();
+
     public static void config(BorderPane root){
-        ListView<Integer> listView = new ListView<>();
         listView.setEditable(false);
         listView.setCellFactory((ListView<Integer> l) -> new GraphView());
         listView.setItems(GP.graphList);
         listView.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                WarningText.getInstance().setWarningText(String.valueOf(listView.getSelectionModel().getSelectedItem()));
+                if (listView.getSelectionModel() != null){
+                    GP.drawing = false;
+                    GP.chosenPoints.clear();
+                    ToolConfig.chooseButton.setSelected(true);
+                }
             }
         });
         root.setLeft(listView);
