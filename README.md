@@ -12,8 +12,13 @@ A painting tool developed with Java and it can draw lines, polygons, ellipses, c
 - A shell bash `run.sh` is provided so you can type `$ bash run.sh` to compile and run it. At current stage, two CLI parameters are needed, representing the path of input file and the path of image output directory. For example, 
 
     ```
-    $ bash run.sh input.txt ./
+    $ bash run.sh input.txt ./ -f
     ```
+- You can also launch a python-like CLI by
+
+	```
+	$ bash run.sh input.txt ./ -c
+	```
 
 ## Front End
 

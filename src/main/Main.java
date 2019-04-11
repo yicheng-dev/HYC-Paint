@@ -15,7 +15,7 @@ import java.io.PrintStream;
 public class Main extends Application {
 
     public static void main(String[] args) {
-        if (args.length == 2){
+        if (args.length == 3){
             if (!parseArg(args))
                 return;
             GP.CLI = true;
@@ -57,7 +57,7 @@ public class Main extends Application {
     }
 
     private static boolean parseArg(String[] args){
-        if (args.length != 2) {
+        if (args.length != 3) {
             System.out.println("Command-Line arguments should be: Path of input file and Path of output directory.");
             return false;
         }
@@ -78,6 +78,9 @@ public class Main extends Application {
         }
         GP.inputInstrFile = args[0];
         GP.outputDir = args[1];
+        if (args[2].equals("-c")){
+            GP.STDIN = true;
+        }
         return true;
     }
 }

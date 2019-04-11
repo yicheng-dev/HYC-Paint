@@ -11,7 +11,7 @@ import java.util.Vector;
 
 public class GP {
     public static boolean CLI = false;
-    public final static boolean STDIN = false;
+    public static boolean STDIN = false;
     public final static int ROOT_WIDTH = 1080;
     public final static int ROOT_HEIGHT = 720;
     public static int id = 0;

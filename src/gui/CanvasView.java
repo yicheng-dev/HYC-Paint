@@ -18,18 +18,18 @@ public class CanvasView extends ImageView {
     private CanvasView(){
         super();
         GP.chosenPoints = new Vector<>();
-
-        this.setOnMouseMoved(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                if (GP.drawing){
-                    if (GP.chosenToggle == ToggleType.LINE){
-                        int id = GUIUtil.nextFreeId();
-                        GraphEntity graph = Canvas.getInstance().getGraph(id);
-                    }
-                }
-            }
-        });
+//
+//        this.setOnMouseMoved(new EventHandler<MouseEvent>() {
+//            @Override
+//            public void handle(MouseEvent event) {
+//                if (GP.drawing){
+//                    if (GP.chosenToggle == ToggleType.LINE){
+//                        int id = GUIUtil.nextFreeId();
+//                        GraphEntity graph = Canvas.getInstance().getGraph(id);
+//                    }
+//                }
+//            }
+//        });
 
         this.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override

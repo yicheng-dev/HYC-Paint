@@ -34,31 +34,43 @@ public class CliInterpreter {
                 inputStream = System.in;
             Scanner scanner = new Scanner(inputStream);
             String commandBuffer = "";
-            while (scanner.hasNext()) {
-                if (exitFlag)
-                    break;
-                String str = scanner.next();
-                if (GP.operations.contains(str)) {
-                    if (commandBuffer.length() != 0) {
-                        commandProcess(commandBuffer);
-                    }
-                    commandBuffer = "";
-                    commandBuffer += str;
-                } else {
-                    commandBuffer += (" " + str);
-                }
-            }
-            if (commandBuffer.length() != 0)
-                commandProcess(commandBuffer);
-            if (exitFlag)
+            if (GP.CLI && GP.STDIN){
+                do {
+                    if (exitFlag)
+                        break;
+                    if (GP.STDIN)
+                        System.out.print(PROMPT);
+                    String command = scanner.nextLine();
+                    commandProcess(command);
+                } while (true);
                 System.exit(0);
+            }
+            else {
+                while (scanner.hasNext()) {
+                    if (exitFlag)
+                        break;
+                    String str = scanner.next();
+                    if (GP.operations.contains(str)) {
+                        if (commandBuffer.length() != 0) {
+                            commandProcess(commandBuffer);
+                        }
+                        commandBuffer = "";
+                        commandBuffer += str;
+                    } else {
+                        commandBuffer += (" " + str);
+                    }
+                }
+                if (commandBuffer.length() != 0)
+                    commandProcess(commandBuffer);
+                if (exitFlag)
+                    System.exit(0);
+            }
         }catch (IOException e){
             WarningText.getInstance().setWarningText("Input file not found.");
         }
     }
 
     public static void commandProcess(String command){
-        System.out.println(command);
         String[] paras = command.split("\\s+");
         if (paras.length < 1){
             return;
