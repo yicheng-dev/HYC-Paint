@@ -7,6 +7,7 @@ import model.Canvas;
 import model.GraphEntity;
 import model.Point;
 
+import java.awt.*;
 import java.io.File;
 import java.util.Vector;
 
@@ -15,12 +16,14 @@ public class GP {
     public static boolean STDIN = false;
     public final static int ROOT_WIDTH = 1080;
     public final static int ROOT_HEIGHT = 720;
+    public final static Color FRAME_COLOR = Color.GRAY;
     public static int id = 0;
     public static int DEFAULT_ELLIPSE_AX = Canvas.getInstance().getWidth() / 10;
     public static int DEFAULT_ELLIPSE_BX = Canvas.getInstance().getHeight() / 10;
 
     public static Vector<Point> chosenPoints = new Vector<>();
     public static GraphEntity drawingEntity;
+    public static GraphEntity selectedEntity;
     public static boolean drawing = false;
     public static ObservableList<Integer> graphList = FXCollections.observableArrayList();
 

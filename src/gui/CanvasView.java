@@ -85,7 +85,7 @@ public class CanvasView extends ImageView {
                     String command = "drawEllipse " + GUIUtil.nextFreeId() + " " + event.getX() + " " + (Canvas.getInstance().getHeight() - event.getY())
                             + " " + 1 + " " + 1;
                     CliInterpreter.commandProcess(command);
-                    System.out.println("center of ellipse: " + event.getX() + " " + (Canvas.getInstance().getHeight() - event.getY()));
+                    //System.out.println("center of ellipse: " + event.getX() + " " + (Canvas.getInstance().getHeight() - event.getY()));
                 }
             }
         });
@@ -106,12 +106,12 @@ public class CanvasView extends ImageView {
             public void handle(MouseEvent event) {
                 if (GP.drawing && GP.chosenToggle == ToggleType.ELLIPSE) {
                     if (GP.drawingEntity != null && GP.drawingEntity.getType() == GraphEntityType.ELLIPSE) {
-                        System.out.println("id: " + GP.drawingEntity.getId());
+                        //System.out.println("id: " + GP.drawingEntity.getId());
                         GP.drawingEntity.clear();
                         GP.drawingEntity.clearPixel();
                         double ax = Math.abs(event.getX() - GP.chosenPoints.get(0).x);
                         double ay = Math.abs((Canvas.getInstance().getHeight() - event.getY()) - GP.chosenPoints.get(0).y);
-                        System.out.println("ax: " + ax + "\tay: " + ay);
+                        //System.out.println("ax: " + ax + "\tay: " + ay);
                         double x = GP.chosenPoints.get(0).x;
                         double y = GP.chosenPoints.get(0).y;
                         /*
@@ -121,7 +121,7 @@ public class CanvasView extends ImageView {
                         CGAlgorithm.setEllipseAttr((Ellipse)GP.drawingEntity, x, y, ax, ay);
                         CGAlgorithm.midPointEllipse((Ellipse)GP.drawingEntity, x, y, ax, ay);
                         GP.drawingEntity.draw();
-                        System.out.println("fuck");
+                        //System.out.println("fuck");
                         if (!GP.CLI)
                             ImageUtil.canvasUpdate();
                     }

@@ -411,6 +411,8 @@ public class Canvas{
         idOfPixels.get(x).get(y).add(id);
         if (id == -1)
             bufferedImage.setRGB(x, y, BACKGROUND_COLOR.getRGB());
+        else if (id == -2)
+            bufferedImage.setRGB(x, y, GP.FRAME_COLOR.getRGB());
         else {
             for (GraphEntity graph : graphs){
                 if (graph.getId() == id){

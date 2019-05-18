@@ -10,7 +10,12 @@ public class GraphEntity {
     private GraphEntityType type;
     private Vector<Pixel> pixels;
     private boolean hasPainted = false;
+    private GraphEntity selectedFrame;
     private int rgb;
+
+    public GraphEntity() {
+        this.pixels = new Vector<>();
+    }
 
     public GraphEntity(int id, GraphEntityType type){
         this.id = id;
@@ -69,5 +74,10 @@ public class GraphEntity {
         if (!hasPainted)
             return PaintPen.getInstance().getRGB();
         return rgb;
+    }
+
+    public void selectedDraw() {
+        System.out.println("fuck");
+        selectedFrame = new SelectedFrame(this);
     }
 }

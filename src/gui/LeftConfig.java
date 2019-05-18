@@ -7,6 +7,8 @@ import javafx.scene.control.ListView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import main.GP;
+import model.Canvas;
+import model.GraphEntity;
 
 public class LeftConfig {
 
@@ -23,6 +25,11 @@ public class LeftConfig {
                     GP.drawing = false;
                     GP.chosenPoints.clear();
                     ToolConfig.chooseButton.setSelected(true);
+                    GP.chosenToggle = ToggleType.CHOOSE;
+                    int id = listView.getSelectionModel().getSelectedItem();
+                    GraphEntity graphEntity = Canvas.getInstance().getGraph(id);
+                    GP.selectedEntity = graphEntity;
+                    graphEntity.selectedDraw();
                 }
             }
         });
