@@ -63,6 +63,7 @@ public class ToolConfig {
                         GP.drawing = false;
                         if (!new_toggle.getUserData().toString().equals("Choose") && GP.selectedEntity != null) {
                             GP.selectedEntity.selectedHide();
+                            GP.selectedEntity = null;
                         }
                         switch (new_toggle.getUserData().toString()){
                             case "Choose": GP.chosenToggle = ToggleType.CHOOSE; break;

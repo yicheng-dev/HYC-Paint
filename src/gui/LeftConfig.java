@@ -13,6 +13,7 @@ import model.GraphEntity;
 public class LeftConfig {
 
     public static ListView<Integer> listView = new ListView<>();
+    private static int selectedItemId;
 
     public static void config(BorderPane root){
         listView.setEditable(false);
@@ -27,6 +28,10 @@ public class LeftConfig {
                     ToolConfig.chooseButton.setSelected(true);
                     GP.chosenToggle = ToggleType.CHOOSE;
                     int id = listView.getSelectionModel().getSelectedItem();
+                    if (id != selectedItemId) {
+                        Canvas.getInstance().getGraph(selectedItemId).selectedHide();
+                    }
+                    selectedItemId = id;
                     GraphEntity graphEntity = Canvas.getInstance().getGraph(id);
                     GP.selectedEntity = graphEntity;
                     graphEntity.selectedDraw();

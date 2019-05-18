@@ -21,4 +21,30 @@ public class GUIUtil {
         GP.id = id;
         return id;
     }
+
+    public static double pointToAngle(double dstX, double dstY, double srcX, double srcY) {
+        double radians;
+        double degrees;
+        if (srcX == dstX && dstY > srcY)
+            degrees = -270;
+        else if (srcX == dstX && dstY == srcY)
+            degrees = 0;
+        else if (srcX == dstX && dstY < srcY)
+            degrees = -90;
+        else if (srcY == dstY && dstX > srcX)
+            degrees = 0;
+        else if (srcY == dstY && dstX < srcX)
+            degrees = -180;
+        else {
+            radians = Math.atan((srcY - dstY) / (srcX - dstX));
+            degrees = Math.toDegrees(radians);
+        }
+        if ((dstX < srcX && dstY < srcY))
+            degrees -= 180;
+        else if ((dstX < srcX && dstY > srcY))
+            degrees -= 180;
+        else if ((dstX > srcX && dstY > srcY))
+            degrees -= 360;
+        return degrees;
+    }
 }

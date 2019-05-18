@@ -434,10 +434,17 @@ public class Canvas{
                     break;
                 }
             }
+            boolean find = false;
             for (GraphEntity graph : graphs){
                 if (graph.getId() == idOfPixels.get(x).get(y).get(idOfPixels.get(x).get(y).size() - 1)){
                     nowRgb = graph.getRgb();
+                    find = true;
                     break;
+                }
+            }
+            if (!find) {
+                if (idOfPixels.get(x).get(y).get(idOfPixels.get(x).get(y).size() - 1) == -2) {
+                    nowRgb = GP.FRAME_COLOR.getRGB();
                 }
             }
         }

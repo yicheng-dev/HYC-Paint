@@ -82,10 +82,27 @@ public class GraphEntity {
     }
 
     public void selectedDraw() {
-        selectedFrame = new SelectedFrame(this);
+        if (selectedFrame != null) {
+            selectedFrame.show();
+        }
+        else {
+            selectedFrame = new SelectedFrame(this);
+        }
     }
 
     public void selectedHide() {
         selectedFrame.hide();
+    }
+
+    public void processPressed(double eventX, double eventY) {
+        selectedFrame.processPressed(eventX, eventY);
+    }
+
+    public void processReleased() {
+        selectedFrame.processReleased();
+    }
+
+    public void processDragged(double eventX, double eventY) {
+        selectedFrame.processDragged(eventX, eventY);
     }
 }

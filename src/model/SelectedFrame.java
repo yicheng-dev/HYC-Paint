@@ -22,10 +22,57 @@ public class SelectedFrame extends GraphEntity{
     private int minY;
     private int maxY;
 
+    private int rotateCenterX;
+    private int rotateCenterY;
+    private int scaleCenterX;
+    private int scaleCenterY;
+
+    private boolean pressed;
+    private OperationStat operationStat;
+
+    private double lastX;
+    private double lastY;
+    private double lastDegree;
+
     public SelectedFrame(GraphEntity parent) {
         super();
         this.parent = parent;
+        this.pressed = false;
         this.scaleLabels = new Vector<>();
+        this.operationStat = OperationStat.FREE;
+        this.lastDegree = 0;
+        buildFrame();
+        buildScaleLabel();
+        buildRotateLabel();
+        buildRotateCenter();
+        buildScaleCenter();
+
+        if (!GP.CLI)
+            ImageUtil.canvasUpdate();
+    }
+
+    private void frameClear(int option) {
+        for (ScaleLabel scaleLabel : scaleLabels) {
+            scaleLabel.clear();
+            scaleLabel.clearPixel();
+        }
+        scaleLabels.clear();
+        if (option != 2) {
+            scaleCenter.clear();
+            scaleCenter.clearPixel();
+        }
+        rotateLabel.clear();
+        rotateLabel.clearPixel();
+        if (option != 1) {
+            rotateCenter.clear();
+            rotateCenter.clearPixel();
+        }
+        frameEdge.clear();
+        frameEdge.clearPixel();
+    }
+
+    private void transUpdate() {
+        frameClear(0);
         buildFrame();
         buildScaleLabel();
         buildRotateLabel();
@@ -35,29 +82,35 @@ public class SelectedFrame extends GraphEntity{
             ImageUtil.canvasUpdate();
     }
 
-    public void update() {
-        this.scaleLabels.clear();
+    private void rotateUpdate() {
+        frameClear(1);
         buildFrame();
         buildScaleLabel();
-        buildRotateLabel();
-        buildRotateCenter();
         buildScaleCenter();
+        buildRotateLabel();
+        if (!GP.CLI)
+            ImageUtil.canvasUpdate();
+    }
+
+    public void show() {
+        frameEdge.draw();
+        rotateCenter.draw();
+        rotateLabel.draw();
+        scaleCenter.draw();
+        for (ScaleLabel scaleLabel : scaleLabels) {
+            scaleLabel.draw();
+        }
         if (!GP.CLI)
             ImageUtil.canvasUpdate();
     }
 
     public void hide() {
         frameEdge.clear();
-        frameEdge.clearPixel();
         rotateCenter.clear();
-        rotateCenter.clearPixel();
         rotateLabel.clear();
-        rotateLabel.clearPixel();
         scaleCenter.clear();
-        scaleCenter.clearPixel();
         for (ScaleLabel scaleLabel : scaleLabels) {
             scaleLabel.clear();
-            scaleLabel.clearPixel();
         }
         if (!GP.CLI)
             ImageUtil.canvasUpdate();
@@ -198,6 +251,8 @@ public class SelectedFrame extends GraphEntity{
         pixels.add(new Pixel(centerX - 4, centerY - 1, GP.FRAME_COLOR.getRGB()));
         pixels.add(new Pixel(centerX - 3, centerY - 2, GP.FRAME_COLOR.getRGB()));
         pixels.add(new Pixel(centerX - 2, centerY - 3, GP.FRAME_COLOR.getRGB()));
+        this.rotateCenterX = centerX;
+        this.rotateCenterY = centerY;
         rotateCenter = new RotateCenter(-2, pixels);
         rotateCenter.draw();
     }
@@ -233,8 +288,88 @@ public class SelectedFrame extends GraphEntity{
         pixels.add(new Pixel(minX - 4, centerY - 1, GP.FRAME_COLOR.getRGB()));
         pixels.add(new Pixel(minX - 3, centerY - 2, GP.FRAME_COLOR.getRGB()));
         pixels.add(new Pixel(minX - 2, centerY - 3, GP.FRAME_COLOR.getRGB()));
+        this.scaleCenterX = minX;
+        this.scaleCenterY = centerY;
         scaleCenter = new ScaleCenter(-2, pixels);
         scaleCenter.draw();
+    }
+
+    private boolean inFrame(double eventX, double eventY) {
+        return (eventX >= minX - 4 && eventX <= maxX + 4 && eventY >= minY - 4 && eventY <= maxY + 4);
+    }
+
+    private boolean inRotateLabel(double eventX, double eventY) {
+        return (eventX >= maxX - 4 && eventX <= maxX + 4 && eventY >= centerY - 4 && eventY <= centerY + 4);
+    }
+
+    private int inScaleLabel(double eventX, double eventY) {
+        if (eventX >= minX - 4 && eventX <= minX + 4 && eventY >= minY - 4 && eventY <= minY + 4)
+            return 0;
+        if (eventX >= minX - 4 && eventX <= minX + 4 && eventY >= maxY - 4 && eventY <= maxY + 4)
+            return 1;
+        if (eventX >= maxX - 4 && eventX <= maxX + 4 && eventY >= minY - 4 && eventY <= minY + 4)
+            return 2;
+        if (eventX >= maxX - 4 && eventX <= maxX + 4 && eventY >= maxY - 4 && eventY <= maxY + 4)
+            return 3;
+        return -1;
+    }
+
+    private boolean inRotateCenter(double eventX, double eventY) {
+        return (eventX >= centerX - 4 && eventX <= centerX + 4 && eventY >= centerY - 4 && eventY <= centerY + 4);
+    }
+
+    private boolean inScaleCenter(double eventX, double eventY) {
+        return (eventX >= minX - 4 && eventX <= minX + 4 && eventY >= centerY - 4 && eventY <= centerY + 4);
+    }
+
+    public void processPressed(double eventX, double eventY) {
+        if (!inFrame(eventX, eventY))
+            return;
+        pressed = true;
+        lastX = eventX;
+        lastY = eventY;
+        int scaleLabelId = inScaleLabel(eventX, eventY);
+        if (scaleLabelId != -1)
+            operationStat = OperationStat.SCALING;
+        else if (inRotateLabel(eventX, eventY))
+            operationStat = OperationStat.ROTATING;
+        else if (inScaleCenter(eventX, eventY))
+            operationStat = OperationStat.MOVING_SCALE;
+        else if (inRotateCenter(eventX, eventY))
+            operationStat = OperationStat.MOVING_ROTATE;
+        else
+            operationStat = OperationStat.TRANSLATING;
+        WarningText.getInstance().setWarningText(operationStat.toString());
+    }
+
+    public void processReleased() {
+        if (!pressed)
+            return;
+        operationStat = OperationStat.FREE;
+    }
+
+    public void processDragged(double eventX, double eventY) {
+        if (!pressed)
+            return;
+        if (operationStat == OperationStat.TRANSLATING) {
+            Vector<Double> vars = new Vector<>();
+            vars.add(eventX - lastX);
+            vars.add(eventY - lastY);
+            Canvas.getInstance().transform(parent.getId(), TransformType.TRANSLATE, vars);
+            transUpdate();
+            lastX = eventX;
+            lastY = eventY;
+        }
+        else if (operationStat == OperationStat.ROTATING) {
+            double rotateAngle = GUIUtil.pointToAngle(eventX, eventY, rotateCenterX, rotateCenterY);
+            Vector<Double> vars = new Vector<>();
+            vars.add((double)rotateCenterX);
+            vars.add((double)rotateCenterY);
+            vars.add(rotateAngle - lastDegree);
+            Canvas.getInstance().transform(parent.getId(), TransformType.ROTATE, vars);
+            rotateUpdate();
+            lastDegree = rotateAngle;
+        }
     }
 
 }
