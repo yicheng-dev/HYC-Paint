@@ -10,11 +10,16 @@ public class GraphEntity {
     private GraphEntityType type;
     private Vector<Pixel> pixels;
     private boolean hasPainted = false;
-    private GraphEntity selectedFrame;
+    private SelectedFrame selectedFrame;
     private int rgb;
 
     public GraphEntity() {
         this.pixels = new Vector<>();
+    }
+
+    public GraphEntity(int id, Vector<Pixel> pixels) {
+        this.id = id;
+        this.pixels = pixels;
     }
 
     public GraphEntity(int id, GraphEntityType type){
@@ -77,7 +82,10 @@ public class GraphEntity {
     }
 
     public void selectedDraw() {
-        System.out.println("fuck");
         selectedFrame = new SelectedFrame(this);
+    }
+
+    public void selectedHide() {
+        selectedFrame.hide();
     }
 }

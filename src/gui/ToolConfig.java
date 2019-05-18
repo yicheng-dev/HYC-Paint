@@ -61,6 +61,9 @@ public class ToolConfig {
                     if (new_toggle != null) {
                         GP.chosenPoints.clear();
                         GP.drawing = false;
+                        if (!new_toggle.getUserData().toString().equals("Choose") && GP.selectedEntity != null) {
+                            GP.selectedEntity.selectedHide();
+                        }
                         switch (new_toggle.getUserData().toString()){
                             case "Choose": GP.chosenToggle = ToggleType.CHOOSE; break;
                             case "Line": GP.chosenToggle = ToggleType.LINE; break;

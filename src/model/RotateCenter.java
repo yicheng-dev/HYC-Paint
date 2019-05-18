@@ -1,10 +1,12 @@
 package model;
 
+import java.util.Vector;
+
 public class RotateCenter extends GraphEntity{
     private double centerX;
     private double centerY;
-    public RotateCenter() {
-        super();
+    public RotateCenter(int id, Vector<Pixel> pixels) {
+        super(id, pixels);
     }
     public void changeTo() {
 
