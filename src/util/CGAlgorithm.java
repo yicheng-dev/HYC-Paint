@@ -174,6 +174,10 @@ public class CGAlgorithm {
     }
 
     public static void midPointEllipse(Ellipse ellipse, double centerX, double centerY, double rx, double ry){
+        if (rx == 0 || ry == 0) {
+            ellipse.addPixel(nearInt(centerX), nearInt(centerY));
+            return;
+        }
         double rxSquare = rx * rx;
         double rySquare = ry * ry;
         double d = rySquare + rxSquare * (-ry + 0.25);

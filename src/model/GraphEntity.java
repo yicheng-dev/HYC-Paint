@@ -1,6 +1,7 @@
 package model;
 
 import gui.WarningText;
+import main.GP;
 
 import java.util.Vector;
 
@@ -51,6 +52,7 @@ public class GraphEntity {
         for (Pixel pixel : pixels){
             Canvas.getInstance().paintPixel(pixel.getX(), Canvas.getInstance().getHeight() - pixel.getY(), id);
         }
+        GP.drawingEntity = this;
     }
 
     public void clear(){

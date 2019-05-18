@@ -4,6 +4,7 @@ import gui.ToggleType;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.Canvas;
+import model.GraphEntity;
 import model.Point;
 
 import java.io.File;
@@ -19,6 +20,7 @@ public class GP {
     public static int DEFAULT_ELLIPSE_BX = Canvas.getInstance().getHeight() / 10;
 
     public static Vector<Point> chosenPoints = new Vector<>();
+    public static GraphEntity drawingEntity;
     public static boolean drawing = false;
     public static ObservableList<Integer> graphList = FXCollections.observableArrayList();
 
