@@ -162,6 +162,7 @@ public class Canvas{
                     polygonTransform(graph, type, vars);
                 }
                 else if (graph.getType() == GraphEntityType.ELLIPSE){
+                    graph.clearPixel();
                     ellipseTransform(graph, type, vars);
                 }
                 else if (graph.getType() == GraphEntityType.CURVE){
@@ -256,52 +257,23 @@ public class Canvas{
         Ellipse ellipse = (Ellipse)graph;
         double centerX = 0, centerY = 0, rx = 0, ry = 0;
         if (type == TransformType.TRANSLATE) {
-            for (Pixel point : ellipse.getPixels()){
-                int originX = point.getX();
-                int originY = point.getY();
-                point.setX(CGAlgorithm.nearInt(originX + vars.get(0)));
-                point.setY(CGAlgorithm.nearInt(originY + vars.get(1)));
-            }
             centerX = vars.get(0) + ellipse.getCenter().x;
             centerY = vars.get(1) + ellipse.getCenter().y;
             rx = ellipse.getRx();
             ry = ellipse.getRy();
         }
         if (type == TransformType.ROTATE){
-            /*
-            double radians = Math.toRadians(vars.get(2));
-            for (Pixel point : ellipse.getPixels()){
-                int originX = point.getX();
-                int originY = point.getY();
-                point.setX(CGAlgorithm.nearInt(vars.get(0) + (originX - vars.get(0)) * Math.cos(radians) - (originY - vars.get(1)) * Math.sin(radians)));
-                point.setY(CGAlgorithm.nearInt(vars.get(1) + (originX - vars.get(0)) * Math.sin(radians) + (originY - vars.get(1)) * Math.cos(radians)));
-            }
-            centerX = vars.get(0) + (ellipse.getCenter().x - vars.get(0)) * Math.cos(radians) - (ellipse.getCenter().y - vars.get(1)) * Math.sin(radians);
-            centerY = vars.get(1) + (ellipse.getCenter().x - vars.get(0)) * Math.sin(radians) + (ellipse.getCenter().y - vars.get(1)) * Math.cos(radians);
-            rx = ellipse.getRx();
-            ry = ellipse.getRy();*/
             WarningText.getInstance().setWarningText("Rotation of ellipse isn't supported.");
             return;
         }
         if (type == TransformType.SCALE){
-            for (Pixel point : ellipse.getPixels()){
-                int originX = point.getX();
-                int originY = point.getY();
-                point.setX(CGAlgorithm.nearInt(originX * vars.get(2) + vars.get(0) * (1 - vars.get(2))));
-                point.setY(CGAlgorithm.nearInt(originY * vars.get(2) + vars.get(1) * (1 - vars.get(2))));
-            }
             centerX = ellipse.getCenter().x * vars.get(2) + vars.get(0) * (1 - vars.get(2));
             centerY = ellipse.getCenter().y * vars.get(2) + vars.get(1) * (1 - vars.get(2));
             rx = ellipse.getRx() * vars.get(2);
             ry = ellipse.getRy() * vars.get(2);
-        }/*
-        for (int i = 0; i < ellipse.getPixels().size() - 1; i++){
-            CGAlgorithm.dda(ellipse, ellipse.getPixels().get(i).getX(), ellipse.getPixels().get(i).getY(),
-                    ellipse.getPixels().get(i + 1).getX(), ellipse.getPixels().get(i + 1).getY());
         }
-        CGAlgorithm.dda(ellipse, ellipse.getPixels().get(ellipse.getPixels().size() - 1).getX(), ellipse.getPixels().get(ellipse.getPixels().size() - 1).getY(),
-                ellipse.getPixels().get(0).getX(), ellipse.getPixels().get(0).getY());*/
         CGAlgorithm.setEllipseAttr(ellipse, centerX, centerY, rx, ry);
+        CGAlgorithm.midPointEllipse(ellipse, centerX, centerY, rx, ry);
         ellipse.draw();
     }
 

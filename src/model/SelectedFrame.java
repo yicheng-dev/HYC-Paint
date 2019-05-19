@@ -32,8 +32,7 @@ public class SelectedFrame extends GraphEntity{
 
     private double lastTransX;
     private double lastTransY;
-    private double lastScaleX;
-    private double lastScaleY;
+    private double lastScaleDistance;
     private double lastDegree;
 
     public SelectedFrame(GraphEntity parent) {
@@ -89,6 +88,16 @@ public class SelectedFrame extends GraphEntity{
         buildScaleLabel();
         buildScaleCenter();
         buildRotateLabel();
+        if (!GP.CLI)
+            ImageUtil.canvasUpdate();
+    }
+
+    private void scaleUpdate() {
+        frameClear(2);
+        buildFrame();
+        buildScaleLabel();
+        buildRotateLabel();
+        buildRotateCenter();
         if (!GP.CLI)
             ImageUtil.canvasUpdate();
     }
@@ -327,15 +336,16 @@ public class SelectedFrame extends GraphEntity{
         if (!inFrame(eventX, eventY))
             return;
         pressed = true;
-        lastTransX = eventX;
-        lastTransY = eventY;
-        this.lastDegree = GUIUtil.pointToAngle(eventX, eventY, rotateCenterX, rotateCenterY);
         int scaleLabelId = inScaleLabel(eventX, eventY);
-        if (scaleLabelId != -1)
+        if (scaleLabelId != -1) {
             operationStat = OperationStat.SCALING;
+            lastScaleDistance = GUIUtil.calDistance(eventX, eventY, scaleCenterX, scaleCenterY);
+        }
         else if (inRotateLabel(eventX, eventY)) {
-            if (parent.getType() != GraphEntityType.ELLIPSE)
+            if (parent.getType() != GraphEntityType.ELLIPSE) {
                 operationStat = OperationStat.ROTATING;
+                lastDegree = GUIUtil.pointToAngle(eventX, eventY, rotateCenterX, rotateCenterY);
+            }
             else {
                 operationStat = OperationStat.FREE;
                 WarningText.getInstance().setWarningText("Rotation of ellipse is not supported.");
@@ -346,8 +356,11 @@ public class SelectedFrame extends GraphEntity{
             operationStat = OperationStat.MOVING_SCALE;
         else if (inRotateCenter(eventX, eventY))
             operationStat = OperationStat.MOVING_ROTATE;
-        else
+        else {
             operationStat = OperationStat.TRANSLATING;
+            lastTransX = eventX;
+            lastTransY = eventY;
+        }
         WarningText.getInstance().setWarningText(operationStat.toString());
     }
 
@@ -378,6 +391,16 @@ public class SelectedFrame extends GraphEntity{
             Canvas.getInstance().transform(parent.getId(), TransformType.ROTATE, vars);
             rotateUpdate();
             lastDegree = rotateAngle;
+        }
+        else if (operationStat == OperationStat.SCALING) {
+            double distance = GUIUtil.calDistance(eventX, eventY, scaleCenterX, scaleCenterY);
+            Vector<Double> vars = new Vector<>();
+            vars.add((double)scaleCenterX);
+            vars.add((double)scaleCenterY);
+            vars.add(distance / lastScaleDistance);
+            Canvas.getInstance().transform(parent.getId(), TransformType.SCALE, vars);
+            scaleUpdate();
+            lastScaleDistance = distance;
         }
     }
 

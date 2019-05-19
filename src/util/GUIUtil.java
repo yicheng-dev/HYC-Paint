@@ -47,4 +47,8 @@ public class GUIUtil {
             degrees -= 360;
         return degrees;
     }
+
+    public static double calDistance(double dstX, double dstY, double srcX, double srcY) {
+        return Math.sqrt(Math.pow(dstX - srcX, 2) + Math.pow(dstY - srcY, 2));
+    }
 }
