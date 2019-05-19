@@ -30,8 +30,10 @@ public class SelectedFrame extends GraphEntity{
     private boolean pressed;
     private OperationStat operationStat;
 
-    private double lastX;
-    private double lastY;
+    private double lastTransX;
+    private double lastTransY;
+    private double lastScaleX;
+    private double lastScaleY;
     private double lastDegree;
 
     public SelectedFrame(GraphEntity parent) {
@@ -40,7 +42,6 @@ public class SelectedFrame extends GraphEntity{
         this.pressed = false;
         this.scaleLabels = new Vector<>();
         this.operationStat = OperationStat.FREE;
-        this.lastDegree = 0;
         buildFrame();
         buildScaleLabel();
         buildRotateLabel();
@@ -326,13 +327,21 @@ public class SelectedFrame extends GraphEntity{
         if (!inFrame(eventX, eventY))
             return;
         pressed = true;
-        lastX = eventX;
-        lastY = eventY;
+        lastTransX = eventX;
+        lastTransY = eventY;
+        this.lastDegree = GUIUtil.pointToAngle(eventX, eventY, rotateCenterX, rotateCenterY);
         int scaleLabelId = inScaleLabel(eventX, eventY);
         if (scaleLabelId != -1)
             operationStat = OperationStat.SCALING;
-        else if (inRotateLabel(eventX, eventY))
-            operationStat = OperationStat.ROTATING;
+        else if (inRotateLabel(eventX, eventY)) {
+            if (parent.getType() != GraphEntityType.ELLIPSE)
+                operationStat = OperationStat.ROTATING;
+            else {
+                operationStat = OperationStat.FREE;
+                WarningText.getInstance().setWarningText("Rotation of ellipse is not supported.");
+                return;
+            }
+        }
         else if (inScaleCenter(eventX, eventY))
             operationStat = OperationStat.MOVING_SCALE;
         else if (inRotateCenter(eventX, eventY))
@@ -353,12 +362,12 @@ public class SelectedFrame extends GraphEntity{
             return;
         if (operationStat == OperationStat.TRANSLATING) {
             Vector<Double> vars = new Vector<>();
-            vars.add(eventX - lastX);
-            vars.add(eventY - lastY);
+            vars.add(eventX - lastTransX);
+            vars.add(eventY - lastTransY);
             Canvas.getInstance().transform(parent.getId(), TransformType.TRANSLATE, vars);
             transUpdate();
-            lastX = eventX;
-            lastY = eventY;
+            lastTransX = eventX;
+            lastTransY = eventY;
         }
         else if (operationStat == OperationStat.ROTATING) {
             double rotateAngle = GUIUtil.pointToAngle(eventX, eventY, rotateCenterX, rotateCenterY);

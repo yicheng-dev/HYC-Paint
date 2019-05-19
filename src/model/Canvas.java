@@ -268,6 +268,7 @@ public class Canvas{
             ry = ellipse.getRy();
         }
         if (type == TransformType.ROTATE){
+            /*
             double radians = Math.toRadians(vars.get(2));
             for (Pixel point : ellipse.getPixels()){
                 int originX = point.getX();
@@ -278,7 +279,9 @@ public class Canvas{
             centerX = vars.get(0) + (ellipse.getCenter().x - vars.get(0)) * Math.cos(radians) - (ellipse.getCenter().y - vars.get(1)) * Math.sin(radians);
             centerY = vars.get(1) + (ellipse.getCenter().x - vars.get(0)) * Math.sin(radians) + (ellipse.getCenter().y - vars.get(1)) * Math.cos(radians);
             rx = ellipse.getRx();
-            ry = ellipse.getRy();
+            ry = ellipse.getRy();*/
+            WarningText.getInstance().setWarningText("Rotation of ellipse isn't supported.");
+            return;
         }
         if (type == TransformType.SCALE){
             for (Pixel point : ellipse.getPixels()){
