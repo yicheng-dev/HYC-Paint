@@ -1,5 +1,6 @@
 package model;
 
+import gui.CanvasView;
 import gui.WarningText;
 import main.GP;
 import util.CGAlgorithm;
@@ -44,8 +45,8 @@ public class SelectedFrame extends GraphEntity{
         buildFrame();
         buildScaleLabel();
         buildRotateLabel();
-        buildRotateCenter();
-        buildScaleCenter();
+        buildRotateCenter(centerX, centerY);
+        buildScaleCenter(minX, centerY);
 
         if (!GP.CLI)
             ImageUtil.canvasUpdate();
@@ -73,20 +74,22 @@ public class SelectedFrame extends GraphEntity{
 
     private void transUpdate() {
         frameClear(0);
+        int oldCenterX = centerX, oldCenterY = centerY;
         buildFrame();
         buildScaleLabel();
         buildRotateLabel();
-        buildRotateCenter();
-        buildScaleCenter();
+        buildRotateCenter(centerX + (rotateCenterX - oldCenterX), centerY + (rotateCenterY - oldCenterY));
+        buildScaleCenter(centerX + (scaleCenterX - oldCenterX), centerY + (scaleCenterY - oldCenterY));
         if (!GP.CLI)
             ImageUtil.canvasUpdate();
     }
 
     private void rotateUpdate() {
         frameClear(1);
+        int oldCenterX = centerX, oldCenterY = centerY;
         buildFrame();
         buildScaleLabel();
-        buildScaleCenter();
+        buildScaleCenter(centerX + (scaleCenterX - oldCenterX), centerY + (scaleCenterY - oldCenterY));
         buildRotateLabel();
         if (!GP.CLI)
             ImageUtil.canvasUpdate();
@@ -94,10 +97,11 @@ public class SelectedFrame extends GraphEntity{
 
     private void scaleUpdate() {
         frameClear(2);
+        int oldCenterX = centerX, oldCenterY = centerY;
         buildFrame();
         buildScaleLabel();
         buildRotateLabel();
-        buildRotateCenter();
+        buildRotateCenter(centerX + (rotateCenterX - oldCenterX), centerY + (rotateCenterY - oldCenterY));
         if (!GP.CLI)
             ImageUtil.canvasUpdate();
     }
@@ -230,76 +234,77 @@ public class SelectedFrame extends GraphEntity{
         rotateLabel.draw();
     }
 
-    private void buildRotateCenter() {
+    private void buildRotateCenter(int x, int y) {
         Vector<Pixel> pixels = new Vector<>();
-        pixels.add(new Pixel(centerX, centerY, GP.FRAME_COLOR.getRGB()));
-        pixels.add(new Pixel(centerX - 1, centerY, GP.FRAME_COLOR.getRGB()));
-        pixels.add(new Pixel(centerX - 2, centerY, GP.FRAME_COLOR.getRGB()));
-        pixels.add(new Pixel(centerX + 1, centerY, GP.FRAME_COLOR.getRGB()));
-        pixels.add(new Pixel(centerX + 2, centerY, GP.FRAME_COLOR.getRGB()));
-        pixels.add(new Pixel(centerX, centerY - 1, GP.FRAME_COLOR.getRGB()));
-        pixels.add(new Pixel(centerX, centerY - 2, GP.FRAME_COLOR.getRGB()));
-        pixels.add(new Pixel(centerX, centerY + 1, GP.FRAME_COLOR.getRGB()));
-        pixels.add(new Pixel(centerX, centerY + 2, GP.FRAME_COLOR.getRGB()));
-        pixels.add(new Pixel(centerX - 1, centerY - 4, GP.FRAME_COLOR.getRGB()));
-        pixels.add(new Pixel(centerX, centerY - 4, GP.FRAME_COLOR.getRGB()));
-        pixels.add(new Pixel(centerX + 1, centerY - 4, GP.FRAME_COLOR.getRGB()));
-        pixels.add(new Pixel(centerX + 2, centerY - 3, GP.FRAME_COLOR.getRGB()));
-        pixels.add(new Pixel(centerX + 3, centerY - 2, GP.FRAME_COLOR.getRGB()));
-        pixels.add(new Pixel(centerX + 4, centerY - 1, GP.FRAME_COLOR.getRGB()));
-        pixels.add(new Pixel(centerX + 4, centerY, GP.FRAME_COLOR.getRGB()));
-        pixels.add(new Pixel(centerX + 4, centerY + 1, GP.FRAME_COLOR.getRGB()));
-        pixels.add(new Pixel(centerX + 3, centerY + 2, GP.FRAME_COLOR.getRGB()));
-        pixels.add(new Pixel(centerX + 2, centerY + 3, GP.FRAME_COLOR.getRGB()));
-        pixels.add(new Pixel(centerX + 1, centerY + 4, GP.FRAME_COLOR.getRGB()));
-        pixels.add(new Pixel(centerX, centerY + 4, GP.FRAME_COLOR.getRGB()));
-        pixels.add(new Pixel(centerX - 1, centerY + 4, GP.FRAME_COLOR.getRGB()));
-        pixels.add(new Pixel(centerX - 2, centerY + 3, GP.FRAME_COLOR.getRGB()));
-        pixels.add(new Pixel(centerX - 3, centerY + 2, GP.FRAME_COLOR.getRGB()));
-        pixels.add(new Pixel(centerX - 4, centerY + 1, GP.FRAME_COLOR.getRGB()));
-        pixels.add(new Pixel(centerX - 4, centerY, GP.FRAME_COLOR.getRGB()));
-        pixels.add(new Pixel(centerX - 4, centerY - 1, GP.FRAME_COLOR.getRGB()));
-        pixels.add(new Pixel(centerX - 3, centerY - 2, GP.FRAME_COLOR.getRGB()));
-        pixels.add(new Pixel(centerX - 2, centerY - 3, GP.FRAME_COLOR.getRGB()));
-        this.rotateCenterX = centerX;
-        this.rotateCenterY = centerY;
+        pixels.add(new Pixel(x, y, GP.FRAME_COLOR.getRGB()));
+        pixels.add(new Pixel(x - 1, y, GP.FRAME_COLOR.getRGB()));
+        pixels.add(new Pixel(x - 2, y, GP.FRAME_COLOR.getRGB()));
+        pixels.add(new Pixel(x + 1, y, GP.FRAME_COLOR.getRGB()));
+        pixels.add(new Pixel(x + 2, y, GP.FRAME_COLOR.getRGB()));
+        pixels.add(new Pixel(x, y - 1, GP.FRAME_COLOR.getRGB()));
+        pixels.add(new Pixel(x, y - 2, GP.FRAME_COLOR.getRGB()));
+        pixels.add(new Pixel(x, y + 1, GP.FRAME_COLOR.getRGB()));
+        pixels.add(new Pixel(x, y + 2, GP.FRAME_COLOR.getRGB()));
+        pixels.add(new Pixel(x - 1, y - 4, GP.FRAME_COLOR.getRGB()));
+        pixels.add(new Pixel(x, y - 4, GP.FRAME_COLOR.getRGB()));
+        pixels.add(new Pixel(x + 1, y - 4, GP.FRAME_COLOR.getRGB()));
+        pixels.add(new Pixel(x + 2, y - 3, GP.FRAME_COLOR.getRGB()));
+        pixels.add(new Pixel(x + 3, y - 2, GP.FRAME_COLOR.getRGB()));
+        pixels.add(new Pixel(x + 4, y - 1, GP.FRAME_COLOR.getRGB()));
+        pixels.add(new Pixel(x + 4, y, GP.FRAME_COLOR.getRGB()));
+        pixels.add(new Pixel(x + 4, y + 1, GP.FRAME_COLOR.getRGB()));
+        pixels.add(new Pixel(x + 3, y + 2, GP.FRAME_COLOR.getRGB()));
+        pixels.add(new Pixel(x + 2, y + 3, GP.FRAME_COLOR.getRGB()));
+        pixels.add(new Pixel(x + 1, y + 4, GP.FRAME_COLOR.getRGB()));
+        pixels.add(new Pixel(x, y + 4, GP.FRAME_COLOR.getRGB()));
+        pixels.add(new Pixel(x - 1, y + 4, GP.FRAME_COLOR.getRGB()));
+        pixels.add(new Pixel(x - 2, y + 3, GP.FRAME_COLOR.getRGB()));
+        pixels.add(new Pixel(x - 3, y + 2, GP.FRAME_COLOR.getRGB()));
+        pixels.add(new Pixel(x - 4, y + 1, GP.FRAME_COLOR.getRGB()));
+        pixels.add(new Pixel(x - 4, y, GP.FRAME_COLOR.getRGB()));
+        pixels.add(new Pixel(x - 4, y - 1, GP.FRAME_COLOR.getRGB()));
+        pixels.add(new Pixel(x - 3, y - 2, GP.FRAME_COLOR.getRGB()));
+        pixels.add(new Pixel(x - 2, y - 3, GP.FRAME_COLOR.getRGB()));
+        this.rotateCenterX = x;
+        this.rotateCenterY = y;
         rotateCenter = new RotateCenter(-2, pixels);
         rotateCenter.draw();
     }
 
-    private void buildScaleCenter() {
+    private void buildScaleCenter(int x, int y) {
         Vector<Pixel> pixels = new Vector<>();
-        pixels.add(new Pixel(minX, centerY, GP.FRAME_COLOR.getRGB()));
-        pixels.add(new Pixel(minX + 1, centerY + 1, GP.FRAME_COLOR.getRGB()));
-        pixels.add(new Pixel(minX + 2, centerY + 2, GP.FRAME_COLOR.getRGB()));
-        pixels.add(new Pixel(minX - 1, centerY - 1, GP.FRAME_COLOR.getRGB()));
-        pixels.add(new Pixel(minX - 2, centerY - 2, GP.FRAME_COLOR.getRGB()));
-        pixels.add(new Pixel(minX - 1, centerY + 1, GP.FRAME_COLOR.getRGB()));
-        pixels.add(new Pixel(minX - 2, centerY + 2, GP.FRAME_COLOR.getRGB()));
-        pixels.add(new Pixel(minX + 1, centerY - 1, GP.FRAME_COLOR.getRGB()));
-        pixels.add(new Pixel(minX + 2, centerY - 2, GP.FRAME_COLOR.getRGB()));
-        pixels.add(new Pixel(minX - 1, centerY - 4, GP.FRAME_COLOR.getRGB()));
-        pixels.add(new Pixel(minX, centerY - 4, GP.FRAME_COLOR.getRGB()));
-        pixels.add(new Pixel(minX + 1, centerY - 4, GP.FRAME_COLOR.getRGB()));
-        pixels.add(new Pixel(minX + 2, centerY - 3, GP.FRAME_COLOR.getRGB()));
-        pixels.add(new Pixel(minX + 3, centerY - 2, GP.FRAME_COLOR.getRGB()));
-        pixels.add(new Pixel(minX + 4, centerY - 1, GP.FRAME_COLOR.getRGB()));
-        pixels.add(new Pixel(minX + 4, centerY, GP.FRAME_COLOR.getRGB()));
-        pixels.add(new Pixel(minX + 4, centerY + 1, GP.FRAME_COLOR.getRGB()));
-        pixels.add(new Pixel(minX + 3, centerY + 2, GP.FRAME_COLOR.getRGB()));
-        pixels.add(new Pixel(minX + 2, centerY + 3, GP.FRAME_COLOR.getRGB()));
-        pixels.add(new Pixel(minX + 1, centerY + 4, GP.FRAME_COLOR.getRGB()));
-        pixels.add(new Pixel(minX, centerY + 4, GP.FRAME_COLOR.getRGB()));
-        pixels.add(new Pixel(minX - 1, centerY + 4, GP.FRAME_COLOR.getRGB()));
-        pixels.add(new Pixel(minX - 2, centerY + 3, GP.FRAME_COLOR.getRGB()));
-        pixels.add(new Pixel(minX - 3, centerY + 2, GP.FRAME_COLOR.getRGB()));
-        pixels.add(new Pixel(minX - 4, centerY + 1, GP.FRAME_COLOR.getRGB()));
-        pixels.add(new Pixel(minX - 4, centerY, GP.FRAME_COLOR.getRGB()));
-        pixels.add(new Pixel(minX - 4, centerY - 1, GP.FRAME_COLOR.getRGB()));
-        pixels.add(new Pixel(minX - 3, centerY - 2, GP.FRAME_COLOR.getRGB()));
-        pixels.add(new Pixel(minX - 2, centerY - 3, GP.FRAME_COLOR.getRGB()));
-        this.scaleCenterX = minX;
-        this.scaleCenterY = centerY;
+        pixels.add(new Pixel(x, y, GP.FRAME_COLOR.getRGB()));
+        pixels.add(new Pixel(x + 1, y + 1, GP.FRAME_COLOR.getRGB()));
+        pixels.add(new Pixel(x + 2, y + 2, GP.FRAME_COLOR.getRGB()));
+        pixels.add(new Pixel(x - 1, y - 1, GP.FRAME_COLOR.getRGB()));
+        pixels.add(new Pixel(x - 2, y - 2, GP.FRAME_COLOR.getRGB()));
+        pixels.add(new Pixel(x - 1, y + 1, GP.FRAME_COLOR.getRGB()));
+        pixels.add(new Pixel(x - 2, y + 2, GP.FRAME_COLOR.getRGB()));
+        pixels.add(new Pixel(x + 1, y - 1, GP.FRAME_COLOR.getRGB()));
+        pixels.add(new Pixel(x + 2, y - 2, GP.FRAME_COLOR.getRGB()));
+        pixels.add(new Pixel(x - 1, y - 4, GP.FRAME_COLOR.getRGB()));
+        pixels.add(new Pixel(x, y - 4, GP.FRAME_COLOR.getRGB()));
+        pixels.add(new Pixel(x + 1, y - 4, GP.FRAME_COLOR.getRGB()));
+        pixels.add(new Pixel(x + 2, y - 3, GP.FRAME_COLOR.getRGB()));
+        pixels.add(new Pixel(x + 3, y - 2, GP.FRAME_COLOR.getRGB()));
+        pixels.add(new Pixel(x + 4, y - 1, GP.FRAME_COLOR.getRGB()));
+        pixels.add(new Pixel(x + 4, y, GP.FRAME_COLOR.getRGB()));
+        pixels.add(new Pixel(x + 4, y + 1, GP.FRAME_COLOR.getRGB()));
+        pixels.add(new Pixel(x + 3, y + 2, GP.FRAME_COLOR.getRGB()));
+        pixels.add(new Pixel(x + 2, y + 3, GP.FRAME_COLOR.getRGB()));
+        pixels.add(new Pixel(x + 1, y + 4, GP.FRAME_COLOR.getRGB()));
+        pixels.add(new Pixel(x, y + 4, GP.FRAME_COLOR.getRGB()));
+        pixels.add(new Pixel(x - 1, y + 4, GP.FRAME_COLOR.getRGB()));
+        pixels.add(new Pixel(x - 2, y + 3, GP.FRAME_COLOR.getRGB()));
+        pixels.add(new Pixel(x - 3, y + 2, GP.FRAME_COLOR.getRGB()));
+        pixels.add(new Pixel(x - 4, y + 1, GP.FRAME_COLOR.getRGB()));
+        pixels.add(new Pixel(x - 4, y, GP.FRAME_COLOR.getRGB()));
+        pixels.add(new Pixel(x - 4, y - 1, GP.FRAME_COLOR.getRGB()));
+        pixels.add(new Pixel(x - 3, y - 2, GP.FRAME_COLOR.getRGB()));
+        pixels.add(new Pixel(x - 2, y - 3, GP.FRAME_COLOR.getRGB()));
+        this.scaleCenterX = x;
+        this.scaleCenterY = y;
+        // System.out.println("scale center changed to: (" + scaleCenterX + ", " + scaleCenterY + ")");
         scaleCenter = new ScaleCenter(-2, pixels);
         scaleCenter.draw();
     }
@@ -325,16 +330,18 @@ public class SelectedFrame extends GraphEntity{
     }
 
     private boolean inRotateCenter(double eventX, double eventY) {
-        return (eventX >= centerX - 4 && eventX <= centerX + 4 && eventY >= centerY - 4 && eventY <= centerY + 4);
+        return (eventX >= rotateCenterX - 4 && eventX <= rotateCenterX + 4 && eventY >= rotateCenterY - 4 && eventY <= rotateCenterY + 4);
     }
 
     private boolean inScaleCenter(double eventX, double eventY) {
-        return (eventX >= minX - 4 && eventX <= minX + 4 && eventY >= centerY - 4 && eventY <= centerY + 4);
+        return (eventX >= scaleCenterX - 4 && eventX <= scaleCenterX + 4 && eventY >= scaleCenterY - 4 && eventY <= scaleCenterY + 4);
     }
 
     public void processPressed(double eventX, double eventY) {
+        // System.out.println("event: (" + eventX + ", " + eventY + ")");
+        /*
         if (!inFrame(eventX, eventY))
-            return;
+            return;*/
         pressed = true;
         int scaleLabelId = inScaleLabel(eventX, eventY);
         if (scaleLabelId != -1) {
@@ -356,10 +363,13 @@ public class SelectedFrame extends GraphEntity{
             operationStat = OperationStat.MOVING_SCALE;
         else if (inRotateCenter(eventX, eventY))
             operationStat = OperationStat.MOVING_ROTATE;
-        else {
+        else if (inFrame(eventX, eventY)){
             operationStat = OperationStat.TRANSLATING;
             lastTransX = eventX;
             lastTransY = eventY;
+        }
+        else {
+            pressed = false;
         }
         WarningText.getInstance().setWarningText(operationStat.toString());
     }
@@ -401,6 +411,20 @@ public class SelectedFrame extends GraphEntity{
             Canvas.getInstance().transform(parent.getId(), TransformType.SCALE, vars);
             scaleUpdate();
             lastScaleDistance = distance;
+        }
+        else if (operationStat == OperationStat.MOVING_ROTATE) {
+            rotateCenter.clear();
+            rotateCenter.clearPixel();
+            buildRotateCenter(CGAlgorithm.nearInt(eventX), CGAlgorithm.nearInt(eventY));
+            if (!GP.CLI)
+                ImageUtil.canvasUpdate();
+        }
+        else if (operationStat == OperationStat.MOVING_SCALE) {
+            scaleCenter.clear();
+            scaleCenter.clearPixel();
+            buildScaleCenter(CGAlgorithm.nearInt(eventX), CGAlgorithm.nearInt(eventY));
+            if (!GP.CLI)
+                ImageUtil.canvasUpdate();
         }
     }
 
