@@ -6,6 +6,9 @@ public class Line extends GraphEntity{
 
     private Pixel beginPoint;
     private Pixel endPoint;
+
+    private Pixel backupBeginPoint;
+    private Pixel backupEndPoint;
     private String algorithm;
 
     public Line(int id, GraphEntityType type){
@@ -38,5 +41,17 @@ public class Line extends GraphEntity{
 
     public String getAlgorithm() {
         return algorithm;
+    }
+
+    @Override
+    public void savePixel() {
+        backupBeginPoint = beginPoint;
+        backupEndPoint = endPoint;
+    }
+
+    @Override
+    public void loadPixel() {
+        beginPoint = backupBeginPoint;
+        endPoint = backupEndPoint;
     }
 }

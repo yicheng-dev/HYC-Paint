@@ -8,6 +8,10 @@ public class Ellipse extends GraphEntity{
     private int rx;
     private int ry;
 
+    private Point backupCenter;
+    private int backupRx;
+    private int backupRy;
+
     public Ellipse(int id, GraphEntityType type){
         super(id, type);
     }
@@ -35,5 +39,21 @@ public class Ellipse extends GraphEntity{
 
     public int getRy(){
         return ry;
+    }
+
+    @Override
+    public void savePixel() {
+        super.savePixel();
+        backupCenter = center;
+        backupRx = rx;
+        backupRy = ry;
+    }
+
+    @Override
+    public void loadPixel() {
+        super.loadPixel();
+        center = backupCenter;
+        rx = backupRx;
+        ry = backupRy;
     }
 }

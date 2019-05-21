@@ -345,6 +345,7 @@ public class SelectedFrame extends GraphEntity{
         pressed = true;
         int scaleLabelId = inScaleLabel(eventX, eventY);
         if (scaleLabelId != -1) {
+            parent.savePixel();
             operationStat = OperationStat.SCALING;
             lastScaleDistance = GUIUtil.calDistance(eventX, eventY, scaleCenterX, scaleCenterY);
         }
@@ -354,6 +355,7 @@ public class SelectedFrame extends GraphEntity{
                 lastDegree = GUIUtil.pointToAngle(eventX, eventY, rotateCenterX, rotateCenterY);
             }
             else {
+                parent.savePixel();
                 operationStat = OperationStat.FREE;
                 WarningText.getInstance().setWarningText("Rotation of ellipse is not supported.");
                 return;
@@ -364,6 +366,7 @@ public class SelectedFrame extends GraphEntity{
         else if (inRotateCenter(eventX, eventY))
             operationStat = OperationStat.MOVING_ROTATE;
         else if (inFrame(eventX, eventY)){
+            parent.savePixel();
             operationStat = OperationStat.TRANSLATING;
             lastTransX = eventX;
             lastTransY = eventY;
@@ -384,15 +387,17 @@ public class SelectedFrame extends GraphEntity{
         if (!pressed)
             return;
         if (operationStat == OperationStat.TRANSLATING) {
+            parent.loadPixel();
             Vector<Double> vars = new Vector<>();
             vars.add(eventX - lastTransX);
             vars.add(eventY - lastTransY);
             Canvas.getInstance().transform(parent.getId(), TransformType.TRANSLATE, vars);
             transUpdate();
-            lastTransX = eventX;
-            lastTransY = eventY;
+//            lastTransX = eventX;
+//            lastTransY = eventY;
         }
         else if (operationStat == OperationStat.ROTATING) {
+            parent.loadPixel();
             double rotateAngle = GUIUtil.pointToAngle(eventX, eventY, rotateCenterX, rotateCenterY);
             Vector<Double> vars = new Vector<>();
             vars.add((double)rotateCenterX);
@@ -400,9 +405,10 @@ public class SelectedFrame extends GraphEntity{
             vars.add(rotateAngle - lastDegree);
             Canvas.getInstance().transform(parent.getId(), TransformType.ROTATE, vars);
             rotateUpdate();
-            lastDegree = rotateAngle;
+//            lastDegree = rotateAngle;
         }
         else if (operationStat == OperationStat.SCALING) {
+            parent.loadPixel();
             double distance = GUIUtil.calDistance(eventX, eventY, scaleCenterX, scaleCenterY);
             Vector<Double> vars = new Vector<>();
             vars.add((double)scaleCenterX);
@@ -410,7 +416,7 @@ public class SelectedFrame extends GraphEntity{
             vars.add(distance / lastScaleDistance);
             Canvas.getInstance().transform(parent.getId(), TransformType.SCALE, vars);
             scaleUpdate();
-            lastScaleDistance = distance;
+//            lastScaleDistance = distance;
         }
         else if (operationStat == OperationStat.MOVING_ROTATE) {
             rotateCenter.clear();

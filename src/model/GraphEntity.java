@@ -9,29 +9,34 @@ public class GraphEntity {
     private int id;
     private GraphEntityType type;
     private Vector<Pixel> pixels;
+    private Vector<Pixel> backup_pixels;
     private boolean hasPainted = false;
     private SelectedFrame selectedFrame;
     private int rgb;
 
     public GraphEntity() {
         this.pixels = new Vector<>();
+        backup_pixels = new Vector<>();
     }
 
     public GraphEntity(int id, Vector<Pixel> pixels) {
         this.id = id;
         this.pixels = pixels;
+        backup_pixels = new Vector<>();
     }
 
     public GraphEntity(int id, GraphEntityType type){
         this.id = id;
         this.type = type;
         this.pixels = new Vector<>();
+        backup_pixels = new Vector<>();
     }
 
     public GraphEntity(int id, GraphEntityType type, Vector<Pixel> pixels){
         this.id = id;
         this.type = type;
         this.pixels = pixels;
+        backup_pixels = new Vector<>();
     }
 
     public void addPixel(int x, int y){
@@ -73,6 +78,21 @@ public class GraphEntity {
         for (Pixel pixel : pixels) {
             Canvas.getInstance().clearPixel(pixel.getX(), Canvas.getInstance().getHeight() - pixel.getY(), id);
         }
+    }
+
+    public void savePixel() {
+        if (pixels.size() == 0)
+            return;
+        backup_pixels.clear();
+        backup_pixels.addAll(pixels);
+    }
+
+    public void loadPixel() {
+        if (backup_pixels == null)
+            return;
+        clear();
+        pixels.clear();
+        pixels.addAll(backup_pixels);
     }
 
     public int getRgb() {
