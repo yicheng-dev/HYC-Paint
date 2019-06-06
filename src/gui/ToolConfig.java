@@ -1,6 +1,7 @@
 package gui;
 
 import io.CliInterpreter;
+import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -20,6 +21,8 @@ public class ToolConfig {
     static ToggleButton ellipseButton = new ToggleButton ("Ellipse");
     static ToggleButton curveButton = new ToggleButton("Curve");
 
+    static CheckBox cropCheckBox = new CheckBox("Crop");
+
     public static void config(VBox vBox){
         HBox toolHBox = new HBox();
         toolHBox.setAlignment(Pos.CENTER_LEFT);
@@ -34,6 +37,7 @@ public class ToolConfig {
         toolHBox.getChildren().add(text);
         toolHBox.getChildren().add(colorPicker);
         toolHBox.getChildren().add(commandText);
+        toolHBox.getChildren().add(cropCheckBox);
         vBox.getChildren().add(toolHBox);
     }
 
@@ -88,5 +92,14 @@ public class ToolConfig {
         toolHBox.getChildren().add(polygonButton);
         toolHBox.getChildren().add(ellipseButton);
         toolHBox.getChildren().add(curveButton);
+
+        cropCheckBox.setText("Clip");
+        cropCheckBox.setSelected(false);
+        cropCheckBox.selectedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                GP.cropping = newValue;
+            }
+        });
     }
 }

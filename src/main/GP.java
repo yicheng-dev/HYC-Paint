@@ -22,13 +22,16 @@ public class GP {
     public static int DEFAULT_ELLIPSE_BX = Canvas.getInstance().getHeight() / 10;
 
     public static Vector<Point> chosenPoints = new Vector<>();
+    public static Vector<Point> croppingPoints = new Vector<>();
     public static GraphEntity drawingEntity;
     public static GraphEntity selectedEntity;
     public static boolean drawing = false;
+    public static boolean cropping = false;
     public static ObservableList<Integer> graphList = FXCollections.observableArrayList();
 
     public static String lineAlgorithm = "DDA";
     public static String curveAlgorithm = "Bezier";
+    public static String clipAlgorithm = "Liang-Barsky";
     public static ToggleType chosenToggle = ToggleType.CHOOSE;
     public static String inputInstrFile = "input.txt";
     public static String outputDir = "." + File.separator;

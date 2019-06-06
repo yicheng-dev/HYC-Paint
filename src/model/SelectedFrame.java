@@ -2,6 +2,7 @@ package model;
 
 import gui.CanvasView;
 import gui.WarningText;
+import io.CliInterpreter;
 import main.GP;
 import util.CGAlgorithm;
 import util.GUIUtil;
@@ -102,6 +103,18 @@ public class SelectedFrame extends GraphEntity{
         buildScaleLabel();
         buildRotateLabel();
         buildRotateCenter(centerX + (rotateCenterX - oldCenterX), centerY + (rotateCenterY - oldCenterY));
+        if (!GP.CLI)
+            ImageUtil.canvasUpdate();
+    }
+
+    private void cropUpdate() {
+        frameClear(0);
+        int oldCenterX = centerX, oldCenterY = centerY;
+        buildFrame();
+        buildScaleLabel();
+        buildRotateLabel();
+        buildRotateCenter(centerX + (rotateCenterX - oldCenterX), centerY + (rotateCenterY - oldCenterY));
+        buildScaleCenter(centerX + (scaleCenterX - oldCenterX), centerY + (scaleCenterY - oldCenterY));
         if (!GP.CLI)
             ImageUtil.canvasUpdate();
     }
@@ -432,6 +445,18 @@ public class SelectedFrame extends GraphEntity{
             if (!GP.CLI)
                 ImageUtil.canvasUpdate();
         }
+    }
+
+    public void processCrop() {
+        assert GP.croppingPoints.size() == 2;
+        double x1 = Math.min(GP.croppingPoints.get(0).x, GP.croppingPoints.get(1).x);
+        double y1 = Math.min(GP.croppingPoints.get(0).y, GP.croppingPoints.get(1).y); /* 左下角坐标 */
+        double x2 = Math.max(GP.croppingPoints.get(0).x, GP.croppingPoints.get(1).x);
+        double y2 = Math.max(GP.croppingPoints.get(0).y, GP.croppingPoints.get(1).y); /* 右上角坐标 */
+
+        String command = "clip " + this.getId() + " " + x1 + " " + y1 + " " + x2 + " " + y2 + " " + GP.clipAlgorithm;
+        CliInterpreter.commandProcess(command);
+        cropUpdate();
     }
 
 }

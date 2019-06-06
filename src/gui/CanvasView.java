@@ -21,11 +21,12 @@ public class CanvasView extends ImageView {
     private CanvasView(){
         super();
         GP.chosenPoints = new Vector<>();
+        GP.croppingPoints = new Vector<>();
 
         this.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                if (event.getButton() == MouseButton.PRIMARY){
+                if (event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 1){
                     if (GP.chosenToggle == ToggleType.LINE || GP.chosenToggle == ToggleType.POLYGON || GP.chosenToggle == ToggleType.CURVE) {
                         if (!GP.drawing) {
                             GP.chosenPoints.add(new Point(event.getX(), Canvas.getInstance().getHeight() - event.getY()));
@@ -45,8 +46,17 @@ public class CanvasView extends ImageView {
                             }
                         }
                     }
+                    else if (GP.cropping && GP.chosenToggle == ToggleType.CHOOSE && GP.selectedEntity != null) {
+                        if (GP.croppingPoints.size() == 0)
+                            GP.croppingPoints.add(new Point(event.getX(), Canvas.getInstance().getHeight() - event.getY()));
+                        else {
+                            GP.croppingPoints.add(new Point(event.getX(), Canvas.getInstance().getHeight() - event.getY()));
+                            GP.selectedEntity.crop();
+                            GP.croppingPoints.clear();
+                        }
+                    }
                 }
-                else if (event.getButton() == MouseButton.SECONDARY){
+                else if (event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
                     if (GP.drawing){
                         if (GP.chosenToggle == ToggleType.POLYGON){
                             String command = "drawPolygon " + GUIUtil.nextFreeId() + " " + GP.chosenPoints.size() + " " + GP.lineAlgorithm;

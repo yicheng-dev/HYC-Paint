@@ -125,4 +125,9 @@ public class GraphEntity {
     public void processDragged(double eventX, double eventY) {
         selectedFrame.processDragged(eventX, eventY);
     }
+
+    public void crop() {
+        selectedFrame.processCrop();
+    }
+
 }
