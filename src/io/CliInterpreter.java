@@ -176,6 +176,7 @@ public class CliInterpreter {
                 exitFlag = true;
                 break;
             default:
+                WarningText.getInstance().setWarningText("Invalid command. Please read the document.");
                 break;
         }
     }
