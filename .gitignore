@@ -1,5 +1,5 @@
 *.txt
 *.bmp
 *.DS_Store
-out/
+build/
 !/image/output.bmp

@@ -415,7 +415,7 @@ public class SelectedFrame extends GraphEntity{
             Vector<Double> vars = new Vector<>();
             vars.add((double)rotateCenterX);
             vars.add((double)rotateCenterY);
-            vars.add(rotateAngle - lastDegree);
+            vars.add(rotateAngle);
             Canvas.getInstance().transform(parent.getId(), TransformType.ROTATE, vars);
             rotateUpdate();
 //            lastDegree = rotateAngle;

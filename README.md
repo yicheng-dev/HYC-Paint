@@ -12,17 +12,22 @@ A painting tool developed with Java and it can draw lines, polygons, ellipses, c
 - A shell bash `run.sh` is provided so you can type `$ bash run.sh` to compile and run it. At current stage, two CLI parameters are needed, representing the path of input file and the path of image output directory. For example, 
 
     ```
-    $ bash run.sh input.txt ./ -f
+    $ bash run.sh input.txt ./
     ```
 - You can also launch a python-like CLI by
 
 	```
-	$ bash run.sh input.txt ./ -c
+	$ bash run.sh -c
 	```
+- You can launch a GUI simply by
+
+    ```
+    $ bash run.sh
+    ```
 
 ## Front End
 
-At current stage, the GUI of HYC-Paint has not been developed so only CLI is supported. You can input instructions into your input file (designated by you). The following instructions are a good example. The annotations beginning with `%` should not appear in real files.
+You can input instructions into your input file (designated by you). The following instructions are a good example. The annotations beginning with `%` should not appear in real files.
 
 ```
 resetCanvas 400 300     % Clear and reset the canvas to 400 * 300
@@ -68,6 +73,8 @@ exit       % Exit
 ```
 
 - `JavaFX` is being used to optimize the front-end.
+
+- At current stage, GUI has been built and `demo.gif` is a good demo. You can follow it and draw what you want with GUI.
 
 ## Back End
 
