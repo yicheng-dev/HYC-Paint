@@ -25,6 +25,7 @@ public class GP {
     public static Vector<Point> croppingPoints = new Vector<>();
     public static GraphEntity drawingEntity;
     public static GraphEntity selectedEntity;
+    public static boolean isBezier = true;
     public static boolean drawing = false;
     public static boolean cropping = false;
     public static ObservableList<Integer> graphList = FXCollections.observableArrayList();

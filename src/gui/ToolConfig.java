@@ -3,6 +3,7 @@ package gui;
 import io.CliInterpreter;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
@@ -13,6 +14,8 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import main.GP;
 
+import java.util.stream.StreamSupport;
+
 public class ToolConfig {
 
     static ToggleButton chooseButton = new ToggleButton("Choose");
@@ -21,6 +24,7 @@ public class ToolConfig {
     static ToggleButton ellipseButton = new ToggleButton ("Ellipse");
     static ToggleButton curveButton = new ToggleButton("Curve");
 
+    static ChoiceBox curveCb = new ChoiceBox();
     static CheckBox cropCheckBox = new CheckBox("Crop");
 
     public static void config(VBox vBox){
@@ -30,6 +34,8 @@ public class ToolConfig {
         TextField commandText = new TextField();
         commandText.setPromptText("Enter your command");
         commandTextConfig(commandText);
+        curveCb.getItems().addAll("Bezier", "B-spline");
+        curveCb.setValue("Bezier");
         ColorPicker colorPicker = new ColorPicker();
         ColorPickerConfig.config(colorPicker);
         toggleConfig(toolHBox);
@@ -79,8 +85,12 @@ public class ToolConfig {
                         }
                     }
                 });
-
-
+        curveCb.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                GP.isBezier = newValue.equals("Bezier");
+            }
+        });
         chooseButton.setToggleGroup(group);
         chooseButton.setSelected(true);
         lineButton.setToggleGroup(group);
@@ -92,6 +102,7 @@ public class ToolConfig {
         toolHBox.getChildren().add(polygonButton);
         toolHBox.getChildren().add(ellipseButton);
         toolHBox.getChildren().add(curveButton);
+        toolHBox.getChildren().add(curveCb);
 
         cropCheckBox.setText("Clip");
         cropCheckBox.setSelected(false);

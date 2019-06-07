@@ -66,7 +66,13 @@ public class CanvasView extends ImageView {
                             CliInterpreter.commandProcess(command);
                         }
                         if (GP.chosenToggle == ToggleType.CURVE){
-                            String command = "drawCurve " + GUIUtil.nextFreeId() + " " + GP.chosenPoints.size() + " " + GP.curveAlgorithm;
+                            String command = "drawCurve " + GUIUtil.nextFreeId() + " " + GP.chosenPoints.size() + " ";
+                            if (GP.isBezier) {
+                                command += "Bezier";
+                            }
+                            else {
+                                command += "B-spline";
+                            }
                             for (Point chosenPoint : GP.chosenPoints){
                                 command += " " + chosenPoint.x + " " + chosenPoint.y;
                             }
