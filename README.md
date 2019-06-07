@@ -74,7 +74,9 @@ exit       % Exit
 
 - `JavaFX` is being used to optimize the front-end.
 
-- At current stage, GUI has been built and `demo.gif` is a good demo. You can follow it and draw what you want with GUI.
+- At current stage, GUI has been built and `image/demo.gif` is a good demo. You can follow it and draw what you want with GUI.
+
+![](image/demo.gif)
 
 ## Back End
 
