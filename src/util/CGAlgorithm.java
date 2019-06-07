@@ -224,22 +224,48 @@ public class CGAlgorithm {
         }
     }
 
+    private static double De_Boor_x(int r, double t, int i, Vector<Point> points, double[] T, int k) {
+        if (r == 0)
+            return points.get(i).x;
+        if (T[i + k - r] - T[i] == 0 && T[i + k - r] - T[i] != 0)
+            return ((T[i + k - r] - t) / (T[i + k - r] - T[i])) * De_Boor_x(r - 1, t, i - 1, points, T, k);
+        else if (T[i + k - r] - T[i] != 0 && T[i + k - r] - T[i] == 0)
+            return ((t - T[i]) / (T[i + k - r] - T[i])) * De_Boor_x(r - 1, t, i, points, T, k);
+        else if (T[i + k - r] - T[i] == 0 && T[i + k - r] - T[i] == 0)
+            return 0;
+        return ((t - T[i]) / (T[i + k - r] - T[i])) * De_Boor_x(r - 1, t, i, points, T, k) + (
+                (T[i + k - r] - t) / (T[i + k - r] - T[i])) * De_Boor_x(r - 1, t, i - 1, points, T, k);
+    }
+
+    private static double De_Boor_y(int r, double t, int i, Vector<Point> points, double[] T, int k) {
+        if (r == 0)
+            return points.get(i).y;
+        if (T[i + k - r] - T[i] == 0 && T[i + k - r] - T[i] != 0)
+            return ((T[i + k - r] - t) / (T[i + k - r] - T[i])) * De_Boor_y(r - 1, t, i - 1, points, T, k);
+        else if (T[i + k - r] - T[i] != 0 && T[i + k - r] - T[i] == 0)
+            return ((t - T[i]) / (T[i + k - r] - T[i])) * De_Boor_y(r - 1, t, i, points, T, k);
+        else if (T[i + k - r] - T[i] == 0 && T[i + k - r] - T[i] == 0)
+            return 0;
+        return ((t - T[i]) / (T[i + k - r] - T[i])) * De_Boor_y(r - 1, t, i, points, T, k) + (
+                (T[i + k - r] - t) / (T[i + k - r] - T[i])) * De_Boor_y(r - 1, t, i - 1, points, T, k);
+    }
+
     public static void bSpline(Curve curve, int n, Vector<Point> points){
+        int k = 3;
         double step = 0.01;
         Vector<Point> pixels = new Vector<>();
-        for (double t = 0; t <= 1; t += step){
-            double x = 0.0;
-            double y = 0.0;
-            for (int i = 0; i <= n - 1; i++){
-                double f = 0.0;
-                for (int j = 0; j <= n - 1 - i; j++){
-                    f += Math.pow(-1, j) * combination(j, n) * Math.pow(t + n - 1 - i - j, n - 1);
-                }
-                f /= factorial(n - 1);
-                x += points.get(i).x * f;
-                y += points.get(i).y * f;
+        double [] T = new double[n + k];
+        double interval_cnt = 1;
+        for (int i = 0; i < n + k - 1; i++) {
+            T[i] = interval_cnt;
+            interval_cnt += 9.0 / (n + k);
+        }
+        for (int j = k - 1; j < n; j++) {
+            double cnt = T[j];
+            while (cnt <= T[j + 1]) {
+                pixels.add(new Point(De_Boor_x(k - 1, cnt, j, points, T, k), De_Boor_y(k - 1, cnt, j, points, T, k)));
+                cnt += step;
             }
-            pixels.add(new Point(x, y));
         }
         for (int i = 0; i < pixels.size() - 1; i++){
             dda(curve, pixels.get(i).x, pixels.get(i).y, pixels.get(i + 1).x, pixels.get(i + 1).y);
